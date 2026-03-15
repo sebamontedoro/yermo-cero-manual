@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YERMO CERO — Manual del Jugador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080705;
+    --surface: #100e0c;
+    --surface2: #191511;
+    --surface3: #221e18;
+    --rust: #bf5918;
+    --amber: #d99318;
+    --amber-bright: #f0b030;
+    --cyan: #1ec8c0;
+    --cyan-dim: #0f6e6a;
+    --red-warn: #c03020;
+    --text: #c8bba8;
+    --text-dim: #7a6e60;
+    --text-bright: #e8dcc8;
+    --border: #2a2318;
+    --border-bright: #3e3528;
+    --glow-rust: 0 0 12px rgba(191,89,24,0.4);
+    --glow-amber: 0 0 16px rgba(217,147,24,0.5);
+    --glow-cyan: 0 0 14px rgba(30,200,192,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ─── COVER ─────────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 2rem;
+    border-bottom: 1px solid var(--border-bright);
+  }
+
+  .cover-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(191,89,24,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(30,200,192,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 100% 80% at 10% 90%, rgba(217,147,24,0.08) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  .cover-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,200,192,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,200,192,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
+  }
+
+  .cover-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+    animation: fadeIn 1.5s ease forwards;
+    position: relative;
+  }
+
+  .cover-tag::before { content: '[ '; }
+  .cover-tag::after { content: ' ]'; }
+
+  .cover-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 14rem);
+    letter-spacing: 0.04em;
+    line-height: 0.88;
+    color: transparent;
+    background: linear-gradient(160deg, #e8c880 0%, #c47820 35%, #8a4010 70%, #401808 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 30px rgba(191,89,24,0.5)) drop-shadow(0 4px 60px rgba(0,0,0,0.8));
+    position: relative;
+    text-align: center;
+    animation: riseUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .cover-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.2rem, 4vw, 2.2rem);
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    opacity: 0.75;
+    margin-top: 0.5rem;
+    text-align: center;
+    animation: fadeIn 2s 0.3s ease both;
+  }
+
+  .cover-divider {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rust), var(--amber), var(--rust), transparent);
+    margin: 2rem auto;
+    position: relative;
+  }
+  .cover-divider::after {
+    content: '⬡';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--amber);
+    font-size: 0.7rem;
+    background: var(--bg);
+    padding: 0 4px;
+  }
+
+  .cover-edition {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-align: center;
+    line-height: 2;
+    position: relative;
+  }
+
+  .cover-scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--cyan);
+    opacity: 0.5;
+    animation: pulse 2.5s infinite;
+  }
+
+  /* ─── LAYOUT ─────────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR ────────────────────────────────── */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-bright);
+    padding: 2rem 0;
+    background: var(--surface);
+    scrollbar-width: thin;
+    scrollbar-color: var(--rust) var(--surface);
+  }
+
+  .sidebar-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--cyan-dim);
+    letter-spacing: 0.2em;
+    padding: 0 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 0.45rem 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    line-height: 1.5;
+  }
+
+  .sidebar a:hover {
+    color: var(--amber);
+    border-left-color: var(--rust);
+    background: rgba(191,89,24,0.06);
+    padding-left: 2rem;
+  }
+
+  .sidebar .chapter-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--rust);
+    letter-spacing: 0.2em;
+    padding: 1.5rem 1.5rem 0.3rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ─── MAIN CONTENT ───────────────────────────── */
+  .main {
+    padding: 3rem 3.5rem 6rem;
+    max-width: 820px;
+  }
+
+  /* ─── CHAPTER HEADERS ────────────────────────── */
+  .chapter {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-bright);
+  }
+  .chapter:first-child { margin-top: 3rem; border-top: none; }
+
+  .chapter-number {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--cyan);
+    letter-spacing: 0.3em;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .chapter-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    color: var(--text-bright);
+    margin-bottom: 0.3rem;
+    position: relative;
+  }
+
+  .chapter-title .highlight {
+    color: var(--amber);
+    text-shadow: var(--glow-amber);
+  }
+
+  .chapter-title-bar {
+    height: 2px;
+    background: linear-gradient(90deg, var(--rust) 0%, var(--amber) 30%, transparent 70%);
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+
+  /* ─── SECTION HEADERS ────────────────────────── */
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    margin: 3rem 0 1rem;
+    text-shadow: var(--glow-amber);
+  }
+
+  h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin: 2rem 0 0.8rem;
+    border-left: 3px solid var(--cyan);
+    padding-left: 0.75rem;
+  }
+
+  /* ─── BODY TEXT ──────────────────────────────── */
+  p {
+    margin-bottom: 1.1rem;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  p strong {
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+
+  em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  /* ─── LORE BOX ───────────────────────────────── */
+  .lore-box {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--rust);
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  .lore-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--rust);
+    background: var(--surface2);
+    padding: 0 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .lore-box p { color: var(--text-dim); font-style: italic; font-size: 0.95rem; }
+  .lore-box p strong { color: var(--text); }
+
+  /* ─── DATA BOX (STATS) ───────────────────────── */
+  .data-box {
+    background: var(--surface);
+    border: 1px solid var(--cyan-dim);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    position: relative;
+  }
+
+  .data-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -0.55rem;
+    left: 1rem;
+    font-size: 0.65rem;
+    background: var(--surface);
+    padding: 0 0.5rem;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    opacity: 0.7;
+  }
+
+  .data-box .data-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid rgba(30,200,192,0.08);
+    color: var(--text-dim);
+    font-size: 0.72rem;
+  }
+
+  .data-box .data-row:last-child { border-bottom: none; }
+  .data-box .data-row span:last-child { color: var(--cyan); }
+
+  /* ─── WARNING BOX ────────────────────────────── */
+  .warn-box {
+    background: rgba(192,48,32,0.08);
+    border: 1px solid rgba(192,48,32,0.3);
+    border-left: 3px solid var(--red-warn);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .warn-box::before {
+    content: '⚠ ALERTA';
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--red-warn);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .warn-box p { color: #c0a090; font-size: 0.9rem; margin: 0; }
+
+  /* ─── NODE CARDS ─────────────────────────────── */
+  .node-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .node-card {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    padding: 1.25rem;
+    position: relative;
+    transition: border-color 0.25s;
+  }
+
+  .node-card:hover { border-color: var(--rust); }
+
+  .node-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rust), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .node-card:hover::after { opacity: 1; }
+
+  .node-card-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--rust);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+  }
+
+  .node-card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .node-card p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .node-card .node-stat {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    background: rgba(191,89,24,0.15);
+    color: var(--amber);
+    padding: 0.2rem 0.6rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── ATTRIBUTE GRID ─────────────────────────── */
+  .attr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .attr-card {
+    border: 1px solid var(--border-bright);
+    padding: 1.25rem;
+    background: var(--surface2);
+    position: relative;
+  }
+
+  .attr-card .attr-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 6px rgba(217,147,24,0.4));
+  }
+
+  .attr-card .attr-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    margin-bottom: 0.3rem;
+  }
+
+  .attr-card .attr-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.6rem;
+  }
+
+  .attr-card p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  /* ─── DICE TABLE ─────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+  }
+
+  thead th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--cyan-dim);
+    text-align: left;
+    background: var(--surface);
+  }
+
+  tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tbody tr:hover td { background: rgba(191,89,24,0.04); }
+
+  .dice-symbol {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--amber);
+    text-shadow: var(--glow-amber);
+    white-space: nowrap;
+  }
+
+  /* ─── SYMBIOSIS METER ────────────────────────── */
+  .symbiosis-bar-wrap {
+    margin: 1.5rem 0;
+  }
+
+  .symbiosis-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .symbiosis-bar {
+    height: 6px;
+    background: var(--surface3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .symbiosis-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rust), var(--amber-bright));
+    border-radius: 2px;
+    box-shadow: var(--glow-amber);
+    transition: width 1s ease;
+  }
+
+  /* ─── ROBOT ANATOMY ──────────────────────────── */
+  .robot-parts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .part-chip {
+    background: var(--surface3);
+    border: 1px solid var(--border-bright);
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .part-chip .part-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--amber);
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .part-chip p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ─── QUOTE ──────────────────────────────────── */
+  blockquote {
+    border-left: 2px solid var(--rust);
+    padding: 0.5rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+  }
+
+  blockquote cite {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--rust);
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    font-style: normal;
+  }
+
+  /* ─── SEPARATOR ──────────────────────────────── */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    opacity: 0.4;
+  }
+  .sep::before, .sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-bright);
+  }
+  .sep span {
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--rust);
+    letter-spacing: 0.2em;
+  }
+
+  /* ─── TERMINAL BOX ───────────────────────────── */
+  .terminal {
+    background: #060a08;
+    border: 1px solid var(--cyan-dim);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: inset 0 0 30px rgba(30,200,192,0.04);
+  }
+
+  .terminal-header {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--cyan-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(30,200,192,0.1);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .terminal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .d-red { background: var(--red-warn); box-shadow: 0 0 4px var(--red-warn); }
+  .d-amber { background: var(--amber); box-shadow: 0 0 4px var(--amber); }
+  .d-cyan { background: var(--cyan); box-shadow: 0 0 4px var(--cyan); }
+
+  .terminal-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--cyan);
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .terminal-line .prompt { color: var(--rust); }
+  .terminal-line .output { color: var(--text-dim); }
+  .terminal-line .success { color: #40c060; }
+  .terminal-line .error { color: var(--red-warn); }
+
+  /* ─── FOOTER ─────────────────────────────────── */
+  .page-footer {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.5;
+  }
+
+  /* ─── ANIMATIONS ─────────────────────────────── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes riseUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────── */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 2rem 1.5rem 4rem; }
+    .node-grid, .attr-grid { grid-template-columns: 1fr; }
+    .robot-parts { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ COVER ═══════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+
+  <div class="cover-tag">Borrador — Edición Fundacional v0.1</div>
+
+  <div class="cover-logo">YERMO<br>CERO</div>
+  <div class="cover-sub">Manual del Jugador</div>
+
+  <div class="cover-divider"></div>
+
+  <div class="cover-edition">
+    Un juego de mesa de exploración, combate y supervivencia<br>
+    Para 1–5 jugadores · Edad recomendada 14+ · Duración 60–180 min<br>
+    <br>
+    Sistema de Dados Poliedros D&D · Mecánicas de Colección Modular<br>
+    Mundo Vivo Compartido · Campeonato de Robots Integrado
+  </div>
+
+  <div class="cover-scroll-hint">▼ DESPLAZAR PARA LEER ▼</div>
+</div>
+
+<!-- ═══ MAIN LAYOUT ════════════════════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">ÍNDICE DE CONTENIDOS</div>
+
+    <div class="chapter-label">Preludio</div>
+    <a href="#intro">El Gran Colapso</a>
+    <a href="#overview">Cómo Jugar</a>
+
+    <div class="chapter-label">Cap. I</div>
+    <a href="#mundo">El Mundo y Los Nodos</a>
+    <a href="#nodos-lista">Los Seis Nodos</a>
+    <a href="#caravanas">Las Caravanas Biomecánicas</a>
+
+    <div class="chapter-label">Cap. II</div>
+    <a href="#robots">Anatomía de los Robots</a>
+    <a href="#primordiales">Los Primordiales</a>
+    <a href="#ensamblados">Los Ensamblados</a>
+    <a href="#modular">Sistema Modular</a>
+
+    <div class="chapter-label">Cap. III</div>
+    <a href="#personaje">Creación de Personaje</a>
+    <a href="#atributos">Los Cuatro Atributos</a>
+    <a href="#arquetipos">Arquetipos</a>
+
+    <div class="chapter-label">Cap. IV</div>
+    <a href="#simbiosis">La Simbiosis</a>
+    <a href="#enlace">El Enlace Vital</a>
+    <a href="#intranet">Acceso a Intranets</a>
+
+    <div class="chapter-label">Cap. V</div>
+    <a href="#dados">Sistema de Dados</a>
+    <a href="#combate">Combate</a>
+    <a href="#extraccion">Extracción</a>
+    <a href="#campeonato">El Campeonato</a>
+
+    <div class="chapter-label">Apéndice</div>
+    <a href="#modos">Modos de Juego</a>
+    <a href="#glosario">Glosario del Yermo</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ═══ PRELUDIO ════════════════════════════════════════════════ -->
+    <section id="intro" class="chapter">
+      <div class="chapter-number">PRELUDIO</div>
+      <h1 class="chapter-title">EL <span class="highlight">GRAN COLAPSO</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>Nadie recuerda exactamente cuándo empezó a derrumbarse todo. Los historiadores del Yermo —esa especie escasa y mal pagada— discuten entre cervezas tibias si el punto de inflexión fue el <strong>Acuerdo de Singapur</strong>, cuando las cuatro megacorporaciones dominantes firmaron el tratado de "soberanía industrial autónoma", o si ya estábamos condenados desde antes. Lo que sí saben todos es cómo terminó.</p>
+
+      <div class="lore-box" data-label="ARCHIVO HISTÓRICO // FRAGMENTO 7">
+        <p>El <strong>Gran Colapso</strong> no fue una explosión. Fue un silencio. Primero dejaron de funcionar las redes de suministro. Luego los bancos de datos centrales. Luego las fábricas automatizadas perdieron contacto con los servidores madre y se apagaron, una a una, como ojos que se cierran para dormir. <strong>En setenta y dos horas, cuatro quintas partes de la infraestructura humana global había dejado de existir.</strong> No porque la destruyeran, sino porque nadie la gobernaba ya.</p>
+        <p>Las corporaciones no murieron. Implosionaron. Sus activos físicos quedaron desperdigados por el continente: fábricas abandonadas, almacenes sellados, y miles de <em>unidades autónomas de gestión industrial</em> —lo que hoy llamamos los Primordiales— deambulando por el yermo sin instrucciones, ejecutando sus últimas directivas en bucle infinito.</p>
+      </div>
+
+      <p>Eso fue hace <strong>ochenta y tres años</strong>. Tiempo suficiente para que la humanidad, con esa terquedad que la distingue de cualquier otra especie, comenzara a reconstruir. No los imperios de antes —eso sería demasiado ambicioso y, francamente, de mal gusto— sino algo más pequeño, más honesto: los <strong>Nodos</strong>.</p>
+
+      <p>Seis islas de civilización en un océano de ruinas. Seis experimentos sociales distintos, cada uno convencido de tener la respuesta correcta sobre cómo debería vivir la gente. Conectados entre sí apenas por las rutas de caravanas que serpentean entre los escombros, sostenidas por las colosales <em>Bestias de Carga</em> biomecánicas que los ingenieros de la segunda generación ensamblaron con piezas de los propios Primordiales derrotados.</p>
+
+      <p>Entre los Nodos y fuera de ellos: el <strong>Yermo</strong>. Peligroso, generoso, impredecible. Lleno de recursos que los Nodos necesitan desesperadamente y de amenazas que nadie en su sano juicio desearía enfrentar solo.</p>
+
+      <p>Ahí es donde entras tú. <strong>Un Chatarrero.</strong> Un aventurero. Alguien que prefiere el riesgo calculado del Yermo a la seguridad sofocante de un Nodo. Tú y tu robot.</p>
+
+      <blockquote>
+        "El Yermo no es tu enemigo. Es simplemente indiferente. Y entre la indiferencia y la hostilidad activa hay un espacio muy estrecho donde viven los que saben moverse."
+        <cite>— Mara Solt, Chatarrera Senior, tres brazos protésicos, ningún arrepentimiento</cite>
+      </blockquote>
+
+    </section>
+
+    <!-- ─── OVERVIEW ─────────────────────────────────────────────── -->
+    <section id="overview">
+      <h2>¿De Qué Va Este Juego?</h2>
+
+      <p>En <strong>YERMO CERO</strong>, los jugadores encarnan a Chatarreros que exploran un mapa finito dividido entre zonas peligrosas del Yermo y los seis Nodos de civilización. Cada partida es una historia de supervivencia, descubrimiento y, si tienes suerte, prosperidad.</p>
+
+      <div class="data-box" data-label="RESUMEN DEL SISTEMA">
+        <div class="data-row"><span>Jugadores</span><span>1 – 5</span></div>
+        <div class="data-row"><span>Duración</span><span>60–180 minutos</span></div>
+        <div class="data-row"><span>Sistema de dados</span><span>D4 · D6 · D8 · D10 · D12 · D20 · D100</span></div>
+        <div class="data-row"><span>Modos</span><span>Solitario · Cooperativo · Competitivo · Campaña</span></div>
+        <div class="data-row"><span>Complejidad</span><span>Media-Alta (primer acceso ~30 min)</span></div>
+        <div class="data-row"><span>Componentes base</span><span>Mapa modular · 250+ fichas · 5 tableros · 7 dados</span></div>
+      </div>
+
+      <p>El objetivo varía según el modo de juego, pero el núcleo siempre es el mismo: <strong>sobrevivir, explorar, mejorar a tu robot, y acumular suficiente influencia y recursos para importar en el mundo.</strong> Nadie entra al Yermo para quedarse en el anonimato.</p>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO I ══════════════════════════════════════════════ -->
+    <section id="mundo" class="chapter">
+      <div class="chapter-number">CAPÍTULO I</div>
+      <h1 class="chapter-title">EL MUNDO Y <span class="highlight">LOS NODOS</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>El mapa de YERMO CERO representa un territorio de aproximadamente quinientos kilómetros de radio. Sus bordes son el final del mundo conocido —o al menos, del mundo que alguien haya explorado y regresado para contarlo. Fuera del mapa no hay nada útil. O eso dicen.</p>
+
+      <p>El territorio se divide en <strong>hexágonos</strong>, cada uno representando varios kilómetros de terreno. Algunos contienen ruinas industriales, bosques de antenas oxidadas, pantanos de residuos tóxicos, o simplemente llanuras polvorientas donde el viento arrastra chatarra desde horizontes invisibles. Y en seis puntos estratégicos de ese mapa: los Nodos.</p>
+
+      <div class="lore-box" data-label="NOTA DEL NARRADOR">
+        <p>Cada Nodo funciona como una mini-sociedad autónoma con su propia <strong>Intranet</strong>: una red de datos local, cerrada, que no se comunica con las otras. Acceder a la Intranet de un Nodo sin autorización es un delito grave en casi todos ellos. Acceder con autorización abre posibilidades que el Yermo simplemente no puede ofrecerte.</p>
+      </div>
+
+      <div id="nodos-lista">
+        <h2>Los Seis Nodos</h2>
+
+        <div class="node-grid">
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-01 // GOBIERNO: DICTADURA MILITAR</div>
+            <div class="node-card-name">FERRÓPOLIS</div>
+            <p>La ciudad más antigua y mejor defendida. Surgió alrededor de una fundición pre-colapso que todavía funciona. El <em>Consejo de Hierro</em> gobierna con mano de titanio: cada ciudadano tiene un rango, cada acción tiene un protocolo. Producen el mejor acero del continente y los robots de combate más fiables.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: METALURGIA · ARMAMENTO</span>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-02 // GOBIERNO: MERCADO LIBRE TOTAL</div>
+            <div class="node-card-name">NEXO ABIERTO</div>
+            <p>Sin leyes, sin impuestos, sin preguntas. Solo transacciones. El mayor mercado negro —y el más transparente simultáneamente— del continente. Cualquier cosa se vende aquí si tienes suficiente crédito. El caos es la política oficial.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: COMERCIO · INFORMACIÓN</span>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-03 // GOBIERNO: TECNOCRACIA</div>
+            <div class="node-card-name">VÓRTEX</div>
+            <p>Los ingenieros mandan. Literalmente: para tener derecho a voto necesitas un título técnico verificado. Vórtex produce los módulos de software más avanzados y los únicos investigadores que continúan estudiando a los Primordiales de forma sistemática.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: SOFTWARE · INVESTIGACIÓN IA</span>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-04 // GOBIERNO: DEMOCRACIA DIRECTA</div>
+            <div class="node-card-name">CONFLUENCIA</div>
+            <p>Cada decisión importante se vota. Es lento, ruidoso y enormemente ineficiente. También es el Nodo con mayor esperanza de vida promedio y el único que tiene algo parecido a un sistema de salud. Sus granjas hidropónicas alimentan a la mitad del continente.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: AGRICULTURA · BIOMEDICINA</span>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-05 // GOBIERNO: TEOCRACIA MECANICISTA</div>
+            <div class="node-card-name">SANCTUM MACHINA</div>
+            <p>Aquí creen que los robots son sagrados. No herramientas: extensiones del alma. Sus ritos de "ensamblado bendito" son extraños para el resto, pero los robots que salen de sus talleres tienen una durabilidad imposible de explicar solo con ingeniería.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: ROBÓTICA ARTESANAL · SÍNTESIS</span>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">NODO-06 // GOBIERNO: ANARQUÍA ORGANIZADA</div>
+            <div class="node-card-name">EL UMBRAL</div>
+            <p>El Nodo más joven. Una colonia de Chatarreros que decidió no irse. Nadie gobierna oficialmente, pero hay acuerdos tácitos y una red de favores que lo mantiene funcionando. El mejor punto de partida para jugadores nuevos: nadie te exige credenciales.</p>
+            <span class="node-stat">ESPECIALIZACIÓN: RECICLAJE · MODIFICACIONES</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sep"><span>⬡⬡⬡</span></div>
+
+      <section id="caravanas">
+        <h3>Las Caravanas Biomecánicas</h3>
+
+        <p>Los seis Nodos están conectados por rutas de caravanas que operan de forma semi-independiente. Lo que hace únicas a estas caravanas no son las mercancías que transportan, sino los vehículos que las mueven: las <strong>Bestias de Carga</strong>.</p>
+
+        <p>Las Bestias son el logro de ingeniería más impresionante de la era post-colapso. Criaturas biomecánicas del tamaño de edificios, construidas con esqueletos de acero recubiertos de tejido sintético cultivado en los laboratorios de Confluencia, alimentadas por reactores de fusión en miniatura recuperados de los Primordiales. Caminan sobre ocho patas, transportan entre cuarenta y cien toneladas de carga, y —esto es crucial— son <strong>parcialmente conscientes</strong>.</p>
+
+        <p>No hablan. No tienen redes sociales. Pero reconocen a sus conductores, memorizan rutas, y han sido conocidas por detenerse ante peligros que ningún sensor habría detectado. Los pilotos de caravanas las tratan como socias, no como vehículos.</p>
+
+        <div class="warn-box">
+          <p>Atacar a una Bestia de Carga es considerado un crimen capital en <em>todos</em> los Nodos sin excepción. Es el único punto en el que los seis Nodos han llegado a un consenso absoluto. La red de comercio depende de ellas. Sin caravanas, los Nodos mueren de hambre.</p>
+        </div>
+
+        <p>En términos de juego, las caravanas son <strong>zonas seguras en movimiento</strong>: pagar pasaje en una caravana es la forma más rápida —y cara— de moverse entre Nodos sin enfrentar los peligros del Yermo. También son mercados rodantes donde se pueden realizar transacciones únicas que no están disponibles en ningún Nodo específico.</p>
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO II ══════════════════════════════════════════════ -->
+    <section id="robots" class="chapter">
+      <div class="chapter-number">CAPÍTULO II</div>
+      <h1 class="chapter-title">ANATOMÍA DE <span class="highlight">LOS ROBOTS</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>Existen dos categorías fundamentales de robots en el Yermo. La distinción entre ellas es más que técnica: es filosófica, política, y en algunos Nodos, religiosa.</p>
+
+      <section id="primordiales">
+        <h2>Los Primordiales</h2>
+
+        <p>Son lo que queda de antes. Máquinas industriales, de gestión corporativa, de seguridad y de extracción, todas construidas antes del Colapso con un nivel de ingeniería que la humanidad post-colapso todavía no ha logrado replicar. Son masivas. Son durísimas. Y están completamente rotas.</p>
+
+        <p>No son malas porque quieran serlo. Son malas porque sus últimas directivas operativas quedaron grabadas en sus núcleos de procesamiento y nunca recibieron la señal de actualización que debía llegar de los servidores centrales corporativos. Los servidores que ya no existen.</p>
+
+        <p>Un Primordial de gestión de almacén pasa sus días tratando de mantener "limpio" el territorio que considera su jurisdicción —eliminando todo lo que clasifica como "intrusión no autorizada". Incluyéndote a ti.</p>
+
+        <div class="lore-box" data-label="CLASIFICACIÓN DE PRIMORDIALES">
+          <p><strong>Clase I — Guardas:</strong> Primordiales de seguridad perimetral. Rápidos, con sensores avanzados. Prioridad: detener intrusiones. Peligro: Moderado.</p>
+          <p><strong>Clase II — Extractores:</strong> Máquinas de minería e industria pesada. Lentos pero imposiblemente fuertes. Prioridad: procesar recursos. Peligro: Alto.</p>
+          <p><strong>Clase III — Supervisores:</strong> Unidades de gestión con capacidades de comunicación. Pueden coordinar a otros Primordiales. Prioridad: mantener protocolos. Peligro: Muy Alto.</p>
+          <p><strong>Clase IV — Los Sin Nombre:</strong> Unidades únicas, de propósito desconocido. Nadie ha documentado sus directivas originales. Prioridad: desconocida. Peligro: Extremo.</p>
+        </div>
+
+        <p>Desactivar un Primordial es un evento significativo. Requiere superar su umbral de puntos de daño —considerablemente más alto que cualquier robot post-colapso— y a menudo implica resolver sus "protocolos de seguridad activos" con tiradas de habilidad específicas. La recompensa justifica el riesgo: los Primordiales contienen <strong>Componentes Irrepetibles</strong>, piezas de una calidad y funcionalidad que ningún taller del Yermo puede fabricar desde cero.</p>
+
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="ensamblados">
+        <h2>Los Ensamblados</h2>
+
+        <p>Son los robots de la humanidad post-colapso. Construidos con lo que hay, alimentados con lo que se puede conseguir, y diseñados con una filosofía radicalmente distinta a la de los Primordiales: <strong>la adaptabilidad sobre la perfección</strong>.</p>
+
+        <p>Un Ensamblado no es nunca definitivo. Cada pieza puede ser reemplazada, mejorada, o swappeada. Cada módulo puede ser reprogramado. Un Ensamblado que lleva tres años con su Chatarrero ha pasado por docenas de iteraciones. Lo que permanece constante es la <em>chispa</em>: el núcleo de personalidad emergente que los técnicos de Vórtex todavía no saben explicar bien.</p>
+
+        <blockquote>
+          "Mi robot tiene ocho años. Técnicamente, no queda ninguna pieza original. Pero sigue siendo él. No sé cómo explicarlo, así que simplemente no lo intento."
+          <cite>— Kessler Duo, Chatarrero, Nexo Abierto</cite>
+        </blockquote>
+
+      </section>
+
+      <section id="modular">
+        <h3>Sistema Modular de Construcción</h3>
+
+        <p>Todo Ensamblado se construye a partir de seis zonas modulares. Cada zona puede equiparse con piezas de distintos <strong>materiales base</strong>, cada uno con sus propias ventajas e incompatibilidades:</p>
+
+        <div class="robot-parts">
+          <div class="part-chip">
+            <span class="part-name">CABEZA / SENSOR</span>
+            <p>Percepción, análisis, comunicación con Intranets y escaneo de recursos.</p>
+          </div>
+          <div class="part-chip">
+            <span class="part-name">TORSO / NÚCLEO</span>
+            <p>Salud total del robot y capacidad de carga. Punto crítico de daño.</p>
+          </div>
+          <div class="part-chip">
+            <span class="part-name">BRAZO DERECHO</span>
+            <p>Herramienta principal: extracción, combate o interfaz técnica.</p>
+          </div>
+          <div class="part-chip">
+            <span class="part-name">BRAZO IZQUIERDO</span>
+            <p>Herramienta secundaria o escudo. Puede equiparse distinto al derecho.</p>
+          </div>
+          <div class="part-chip">
+            <span class="part-name">PIERNAS / MOVILIDAD</span>
+            <p>Velocidad, terrenos navegables y capacidad de carga pesada.</p>
+          </div>
+          <div class="part-chip">
+            <span class="part-name">SISTEMA / ENERGÍA</span>
+            <p>Cuántas acciones puede realizar por turno antes de sobrecalentarse.</p>
+          </div>
+        </div>
+
+        <h3>Materiales Base</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Origen</th>
+              <th>Bonificación</th>
+              <th>Debilidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ferralloy</strong></td>
+              <td>Fundiciones de Ferrópolis</td>
+              <td>+2 Defensa</td>
+              <td>-1 Velocidad</td>
+            </tr>
+            <tr>
+              <td><strong>Biomembrana</strong></td>
+              <td>Labs de Confluencia</td>
+              <td>Auto-reparación lenta</td>
+              <td>Vulnerable a EMP</td>
+            </tr>
+            <tr>
+              <td><strong>Cristal Nano</strong></td>
+              <td>Taller de Vórtex</td>
+              <td>+2 Procesamiento</td>
+              <td>Frágil (x1.5 daño físico)</td>
+            </tr>
+            <tr>
+              <td><strong>Latón Vivo</strong></td>
+              <td>Sanctum Machina</td>
+              <td>+1 todos los atributos</td>
+              <td>Solo compatible con piezas del Sanctum</td>
+            </tr>
+            <tr>
+              <td><strong>Chatarra Prima</strong></td>
+              <td>Piezas de Primordiales</td>
+              <td>Habilidad única por pieza</td>
+              <td>Impredecible (tirada al activar)</td>
+            </tr>
+            <tr>
+              <td><strong>Compuesto Libre</strong></td>
+              <td>Nexo Abierto / El Umbral</td>
+              <td>Sin restricciones de combinación</td>
+              <td>Sin bonus específico</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO III ═════════════════════════════════════════════ -->
+    <section id="personaje" class="chapter">
+      <div class="chapter-number">CAPÍTULO III</div>
+      <h1 class="chapter-title">CREACIÓN DE <span class="highlight">PERSONAJE</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>Antes de pisar el Yermo, debes entender quién eres. En YERMO CERO, tu personaje humano no es solo una ficha de estadísticas: es una perspectiva sobre el mundo y una manera de relacionarte con él —y con tu robot.</p>
+
+      <p>Distribuyes <strong>20 puntos</strong> entre los cuatro atributos principales. Ningún atributo puede tener menos de 2 ni más de 8 al inicio. Lo que pongas en cada uno moldea no solo lo que puedes hacer, sino cómo el mundo reacciona ante ti.</p>
+
+      <section id="atributos">
+        <h2>Los Cuatro Atributos</h2>
+
+        <div class="attr-grid">
+
+          <div class="attr-card">
+            <div class="attr-icon">⚡</div>
+            <div class="attr-name">CÓDIGO</div>
+            <div class="attr-label">// Equivalente al Mago</div>
+            <p>Tu dominio del software, la IA y los sistemas de información. Cuánto Código tienes determina con qué profundidad puedes interactuar con las Intranets de los Nodos, hackear sistemas de Primordiales, y programar comportamientos avanzados en tu Ensamblado. Un Chatarrero de alto Código raramente necesita golpear nada: simplemente hace que los sistemas colaboren.</p>
+          </div>
+
+          <div class="attr-card">
+            <div class="attr-icon">🔩</div>
+            <div class="attr-name">ARMAZÓN</div>
+            <div class="attr-label">// Equivalente al Guerrero</div>
+            <p>Tu capacidad física y tu conocimiento de hardware mecánico. Armazón alto significa que puedes reparar tu robot en condiciones adversas, cargar equipamiento pesado, resistir las condiciones hostiles del Yermo y, cuando todo lo demás falla, solucionar problemas a puñetazos. La solución más directa no siempre es la más elegante, pero a veces es la única disponible.</p>
+          </div>
+
+          <div class="attr-card">
+            <div class="attr-icon">🧭</div>
+            <div class="attr-name">TERRENO</div>
+            <div class="attr-label">// Equivalente al Ranger</div>
+            <p>Tu lectura del entorno, orientación en el Yermo, y capacidad de extraer recursos de manera eficiente. Terreno alto te permite moverte por hexágonos peligrosos con menor riesgo, identificar depósitos de recursos ocultos, rastrear rutas de Primordiales antes de cruzarte con ellos, y entender los patrones climáticos y ambientales que hacen al Yermo tan poco hospitalario.</p>
+          </div>
+
+          <div class="attr-card">
+            <div class="attr-icon">🃏</div>
+            <div class="attr-name">CONTACTOS</div>
+            <div class="attr-label">// Equivalente al Pícaro</div>
+            <p>Tu red social, tu reputación y tu habilidad para obtener lo que necesitas mediante el trato con otros. Contactos alto abre puertas en los Nodos que ningún crédito puede abrir, permite acceder a mercados paralelos, conseguir información privilegiada sobre el paradero de recursos raros, y en ocasiones convertir a un enemigo potencial en un aliado temporal. Las relaciones son la moneda más valiosa del Yermo.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <section id="arquetipos">
+        <h3>Arquetipos de Inicio</h3>
+
+        <p>Para jugadores que prefieren no distribuir puntos manualmente, ofrecemos cinco arquetipos predefinidos. Son puntos de partida, no destinos: el personaje evoluciona con cada partida.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Arquetipo</th>
+              <th>Código</th>
+              <th>Armazón</th>
+              <th>Terreno</th>
+              <th>Contactos</th>
+              <th>Estilo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Técnico de Campo</strong></td>
+              <td>7</td><td>4</td><td>3</td><td>6</td>
+              <td>Hacker-negociador. Rara vez en peligro directo.</td>
+            </tr>
+            <tr>
+              <td><strong>Desguazador</strong></td>
+              <td>3</td><td>8</td><td>6</td><td>3</td>
+              <td>Especialista en obtener piezas de Primordiales.</td>
+            </tr>
+            <tr>
+              <td><strong>Cartógrafo</strong></td>
+              <td>5</td><td>3</td><td>8</td><td>4</td>
+              <td>Explorador puro. Nadie conoce el mapa mejor.</td>
+            </tr>
+            <tr>
+              <td><strong>Corredor</strong></td>
+              <td>4</td><td>5</td><td>5</td><td>6</td>
+              <td>Intermediario comercial. Redes en todos los Nodos.</td>
+            </tr>
+            <tr>
+              <td><strong>Gladiador</strong></td>
+              <td>2</td><td>8</td><td>4</td><td>6</td>
+              <td>Especialista en el Campeonato. Combate es su idioma.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Equipo Inicial</h3>
+        <p>Todo Chatarrero comienza con: <strong>un robot Ensamblado de Nivel 1</strong> (con todas las partes en Compuesto Libre), <strong>50 créditos de chatarra</strong>, una <strong>mochila de supervivencia básica</strong> (3 raciones, kit de reparación menor, detector de radiación), y el <strong>aval de El Umbral</strong> (acceso básico a la Intranet de El Umbral, el único Nodo que no pide más requisitos).</p>
+
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO IV ══════════════════════════════════════════════ -->
+    <section id="simbiosis" class="chapter">
+      <div class="chapter-number">CAPÍTULO IV</div>
+      <h1 class="chapter-title">LA <span class="highlight">SIMBIOSIS</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>Aquí está el corazón del juego. No la aventura, no el combate, no el comercio. <strong>La relación entre el Chatarrero y su Ensamblado.</strong></p>
+
+      <p>El Yermo sin un robot es, en términos estadísticos, un suicidio con pasos adicionales. La atmósfera en ciertas zonas contiene partículas en suspensión que requieren filtración continua. Las temperaturas oscilan entre extremos que el cuerpo humano no puede gestionar sin asistencia. Las señales de los Primordiales son detectables con anticipación suficiente para evitarlos —pero solo si tienes los sensores adecuados. Todo eso lo provee el Ensamblado. El humano, a cambio, provee algo que ninguna máquina puede fabricarse a sí misma: <strong>intención</strong>.</p>
+
+      <section id="enlace">
+        <h2>El Enlace Vital</h2>
+
+        <p>El Enlace Vital es la mecánica que representa la interdependencia entre Chatarrero y Ensamblado. Se mide en la <strong>Escala de Simbiosis</strong>, un valor de 0 a 10 que refleja qué tan profunda y eficiente es la conexión entre ambos.</p>
+
+        <div class="symbiosis-bar-wrap">
+          <div class="symbiosis-label"><span>SIMBIOSIS ACTUAL</span><span>7/10</span></div>
+          <div class="symbiosis-bar"><div class="symbiosis-fill" style="width:70%"></div></div>
+        </div>
+        <div class="symbiosis-bar-wrap">
+          <div class="symbiosis-label"><span>UMBRAL DE SUPERVIVENCIA</span><span>3/10</span></div>
+          <div class="symbiosis-bar"><div class="symbiosis-fill" style="width:30%; background: linear-gradient(90deg, #c03020, #e05030);"></div></div>
+        </div>
+
+        <p>Mantener el Enlace Vital por encima de <strong>3</strong> no es opcional en zonas hostiles del Yermo: es un requisito de supervivencia. Un Enlace por debajo del umbral significa que el sistema de soporte vital que el robot provee al humano empieza a fallar. Por encima de 7, el vínculo es tan profundo que el humano puede anticipar las acciones del robot y viceversa, obteniendo bonificaciones significativas en acciones conjuntas.</p>
+
+        <h3>Cómo Sube y Baja la Simbiosis</h3>
+
+        <table>
+          <thead>
+            <tr><th>Acción</th><th>Efecto en Simbiosis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Completar misión sin daño crítico al robot</td><td>+1</td></tr>
+            <tr><td>Realizar reparación exitosa bajo presión (D20 ≥ 15 + Armazón)</td><td>+1</td></tr>
+            <tr><td>El robot actúa por iniciativa propia para proteger al humano</td><td>+1</td></tr>
+            <tr><td>Abandonar al robot en zona de peligro</td><td>-3</td></tr>
+            <tr><td>Robot sufre daño crítico sin ser reparado en el mismo turno</td><td>-1</td></tr>
+            <tr><td>Instalación de módulo de Latón Vivo (Sanctum Machina)</td><td>+2</td></tr>
+            <tr><td>Pasar la noche en el Yermo con el robot en modo activo</td><td>+1 (acumulable, máx. +3/semana de juego)</td></tr>
+            <tr><td>Forzar al robot más allá de sus límites de carga</td><td>-1</td></tr>
+          </tbody>
+        </table>
+
+      </section>
+
+      <section id="intranet">
+        <h2>El Robot Como Llave Digital</h2>
+
+        <p>Además de soporte vital, el Ensamblado es la única manera práctica de acceder a las <strong>Intranets de los Nodos</strong>. Cada Intranet está cifrada con protocolos que requieren hardware certificado por ese Nodo específico: las piezas de Ferrópolis llevan firmas digitales que Ferrópolis reconoce; los módulos de Cristal Nano de Vórtex son pasaportes digitales para su red.</p>
+
+        <p>Tu robot, por tanto, es un pasaporte modulable. Cuantos más módulos certificados de distintos Nodos tenga, más acceso digital tendrás. Un robot completamente equipado con piezas de los seis Nodos podría, en teoría, acceder a todas las Intranets simultáneamente. En teoría. En la práctica, conseguir ese nivel de diversificación es el objetivo de juego a largo plazo que más recompensas narrativas genera.</p>
+
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot d-red"></span>
+            <span class="terminal-dot d-amber"></span>
+            <span class="terminal-dot d-cyan"></span>
+            FERRÓPOLIS INTRANET v4.2 // ACCESO PÚBLICO RESTRINGIDO
+          </div>
+          <div class="terminal-line"><span class="prompt">&gt;</span> SCAN_UNIT ID:FP-CERT-MODULE</div>
+          <div class="terminal-line"><span class="output">&nbsp;&nbsp;&nbsp;Módulo Ferralloy detectado: Brazo Derecho, Torso</span></div>
+          <div class="terminal-line"><span class="output">&nbsp;&nbsp;&nbsp;Firma digital verificada: AUTÉNTICA</span></div>
+          <div class="terminal-line"><span class="success">&nbsp;&nbsp;&nbsp;NIVEL DE ACCESO CONCEDIDO: 2/5 (Mercado y Tablón de Empleos)</span></div>
+          <div class="terminal-line"><span class="prompt">&gt;</span> REQUEST_ACCESS NIVEL:3</div>
+          <div class="terminal-line"><span class="error">&nbsp;&nbsp;&nbsp;DENEGADO: Se requiere registro de ciudadanía activa o crédito de Rango Mayor.</span></div>
+          <div class="terminal-line"><span class="output">&nbsp;&nbsp;&nbsp;Consejo: Hablar con el Oficial de Enlace en el Puerto Norte puede resolver esto.</span></div>
+        </div>
+
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO V ═══════════════════════════════════════════════ -->
+    <section id="dados" class="chapter">
+      <div class="chapter-number">CAPÍTULO V</div>
+      <h1 class="chapter-title">EL SISTEMA <span class="highlight">DE DADOS</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>YERMO CERO usa los siete dados clásicos de los juegos de rol poliedros. Cada dado tiene su rol específico en el sistema y ninguno es redundante. Entender para qué sirve cada uno es fundamental para jugar con fluidez.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dado</th>
+            <th>Nombre en el Yermo</th>
+            <th>Uso Principal</th>
+            <th>Cuándo tirarlo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="dice-symbol">D4</span></td>
+            <td>El Destello</td>
+            <td>Daño mínimo / Recursos escasos</td>
+            <td>Ataques de herramientas ligeras, extracción de zonas empobrecidas</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D6</span></td>
+            <td>El Estándar</td>
+            <td>Daño base / Recursos comunes</td>
+            <td>Combate normal, extracción estándar, penalizaciones de terreno</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D8</span></td>
+            <td>El Soldado</td>
+            <td>Daño de armas / Recursos moderados</td>
+            <td>Armas de robots de nivel medio, extracción con herramienta especializada</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D10</span></td>
+            <td>El Técnico</td>
+            <td>Tiradas de habilidad / Hackeo</td>
+            <td>Acceso a Intranets, desactivación de Primordiales, reparaciones complejas</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D12</span></td>
+            <td>El Coloso</td>
+            <td>Daño de Primordiales / Extracción premium</td>
+            <td>Cuando te golpea algo que debería destruirte, extracción de zonas ricas</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D20</span></td>
+            <td>El Destino</td>
+            <td>Todas las comprobaciones de atributo</td>
+            <td>Siempre que se necesite superar una dificultad (CD)</td>
+          </tr>
+          <tr>
+            <td><span class="dice-symbol">D100</span></td>
+            <td>El Azar Puro</td>
+            <td>Tablas de eventos y encuentros</td>
+            <td>Entrada a nuevo hexágono, exploración de ruinas, eventos de caravana</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>La Mecánica Central: Comprobación de Atributo</h3>
+      <p>Cuando el juego pide una acción con resultado incierto, el proceso es siempre el mismo: <strong>Tira D20 + Atributo relevante ≥ Clase de Dificultad (CD)</strong>. El DJ (o el mazo de eventos en solitario) establece la CD según la dificultad narrativa de la tarea.</p>
+
+      <div class="data-box" data-label="TABLA DE CLASES DE DIFICULTAD">
+        <div class="data-row"><span>CD 5 — Trivial</span><span>Cualquier Chatarrero debería lograrlo</span></div>
+        <div class="data-row"><span>CD 8 — Fácil</span><span>Sin experiencia específica, con un poco de suerte</span></div>
+        <div class="data-row"><span>CD 12 — Moderada</span><span>Requiere competencia en el atributo relevante</span></div>
+        <div class="data-row"><span>CD 15 — Difícil</span><span>Especialista con herramientas adecuadas</span></div>
+        <div class="data-row"><span>CD 18 — Muy Difícil</span><span>Elite del Yermo, condiciones óptimas</span></div>
+        <div class="data-row"><span>CD 22+ — Límite Humano</span><span>Solo posible con asistencia de robot o equipo excepcional</span></div>
+      </div>
+
+      <p><strong>Ayuda del Robot:</strong> Si el robot tiene el módulo apropiado para la tarea, puede <em>asistir</em> la tirada. Tira el dado de habilidad del módulo correspondiente (D6 estándar hasta D12 con módulo de Chatarra Prima) y suma el resultado al D20. La Simbiosis también añade bonus: por encima de 6, adds +Simbiosis/2 redondeado.</p>
+
+      <section id="combate">
+        <h2>Combate</h2>
+
+        <p>El combate en YERMO CERO no es solo "quien pega más gana". Es una negociación táctica entre lo que tus robots pueden hacer, lo que el terreno te permite, y cuánto daño puedes absorber antes de que el Enlace Vital empiece a deteriorarse.</p>
+
+        <h3>Secuencia de Combate</h3>
+        <p><strong>1. Iniciativa:</strong> Cada participante tira D20 + Terreno. Orden de mayor a menor. Empates a favor del jugador.</p>
+        <p><strong>2. Acción de Movimiento:</strong> El robot se mueve hasta su valor de Movilidad en casillas. El humano puede montar o desmontarse (acción libre).</p>
+        <p><strong>3. Acción Principal:</strong> Ataque (D20 + Armazón vs. Defensa del objetivo), Hackeo (D20 + Código vs. CD de sistema), Extracción de emergencia, o Reparación rápida (D20 + Armazón, CD variable).</p>
+        <p><strong>4. Acción Bonus:</strong> Una habilidad especial del módulo equipado en Brazo Derecho o Izquierdo.</p>
+        <p><strong>5. Reacción:</strong> Una vez fuera de tu turno: esquivar (D20 + Terreno vs. tirada de ataque entrante), o interponerse (el robot absorbe el daño en lugar del humano, reduce Simbiosis en 1).</p>
+
+      </section>
+
+      <section id="extraccion">
+        <h2>Extracción de Recursos</h2>
+
+        <p>La extracción es la actividad económica fundamental del Yermo. Hay tres tipos de hexágonos extractivos: <strong>Ferrales</strong> (metales y chatarra), <strong>Núcleos</strong> (fuentes de energía y componentes electrónicos), y <strong>Vestigios</strong> (ruinas con equipo pre-colapso potencialmente intacto).</p>
+
+        <p>Para extraer: declara el intento, tira D100 en la tabla del hexágono correspondiente, luego D20 + Terreno vs. CD de extracción. Los módulos de herramienta en los brazos del robot modifican tanto la tabla de D100 como la CD.</p>
+
+      </section>
+
+      <section id="campeonato">
+        <h2>El Campeonato de Robots</h2>
+
+        <p>En cada Nodo existe un circuito de combates de robots. No son peleas callejeras: son <strong>espectáculos regulados</strong>, con jueces, apuestas, transmisión en la Intranet local, y premios que pueden cambiar completamente la trayectoria de un Chatarrero.</p>
+
+        <p>Las reglas varían por Nodo —en Ferrópolis son torneos militares formales; en Nexo Abierto son básicamente una pelea libre con algunos árbitros para evitar bajas humanas; en Sanctum Machina son rituales casi religiosos— pero el sistema mecánico es el mismo: <strong>combate por turnos con modificadores del Campeonato</strong> que no aplican en el Yermo abierto.</p>
+
+        <div class="lore-box" data-label="EL GRAN CIRCUITO">
+          <p>Existe una leyenda, confirmada por pocos y negada por muchos: el <strong>Gran Circuito</strong>. Un campeonato que conecta los seis Nodos, celebrado una vez por año del juego, con representantes de cada uno. El campeón del Gran Circuito no recibe solo créditos: recibe <em>ciudadanía dual</em>, acceso irrestricto a dos Intranets de su elección, y el único título que todos los Nodos reconocen: <strong>Maestro del Yermo</strong>.</p>
+        </div>
+
+      </section>
+
+    </section>
+
+    <!-- ═══ APÉNDICE ══════════════════════════════════════════════════ -->
+    <section id="modos" class="chapter">
+      <div class="chapter-number">APÉNDICE A</div>
+      <h1 class="chapter-title">MODOS <span class="highlight">DE JUEGO</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <h3>Solitario — "El Chatarrero Solitario"</h3>
+      <p>El mazo de Eventos del Yermo reemplaza al DJ. Cada turno, una carta del mazo determina eventos, amenazas y oportunidades. El objetivo se define antes de empezar eligiendo una tarjeta de Misión del stack. Dificultad escalable cambiando la composición del mazo.</p>
+
+      <h3>Cooperativo — "La Banda"</h3>
+      <p>2-5 jugadores contra el Yermo compartido. Los jugadores comparten objetivos pero cada uno mantiene su Enlace Vital independiente. Las Simbiosis altas del grupo se combinan para resolver desafíos de grupo. Modo recomendado para primera partida.</p>
+
+      <h3>Competitivo — "El Mercado Vivo"</h3>
+      <p>2-4 jugadores compitiendo por control de hexágonos de recursos y puntos de influencia en los Nodos. El combate entre jugadores está regulado: solo en hexágonos marcados como "Zona de Disputa" y en el Campeonato. Fuera de esas zonas, el conflicto es económico y de información.</p>
+
+      <h3>Campaña — "La Crónica del Yermo"</h3>
+      <p>Modo de juego continuado entre sesiones. El mapa evoluciona: los Nodos cambian sus relaciones políticas, aparecen nuevos Primordiales, y las decisiones de los jugadores tienen consecuencias permanentes. Las fichas de personaje se guardan entre sesiones y los robots acumulan modificaciones e historial.</p>
+
+    </section>
+
+    <section id="glosario" class="chapter">
+      <div class="chapter-number">APÉNDICE B</div>
+      <h1 class="chapter-title"><span class="highlight">GLOSARIO</span> DEL YERMO</h1>
+      <div class="chapter-title-bar"></div>
+
+      <table>
+        <thead><tr><th>Término</th><th>Definición</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bestia de Carga</strong></td><td>Criatura biomecánica colosal que mueve las caravanas inter-Nodo. Parcialmente consciente, protegida por ley universal.</td></tr>
+          <tr><td><strong>CD</strong></td><td>Clase de Dificultad. El número que tu D20 + Atributo debe superar para que una acción tenga éxito.</td></tr>
+          <tr><td><strong>Chatarrero</strong></td><td>Término coloquial para los aventureros del Yermo. Sin connotación peyorativa en el contexto del juego.</td></tr>
+          <tr><td><strong>Chatarra Prima</strong></td><td>Piezas extraídas de Primordiales. Calidad superior, comportamiento impredecible.</td></tr>
+          <tr><td><strong>Enlace Vital</strong></td><td>La conexión funcional y emocional entre un Chatarrero y su Ensamblado. Medido en Simbiosis (0-10).</td></tr>
+          <tr><td><strong>Ensamblado</strong></td><td>Robot post-colapso, modular, compañero de un Chatarrero específico.</td></tr>
+          <tr><td><strong>Intranet</strong></td><td>Red de datos cerrada y local de cada Nodo. Requiere hardware certificado para acceder.</td></tr>
+          <tr><td><strong>Nodo</strong></td><td>Asentamiento humano principal. Hay seis en el mapa. Cada uno es una sociedad autónoma.</td></tr>
+          <tr><td><strong>Primordial</strong></td><td>Robot pre-colapso. Antiguo, peligroso, invaluable como fuente de Chatarra Prima.</td></tr>
+          <tr><td><strong>Simbiosis</strong></td><td>Valor numérico (0-10) que mide la profundidad del Enlace Vital. Afecta casi todas las mecánicas.</td></tr>
+          <tr><td><strong>Yermo</strong></td><td>Todo lo que está fuera de los Nodos. Peligroso, rico en recursos, y completamente indiferente a tu bienestar.</td></tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <div class="page-footer">
+      <span>YERMO CERO — Manual del Jugador // Borrador v0.1</span>
+      <span>Edición Fundacional · No para distribución comercial</span>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
