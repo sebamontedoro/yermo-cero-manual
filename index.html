@@ -720,13 +720,223 @@
     100% { transform: translateY(100%); }
   }
 
+  /* ─── ADVENTURE CARD (Apéndice C) ───────────── */
+  .adv-card {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--rust);
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+  }
+  .adv-card:hover { border-color: var(--amber); box-shadow: 0 0 20px rgba(191,89,24,0.15); }
+  .adv-card-label {
+    position: absolute;
+    top: -0.55rem; left: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--rust);
+    background: var(--surface2);
+    padding: 0 0.5rem;
+    letter-spacing: 0.2em;
+  }
+  .adv-card-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .adv-card-body { flex: 1; min-width: 0; }
+  .adv-card-kicker {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--cyan);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.3rem;
+  }
+  .adv-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+  .adv-card-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin: 0;
+    max-width: 480px;
+  }
+  .adv-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    align-items: flex-end;
+  }
+  .adv-card-meta span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+  .adv-card-cta {
+    margin-top: 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    background: rgba(191,89,24,0.12);
+    color: var(--amber);
+    padding: 0.3rem 0.8rem;
+    letter-spacing: 0.12em;
+    border: 1px solid rgba(191,89,24,0.3);
+    text-align: center;
+    display: block;
+  }
+  .adv-card-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .adv-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    background: var(--surface3);
+    padding: 0.2rem 0.6rem;
+    letter-spacing: 0.1em;
+  }
+  .adv-card-wip {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    padding: 1.5rem 1.75rem;
+    margin: 1rem 0;
+    opacity: 0.4;
+  }
+  .adv-wip-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+  .adv-wip-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+  }
+  .adv-wip-title p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
   /* ─── RESPONSIVE ─────────────────────────────── */
+
+  /* Tablet: 600–860px */
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; }
     .sidebar { display: none; }
-    .main { padding: 2rem 1.5rem 4rem; }
-    .node-grid, .attr-grid { grid-template-columns: 1fr; }
+    .main { padding: 2rem 1.75rem 4rem; max-width: 100%; }
+    .node-grid { grid-template-columns: 1fr 1fr; }
+    .attr-grid { grid-template-columns: 1fr 1fr; }
     .robot-parts { grid-template-columns: 1fr 1fr; }
+    .cover { padding: 4rem 2rem; }
+    .cover-logo { font-size: clamp(4rem, 20vw, 8rem); }
+
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    thead th, tbody td { white-space: normal; min-width: 100px; }
+  }
+
+  /* Mobile: hasta 600px */
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+
+    /* Cover */
+    .cover { padding: 3rem 1.25rem 4rem; min-height: auto; padding-bottom: 3rem; }
+    .cover-tag { font-size: 0.6rem; letter-spacing: 0.15em; }
+    .cover-logo { font-size: clamp(3.5rem, 22vw, 6rem); }
+    .cover-sub { font-size: clamp(0.9rem, 5vw, 1.4rem); letter-spacing: 0.15em; }
+    .cover-edition { font-size: 0.65rem; line-height: 1.8; }
+    .cover-scroll-hint { display: none; }
+
+    /* Layout */
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 1.5rem 1rem 4rem; max-width: 100%; }
+
+    /* Headings */
+    .chapter-title { font-size: clamp(1.8rem, 10vw, 2.8rem); }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 0.75rem; }
+
+    /* Grids — todo en 1 columna en mobile */
+    .node-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .attr-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .robot-parts { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+    /* Part chips más compactos */
+    .part-chip { padding: 0.6rem; }
+    .part-chip p { font-size: 0.7rem; }
+
+    /* Tablas — scroll horizontal */
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); }
+    thead th { font-size: 0.58rem; padding: 0.5rem 0.7rem; white-space: nowrap; }
+    tbody td { font-size: 0.82rem; padding: 0.55rem 0.7rem; }
+    .dice-symbol { font-size: 1rem; }
+
+    /* Data box */
+    .data-box .data-row { font-size: 0.65rem; flex-wrap: wrap; gap: 0.2rem; }
+    .data-box .data-row span:first-child { flex: 1; min-width: 60%; }
+
+    /* Lore y narration */
+    .lore-box, .lore { padding: 1.1rem 1.1rem; }
+    .warn-box, .warn { padding: 0.9rem 1rem; }
+    blockquote { padding: 0.4rem 1rem; font-size: 0.95rem; }
+
+    /* Simbiosis */
+    .symbiosis-label { font-size: 0.6rem; }
+
+    /* Boxes de atributos */
+    .attr-card { padding: 1rem; }
+    .attr-card .attr-icon { font-size: 1.4rem; }
+    .attr-card .attr-name { font-size: 1.1rem; }
+    .attr-card p { font-size: 0.78rem; }
+
+    /* Node cards */
+    .node-card { padding: 1rem; }
+    .node-card-name { font-size: 1.2rem; }
+    .node-card p { font-size: 0.78rem; }
+
+    /* Footer */
+    .page-footer { flex-direction: column; gap: 0.3rem; font-size: 0.55rem; }
+
+    /* Chapters */
+    .chapter { margin-top: 3rem; }
+
+    /* Adventure card */
+    .adv-card { padding: 1.25rem 1rem; }
+    .adv-card-inner { flex-direction: column; }
+    .adv-card-meta { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .adv-card-meta span { text-align: left; }
+    .adv-card-cta { margin-top: 0; }
+    .adv-card-title { font-size: 1.6rem; }
+  }
+
+  /* Mobile muy chico: hasta 380px */
+  @media (max-width: 380px) {
+    .main { padding: 1rem 0.75rem 3rem; }
+    .cover-logo { font-size: 3.2rem; }
+    .robot-parts { grid-template-columns: 1fr; }
+    .node-grid, .attr-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -796,6 +1006,8 @@
     <div class="chapter-label">Apéndice</div>
     <a href="#modos">Modos de Juego</a>
     <a href="#glosario">Glosario del Yermo</a>
+    <a href="#aventuras">Módulos de Aventura</a>
+    <a href="aventura_01_senal_muerta.html" style="color:var(--rust);">↳ 01 · Señal Muerta ↗</a>
   </nav>
 
   <!-- MAIN CONTENT -->
@@ -1391,6 +1603,43 @@
           <tr><td><strong>Yermo</strong></td><td>Todo lo que está fuera de los Nodos. Peligroso, rico en recursos, y completamente indiferente a tu bienestar.</td></tr>
         </tbody>
       </table>
+
+    </section>
+
+    <section id="aventuras" class="chapter">
+      <div class="chapter-number">APÉNDICE C</div>
+      <h1 class="chapter-title">MÓDULOS DE <span class="highlight">AVENTURA</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>Los módulos de aventura son escenarios listos para jugar que introducen mecánicas, NPCs y tramas que se conectan entre sí. Cada módulo indica su dificultad, duración estimada y qué mecánicas del manual pone en práctica por primera vez.</p>
+
+      <a href="aventura_01_senal_muerta.html" class="adv-card">
+        <span class="adv-card-label">MÓDULO 01 · DISPONIBLE</span>
+        <div class="adv-card-inner">
+          <div class="adv-card-body">
+            <div class="adv-card-kicker">AVENTURA INICIAL · EL UMBRAL</div>
+            <div class="adv-card-title">SEÑAL MUERTA</div>
+            <p class="adv-card-desc">Tu madre desapareció en el Sector Delta-4 hace tres semanas. La señal de su robot todavía está activa. Lo que no sabías es que un Primordial Clase II lleva ochenta y tres años ejecutando su última directiva en esa instalación. Él tampoco sabe que ella está ahí.</p>
+          </div>
+          <div class="adv-card-meta">
+            <span>1–3 jugadores</span>
+            <span>60–90 minutos</span>
+            <span class="adv-card-cta">INICIACIÓN ▶</span>
+          </div>
+        </div>
+        <div class="adv-card-tags">
+          <span class="adv-tag">JEFE: GRÚA-7</span>
+          <span class="adv-tag">PRIMORDIAL CLASE II</span>
+          <span class="adv-tag">TUTORIAL DE MECÁNICAS</span>
+          <span class="adv-tag">SIMBIOSIS · COMBATE · HACKEO</span>
+        </div>
+      </a>
+
+      <div class="adv-card-wip">
+        <div class="adv-wip-num">MÓDULO 02 · EN DESARROLLO</div>
+        <div class="adv-wip-title">??? · NEXO ABIERTO</div>
+        <p>Alguien quería el Núcleo de Procesamiento de GRÚA-7. Ahora sabes dónde buscar respuestas.</p>
+      </div>
 
     </section>
 
