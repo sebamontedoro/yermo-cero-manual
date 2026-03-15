@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YERMO CERO — Aventura 01: Señal Muerta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080a;
+    --surface: #0c1014;
+    --surface2: #121820;
+    --surface3: #1a2230;
+    --blue-deep: #0a3a5c;
+    --blue: #1464a0;
+    --blue-bright: #2090d8;
+    --cyan: #18c8c0;
+    --cyan-dim: #0a5a56;
+    --amber: #d09020;
+    --amber-bright: #f0b830;
+    --rust: #c04820;
+    --red: #c83020;
+    --green: #30a848;
+    --green-dim: #1a6030;
+    --text: #b8c8d8;
+    --text-dim: #607080;
+    --text-bright: #e0eef8;
+    --border: #1a2838;
+    --border-bright: #243444;
+    --glow-blue: 0 0 16px rgba(32,144,216,0.4);
+    --glow-amber: 0 0 14px rgba(208,144,32,0.5);
+    --glow-red: 0 0 12px rgba(200,48,32,0.5);
+    --glow-green: 0 0 12px rgba(48,168,72,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* noise */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ── COVER ─────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5rem 8vw;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-bright);
+  }
+
+  .cover-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 70% at 100% 50%, rgba(10,58,92,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 0% 100%, rgba(24,200,192,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 30% 0%, rgba(32,144,216,0.07) 0%, transparent 50%),
+      var(--bg);
+  }
+
+  /* rain lines effect */
+  .cover-rain {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 47px,
+      rgba(32,144,216,0.03) 47px,
+      rgba(32,144,216,0.03) 48px
+    );
+    mask-image: linear-gradient(180deg, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+
+  .cover-module {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--cyan);
+    letter-spacing: 0.3em;
+    margin-bottom: 2rem;
+    opacity: 0.6;
+    position: relative;
+    animation: fadeSlide 1s ease both;
+  }
+
+  .cover-title-small {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+    animation: fadeSlide 1s 0.1s ease both;
+  }
+
+  .cover-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 14vw, 11rem);
+    letter-spacing: 0.03em;
+    line-height: 0.9;
+    color: transparent;
+    background: linear-gradient(150deg, #e8f4ff 0%, #60a8e0 40%, #1464a0 75%, #081828 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 40px rgba(32,144,216,0.4)) drop-shadow(0 8px 80px rgba(0,0,0,0.9));
+    animation: fadeSlide 1s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+    position: relative;
+  }
+
+  .cover-title-accent {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 14vw, 11rem);
+    letter-spacing: 0.03em;
+    line-height: 0.9;
+    color: transparent;
+    background: linear-gradient(150deg, var(--amber-bright), var(--amber), var(--rust));
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(208,144,32,0.5));
+    animation: fadeSlide 1s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .cover-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-bright), var(--cyan), transparent);
+    margin: 2rem 0;
+    animation: fadeSlide 1.2s 0.3s ease both;
+  }
+
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    animation: fadeSlide 1.2s 0.4s ease both;
+  }
+
+  .cover-meta span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .cover-meta span strong {
+    color: var(--cyan);
+    font-weight: 400;
+  }
+
+  .cover-warning {
+    position: absolute;
+    bottom: 3rem;
+    right: 8vw;
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    animation: blink 3s infinite;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── LAYOUT ────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    max-width: 1160px;
+    margin: 0 auto;
+  }
+
+  /* ── SIDEBAR ───────────────────────────── */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-bright);
+    padding: 2rem 0;
+    background: var(--surface);
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue) var(--surface);
+  }
+
+  .sidebar-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-logo .game-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    display: block;
+  }
+
+  .sidebar-logo .module-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: var(--blue-bright);
+    line-height: 1.2;
+  }
+
+  .sidebar .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.52rem;
+    color: var(--blue);
+    letter-spacing: 0.2em;
+    padding: 1.2rem 1.5rem 0.3rem;
+    opacity: 0.7;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 0.35rem 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-left: 2px solid transparent;
+    transition: all 0.18s;
+    line-height: 1.5;
+  }
+
+  .sidebar a:hover {
+    color: var(--cyan);
+    border-left-color: var(--blue-bright);
+    background: rgba(32,144,216,0.06);
+    padding-left: 2rem;
+  }
+
+  /* ── MAIN ──────────────────────────────── */
+  .main {
+    padding: 3rem 3.5rem 6rem;
+    max-width: 800px;
+  }
+
+  /* ── HEADINGS ──────────────────────────── */
+  .section-header {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-bright);
+  }
+  .section-header:first-child { margin-top: 2rem; border-top: none; }
+
+  .section-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.3em;
+    opacity: 0.6;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    color: var(--text-bright);
+    margin-bottom: 0.2rem;
+  }
+
+  .section-title .hl { color: var(--cyan); text-shadow: var(--glow-blue); }
+  .section-title .hl-amber { color: var(--amber-bright); text-shadow: var(--glow-amber); }
+  .section-title .hl-red { color: #e06040; text-shadow: var(--glow-red); }
+
+  .title-bar {
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-bright) 0%, var(--cyan) 20%, transparent 65%);
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 0.08em;
+    color: var(--cyan);
+    margin: 3rem 0 1rem;
+    text-shadow: var(--glow-blue);
+  }
+
+  h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    color: var(--blue-bright);
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+    border-left: 3px solid var(--blue-bright);
+    padding-left: 0.75rem;
+  }
+
+  p { margin-bottom: 1rem; color: var(--text); font-weight: 300; }
+  p strong { color: var(--text-bright); font-weight: 600; }
+  em { color: var(--amber); font-style: italic; }
+
+  /* ── COMPONENTS ─────────────────────────── */
+
+  /* lore */
+  .lore {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--blue-bright);
+    padding: 1.4rem 1.75rem;
+    margin: 1.75rem 0;
+    position: relative;
+  }
+  .lore::before {
+    content: attr(data-tag);
+    position: absolute;
+    top: -0.55rem; left: 1rem;
+    font-family: 'VT323', monospace;
+    font-size: 0.82rem;
+    color: var(--blue-bright);
+    background: var(--surface2);
+    padding: 0 0.5rem;
+    letter-spacing: 0.1em;
+  }
+  .lore p { color: var(--text-dim); font-style: italic; font-size: 0.95rem; margin: 0 0 0.5rem; }
+  .lore p:last-child { margin: 0; }
+  .lore p strong { color: var(--text); }
+
+  /* narration box - GM text */
+  .narration {
+    background: rgba(10,58,92,0.2);
+    border: 1px solid var(--blue-deep);
+    border-top: 2px solid var(--blue-bright);
+    padding: 1.4rem 1.75rem;
+    margin: 1.75rem 0;
+    position: relative;
+  }
+  .narration::before {
+    content: attr(data-tag);
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+  .narration p {
+    color: #90b8d8;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0 0 0.5rem;
+  }
+  .narration p:last-child { margin: 0; }
+
+  /* mechanic block */
+  .mechanic {
+    background: var(--surface);
+    border: 1px solid var(--cyan-dim);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .mechanic::before {
+    content: attr(data-tag);
+    position: absolute;
+    top: -0.55rem; left: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--cyan);
+    background: var(--surface);
+    padding: 0 0.5rem;
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+  }
+  .mechanic .roll-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(24,200,192,0.08);
+    font-size: 0.88rem;
+  }
+  .mechanic .roll-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .mechanic .roll-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    min-width: 90px;
+    padding-top: 2px;
+  }
+  .mechanic .roll-desc { color: var(--text); flex: 1; }
+  .mechanic .roll-result {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    text-align: right;
+    min-width: 140px;
+  }
+  .mechanic .roll-result.success { color: var(--green); }
+  .mechanic .roll-result.fail { color: var(--red); }
+  .mechanic .roll-result.partial { color: var(--amber); }
+
+  /* dice call */
+  .dice-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(32,144,216,0.1);
+    border: 1px solid var(--blue);
+    padding: 0.15rem 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 0.08em;
+    margin: 0 0.2rem;
+  }
+
+  /* encounter header */
+  .encounter-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .encounter-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.25em;
+    opacity: 0.6;
+  }
+
+  .encounter-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid;
+  }
+  .badge-social { color: var(--cyan); border-color: var(--cyan-dim); background: rgba(24,200,192,0.05); }
+  .badge-combat { color: var(--red); border-color: rgba(200,48,32,0.3); background: rgba(200,48,32,0.05); }
+  .badge-explore { color: var(--amber); border-color: rgba(208,144,32,0.3); background: rgba(208,144,32,0.05); }
+  .badge-hazard { color: #e08050; border-color: rgba(224,128,80,0.3); background: rgba(224,128,80,0.05); }
+
+  /* boss card */
+  .boss-card {
+    background: linear-gradient(160deg, #0a0e14 0%, #0c1824 100%);
+    border: 1px solid rgba(200,48,32,0.4);
+    box-shadow: inset 0 0 60px rgba(200,48,32,0.05), 0 0 30px rgba(200,48,32,0.1);
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .boss-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), var(--amber), var(--red), transparent);
+  }
+
+  .boss-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 0.08em;
+    color: #e05030;
+    text-shadow: var(--glow-red);
+    margin-bottom: 0.2rem;
+  }
+
+  .boss-class {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+  }
+
+  .boss-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .boss-stat {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-bright);
+    padding: 0.6rem;
+    text-align: center;
+  }
+
+  .boss-stat .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: #e05030;
+    text-shadow: var(--glow-red);
+    line-height: 1;
+    display: block;
+  }
+
+  .boss-stat .stat-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  .boss-phase {
+    border: 1px solid var(--border-bright);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    background: rgba(0,0,0,0.2);
+    position: relative;
+  }
+
+  .boss-phase::before {
+    content: attr(data-phase);
+    position: absolute;
+    top: -0.5rem; left: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--red);
+    background: #0c1824;
+    padding: 0 0.4rem;
+    letter-spacing: 0.15em;
+  }
+
+  .boss-phase .phase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+  }
+
+  .boss-phase p { font-size: 0.88rem; color: var(--text-dim); margin: 0 0 0.3rem; }
+
+  .boss-action {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.85rem;
+  }
+  .boss-action:last-child { border-bottom: none; }
+  .boss-action .action-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: #e05030;
+    letter-spacing: 0.08em;
+    min-width: 120px;
+    padding-top: 2px;
+  }
+  .boss-action .action-desc { color: var(--text-dim); flex: 1; }
+
+  /* reward box */
+  .reward-box {
+    background: rgba(48,168,72,0.05);
+    border: 1px solid var(--green-dim);
+    border-left: 3px solid var(--green);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .reward-box::before {
+    content: '✓ RECOMPENSAS';
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.75rem;
+  }
+  .reward-box .reward-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(48,168,72,0.08);
+    font-size: 0.85rem;
+  }
+  .reward-box .reward-row:last-child { border-bottom: none; }
+  .reward-box .reward-row span:last-child {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+  }
+
+  /* warn */
+  .warn {
+    background: rgba(200,48,32,0.06);
+    border: 1px solid rgba(200,48,32,0.25);
+    border-left: 3px solid var(--red);
+    padding: 1rem 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .warn::before {
+    content: '⚠ PELIGRO';
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--red);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+  }
+  .warn p { font-size: 0.88rem; color: #b09080; margin: 0; }
+
+  /* act marker */
+  .act-marker {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 4rem 0 2rem;
+  }
+  .act-marker .act-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--blue-deep);
+    letter-spacing: 0.05em;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .act-marker .act-info { flex: 1; }
+  .act-marker .act-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.25em;
+    opacity: 0.6;
+    margin-bottom: 0.2rem;
+  }
+  .act-marker .act-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+  .act-marker .act-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue-deep), transparent);
+    opacity: 0.4;
+  }
+
+  /* map hex mini */
+  .hex-map {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+  }
+  .hex-map .hex-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hex-map .hex {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .hex-map .hex.start { border-color: var(--green-dim); color: var(--green); }
+  .hex-map .hex.danger { border-color: rgba(200,48,32,0.3); color: #e08060; }
+  .hex-map .hex.boss { border-color: rgba(200,48,32,0.5); color: var(--red); background: rgba(200,48,32,0.05); }
+  .hex-map .arrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    opacity: 0.4;
+  }
+
+  /* sep */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    opacity: 0.35;
+  }
+  .sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: var(--border-bright); }
+  .sep span {
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.15em;
+  }
+
+  /* blockquote */
+  blockquote {
+    border-left: 2px solid var(--blue-deep);
+    padding: 0.4rem 1.5rem;
+    margin: 1.75rem 0;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+  }
+  blockquote cite {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    font-style: normal;
+    opacity: 0.7;
+  }
+
+  /* NPC card */
+  .npc-card {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    padding: 1.1rem 1.25rem;
+    margin: 1.25rem 0;
+    align-items: flex-start;
+  }
+  .npc-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(32,144,216,0.3));
+    line-height: 1;
+    margin-top: 3px;
+  }
+  .npc-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    color: var(--text-bright);
+    line-height: 1.1;
+  }
+  .npc-role {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--cyan);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+  }
+  .npc-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; }
+
+  /* footer */
+  .page-footer {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.4;
+  }
+
+  /* ── ANIMATIONS ─────────────────────────── */
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% { opacity: 0.5; }
+    95% { opacity: 0.1; }
+  }
+
+  /* ── RESPONSIVE ─────────────────────────── */
+
+  /* Tablet: 600–820px */
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 2rem 1.75rem 4rem; max-width: 100%; }
+    .boss-stats { grid-template-columns: repeat(2, 1fr); }
+    .cover { padding: 4rem 2rem; }
+    .cover-title { font-size: clamp(3.5rem, 14vw, 7rem); }
+    .cover-title-accent { font-size: clamp(3.5rem, 14vw, 7rem); }
+
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    .mechanic .roll-row { flex-wrap: wrap; gap: 0.4rem; }
+    .mechanic .roll-result { text-align: left; min-width: unset; }
+    .mechanic .roll-label { min-width: 70px; }
+  }
+
+  /* Mobile: hasta 600px */
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+
+    /* Cover */
+    .cover {
+      padding: 2.5rem 1.25rem;
+      min-height: auto;
+      align-items: flex-start;
+    }
+    .cover-module { font-size: 0.55rem; letter-spacing: 0.15em; margin-bottom: 1.25rem; }
+    .cover-title-small { font-size: 0.65rem; margin-bottom: 0.25rem; }
+    .cover-title { font-size: clamp(3rem, 18vw, 5.5rem); }
+    .cover-title-accent { font-size: clamp(3rem, 18vw, 5.5rem); }
+    .cover-divider { margin: 1.25rem 0; }
+    .cover-meta span { font-size: 0.6rem; }
+    .cover-warning { position: relative; bottom: auto; right: auto; margin-top: 2rem; text-align: left; font-size: 0.75rem; }
+
+    /* Layout */
+    .main { padding: 1.5rem 1rem 4rem; max-width: 100%; }
+
+    /* Headings */
+    .section-title { font-size: clamp(1.7rem, 9vw, 2.5rem); }
+    h2 { font-size: 1.35rem; margin: 2rem 0 0.75rem; }
+    h3 { font-size: 0.72rem; }
+
+    /* Act marker */
+    .act-marker { gap: 0.75rem; margin: 2.5rem 0 1.5rem; }
+    .act-marker .act-num { font-size: 2.8rem; }
+    .act-marker .act-name { font-size: 1.3rem; }
+    .act-marker .act-line { display: none; }
+
+    /* Encounter header */
+    .encounter-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    .encounter-badge { font-size: 0.55rem; }
+
+    /* Mechanic boxes */
+    .mechanic { padding: 1rem 1rem; }
+    .mechanic .roll-row {
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.6rem 0;
+    }
+    .mechanic .roll-label {
+      min-width: unset;
+      font-size: 0.6rem;
+      color: var(--blue-bright);
+      opacity: 0.9;
+    }
+    .mechanic .roll-desc { font-size: 0.82rem; }
+    .mechanic .roll-result {
+      text-align: left;
+      min-width: unset;
+      font-size: 0.6rem;
+      padding-left: 0;
+    }
+
+    /* dice-call inline */
+    .dice-call { font-size: 0.65rem; padding: 0.1rem 0.4rem; }
+
+    /* Narration + lore */
+    .narration { padding: 1.1rem 1.1rem; }
+    .narration p { font-size: 0.92rem; }
+    .lore { padding: 1.1rem 1.1rem; }
+    .lore p { font-size: 0.88rem; }
+    .warn { padding: 0.9rem 1rem; }
+    .warn p { font-size: 0.84rem; }
+
+    /* NPC card */
+    .npc-card { flex-direction: column; gap: 0.75rem; padding: 1rem; }
+    .npc-icon { font-size: 1.5rem; margin-top: 0; }
+    .npc-card p { font-size: 0.82rem; }
+    .npc-name { font-size: 1.05rem; }
+
+    /* Hex map */
+    .hex-map {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      padding: 0.75rem 1rem;
+    }
+    .hex-map .hex-step { width: 100%; }
+    .hex-map .hex { width: 100%; text-align: center; padding: 0.3rem 0.5rem; }
+    .hex-map .arrow { transform: rotate(90deg); padding-left: 1rem; }
+
+    /* Boss card */
+    .boss-card { padding: 1.25rem 1rem; }
+    .boss-name { font-size: 1.8rem; }
+    .boss-class { font-size: 0.55rem; }
+    .boss-stats { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+    .boss-stat .stat-val { font-size: 1.3rem; }
+    .boss-stat .stat-name { font-size: 0.5rem; }
+    .boss-phase { padding: 0.9rem 1rem; }
+    .boss-phase .phase-title { font-size: 1rem; }
+    .boss-phase p { font-size: 0.82rem; }
+    .boss-action { flex-direction: column; gap: 0.25rem; }
+    .boss-action .action-name { min-width: unset; font-size: 0.6rem; }
+    .boss-action .action-desc { font-size: 0.82rem; }
+
+    /* Reward box */
+    .reward-box { padding: 1rem; }
+    .reward-box .reward-row { flex-direction: column; gap: 0.1rem; padding: 0.4rem 0; }
+    .reward-box .reward-row span:last-child { text-align: left; }
+
+    /* Tables */
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); }
+    thead th { font-size: 0.58rem; padding: 0.45rem 0.6rem; white-space: nowrap; }
+    tbody td { font-size: 0.8rem; padding: 0.5rem 0.6rem; }
+
+    /* Blockquote */
+    blockquote { padding: 0.4rem 1rem; font-size: 0.95rem; }
+
+    /* Section header spacing */
+    .section-header { margin-top: 3rem; }
+
+    /* Footer */
+    .page-footer { flex-direction: column; gap: 0.25rem; font-size: 0.52rem; }
+  }
+
+  /* Mobile muy chico: hasta 380px */
+  @media (max-width: 380px) {
+    .main { padding: 1rem 0.75rem 3rem; }
+    .cover-title { font-size: 2.8rem; }
+    .cover-title-accent { font-size: 2.8rem; }
+    .boss-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ COVER ═══════════════════════════════ -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-rain"></div>
+
+  <div class="cover-module">YERMO CERO · MÓDULO DE AVENTURA 01</div>
+  <div class="cover-title-small">AVENTURA INICIAL —</div>
+  <div class="cover-title">SEÑAL</div>
+  <div class="cover-title-accent">MUERTA</div>
+
+  <div class="cover-divider"></div>
+
+  <div class="cover-meta">
+    <span>Punto de partida: <strong>El Umbral</strong></span>
+    <span>Jugadores: <strong>1 – 3</strong></span>
+    <span>Duración estimada: <strong>60 – 90 minutos</strong></span>
+    <span>Dificultad: <strong>Iniciación</strong> · Primera aventura recomendada</span>
+    <span>Jefe final: <strong>GRÚA-7 · Primordial Clase II — Extractor</strong></span>
+  </div>
+
+  <div class="cover-warning">
+    ⚠ ZONA DE EXCLUSIÓN ACTIVA<br>
+    SECTOR DELTA-4 · ACCESO NO AUTORIZADO<br>
+    PROTOCOLO DISUASORIO EN EJECUCIÓN
+  </div>
+</div>
+
+<!-- ═══ LAYOUT ════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <span class="game-name">YERMO CERO</span>
+      <div class="module-name">SEÑAL<br>MUERTA</div>
+    </div>
+
+    <div class="section-label">PRELUDIO</div>
+    <a href="#historia">Historia del Personaje</a>
+    <a href="#gancho">El Gancho</a>
+    <a href="#npcs">NPCs Clave</a>
+
+    <div class="section-label">ACTO I</div>
+    <a href="#enc-01">E01 · La Plaza del Umbral</a>
+    <a href="#enc-02">E02 · Primer Hexágono</a>
+    <a href="#enc-03">E03 · Los Restos</a>
+
+    <div class="section-label">ACTO II</div>
+    <a href="#enc-04">E04 · La Antena</a>
+    <a href="#enc-05">E05 · Guardia Dormida</a>
+    <a href="#enc-06">E06 · El Sótano</a>
+
+    <div class="section-label">ACTO III</div>
+    <a href="#boss">GRÚA-7 · Jefe Final</a>
+    <a href="#fases">Fases de Combate</a>
+    <a href="#recompensas">Recompensas</a>
+    <a href="#epilogo">Epílogo</a>
+
+    <div class="section-label">REFERENCIA</div>
+    <a href="#resumen-mecanicas">Mecánicas Usadas</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══ HISTORIA DEL PERSONAJE ══════════════ -->
+    <section id="historia" class="section-header">
+      <div class="section-num">PRELUDIO · ORIGEN</div>
+      <h1 class="section-title">HISTORIA DEL <span class="hl">PERSONAJE</span></h1>
+      <div class="title-bar"></div>
+
+      <p>Esta aventura está diseñada para un jugador que acaba de crear su primer Chatarrero. La historia de origen propuesta a continuación es un punto de partida: el grupo o el jugador individual puede adaptarla, pero conserva todos los elementos necesarios para que los ganchos narrativos funcionen.</p>
+
+      <div class="lore" data-tag="ARCHIVO PERSONAL · CHATARRERO SIN CLASIFICAR">
+        <p>Tu nombre es <strong>Kael Renn</strong>. Veintiocho años, aunque el Yermo te ha envejecido de formas que no aparecen en los documentos. Creciste en El Umbral como hijo de una reparadora de robots —tu madre, Sael Renn— que tenía fama de ser la mejor mecánica del Nodo y también la más terca en cobrar lo justo cuando podría haber cobrado mucho más.</p>
+        <p>Tres semanas atrás, tu madre no regresó de un trabajo de campo. Salió sola —como hacía a veces, con su robot de carga viejo y sus herramientas— hacia el <strong>Sector Delta-4</strong>, un bloque industrial pre-colapso al noreste del Umbral. Dijo que había detectado una señal de energía pasiva en ese sector. Dijo que estaría de vuelta antes del anochecer.</p>
+        <p>No volvió. Nadie fue a buscarla porque en El Umbral nadie te debe nada, pero tampoco nadie te lo impide. <strong>Eso es lo que estás a punto de hacer tú.</strong></p>
+      </div>
+
+      <p>Tu robot —que te dejó tu madre cuando empezaste a explorar el Yermo por tu cuenta hace dos años— se llama <strong>MOTE</strong>. Es un Ensamblado de nivel básico, todo en Compuesto Libre, con un brazo derecho equipado con herramienta de análisis y un torso algo parcheado que refleja años de uso. MOTE no habla, pero lleva semanas con el indicador de estado en ámbar desde que tu madre desapareció. Los técnicos dicen que es un fallo de sensor. Tú sabes que no lo es.</p>
+
+      <p>Tu Simbiosis inicial con MOTE: <strong>6/10</strong>.</p>
+
+    </section>
+
+    <!-- ══ GANCHO ══════════════════════════════ -->
+    <section id="gancho">
+      <h2>El Gancho</h2>
+
+      <p>La misión comienza cuando <strong>Petra Dos</strong>, una informante habitual del mercado del Umbral, te contacta. Petra no es tu amiga —nadie en El Umbral lo es del todo— pero respetaba a tu madre y, más importante, tiene información que quiere monetizar.</p>
+
+      <div class="narration" data-tag="TEXTO DE INTRODUCCIÓN — LEER EN VOZ ALTA O PARAFRASEAR">
+        <p>La plaza central del Umbral huele, como siempre, a aceite quemado y comida frita en grasas de origen cuestionable. Petra Dos te encuentra antes de que la busques tú, que ya es decir algo. Se sienta frente a ti sin pedir permiso y deja sobre la mesa una ficha de datos —rectangular, con el sello de extracción del mercado— como si fuera una carta que ya sabes que vas a leer.</p>
+        <p>"Tu madre no está muerta", dice, sin preámbulo. "O al menos no lo estaba hace diez días. La señal de su robot de carga seguía activa en Delta-4. Señal débil, pero activa." Pausa. Te mira. "Eso vale algo. La información sobre por qué está en Delta-4 vale más. ¿Cuánto crédito tienes?"</p>
+      </div>
+
+    </section>
+
+    <!-- ══ NPCs ════════════════════════════════ -->
+    <section id="npcs">
+      <h2>NPCs Clave</h2>
+
+      <div class="npc-card">
+        <div class="npc-icon">👤</div>
+        <div>
+          <div class="npc-name">PETRA DOS</div>
+          <div class="npc-role">INFORMANTE · MERCADO DEL UMBRAL</div>
+          <p>Cuarenta y tantos, ojo izquierdo protésico de fabricación vortexiana, siempre con dos tazas de café —una para ella, una como señal de que la conversación es de negocios. No miente, pero tampoco da nada gratis. Si el jugador paga <span class="dice-call">15 créditos</span> o supera <span class="dice-call">D20+Contactos CD12</span>, revela que su madre fue contratada por un coleccionista de Nexo Abierto para recuperar componentes de un Primordial inactivo en Delta-4. El Primordial resultó no estar tan inactivo.</p>
+        </div>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-icon">🤖</div>
+        <div>
+          <div class="npc-name">MOTE</div>
+          <div class="npc-role">ENSAMBLADO PERSONAL · COMPUESTO LIBRE NIV. 1</div>
+          <p>El robot del jugador. Nivel 1, todo en Compuesto Libre. Herramienta de análisis en brazo derecho (+1D6 en tiradas de extracción y escaneo), movilidad estándar (3 casillas/turno). Simbiosis inicial 6. Durante la aventura, cada vez que MOTE actúe de forma autónoma para proteger al jugador, la Simbiosis sube 1 automáticamente — esto ocurrirá dos veces si el jugador presta atención.</p>
+        </div>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-icon">🔧</div>
+        <div>
+          <div class="npc-name">SAEL RENN</div>
+          <div class="npc-role">MECÁNICA · DESAPARECIDA EN DELTA-4</div>
+          <p>La madre del jugador. No aparece en combate durante esta aventura —encontrarla (o encontrar lo que le pasó) es el objetivo narrativo. En el Acto III se revela que activó el protocolo de emergencia de su robot de carga y se encerró en el sótano de la instalación para escapar de GRÚA-7. Está viva, agotada, y con el robot de carga con batería al 4%. El reencuentro es el momento emocional central de la aventura.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- ACTO I -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="act-marker">
+      <div class="act-num">I</div>
+      <div class="act-info">
+        <div class="act-label">ACTO PRIMERO</div>
+        <div class="act-name">La Salida al Yermo</div>
+      </div>
+      <div class="act-line"></div>
+    </div>
+
+    <p>El primer acto introduce al jugador a las mecánicas de movimiento, comprobación de atributo y extracción. Los encuentros son deliberadamente manejables: el objetivo es familiarizarse con el sistema sin que una mala tirada arruine la partida antes de que empiece.</p>
+
+    <div class="hex-map">
+      <div class="hex-step"><div class="hex start">EL UMBRAL</div></div>
+      <div class="arrow">──▶</div>
+      <div class="hex-step"><div class="hex">HEX A-1</div></div>
+      <div class="arrow">──▶</div>
+      <div class="hex-step"><div class="hex danger">HEX A-2</div></div>
+      <div class="arrow">──▶</div>
+      <div class="hex-step"><div class="hex danger">HEX B-1</div></div>
+    </div>
+
+    <!-- E01 -->
+    <section id="enc-01">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 01</div>
+          <h3>La Plaza del Umbral — Preparación</h3>
+        </div>
+        <span class="encounter-badge badge-social">SOCIAL / EQUIPAMIENTO</span>
+      </div>
+
+      <p>Antes de salir, el jugador puede interactuar con el mercado del Umbral. Esta es la única oportunidad de comprar suministros con los 50 créditos iniciales antes de entrar al Yermo.</p>
+
+      <div class="mechanic" data-tag="INTERACCIONES DISPONIBLES">
+        <div class="roll-row">
+          <span class="roll-label">MERCADO</span>
+          <span class="roll-desc">Comprar raciones (5 cr/unidad), kit de reparación básico (10 cr), munición de impacto ×3 (8 cr), o batería de emergencia (20 cr). La batería de emergencia restaura 2 de Simbiosis si MOTE cae por debajo de 3 HP.</span>
+          <span class="roll-result partial">Sin tirada necesaria</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">PETRA DOS</span>
+          <span class="roll-desc"><span class="dice-call">D20+Contactos</span> vs CD12 para obtener información sobre Delta-4 sin pagar los 15 créditos. Con éxito: sabe que el Primordial es una unidad de extracción pesada. Con fallo: paga o va a ciegas.</span>
+          <span class="roll-result success">Éxito: info gratis</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">INTRANET UMBRAL</span>
+          <span class="roll-desc"><span class="dice-call">D20+Código</span> vs CD8 para acceder al registro básico de El Umbral y buscar contratos activos en Delta-4. Éxito: confirma que hay un contrato abierto de recuperación de componentes. +5 cr al completarlo.</span>
+          <span class="roll-result success">Éxito: contrato + bonus</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- E02 -->
+    <section id="enc-02">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 02</div>
+          <h3>Hexágono A-1 — Llanura de Antenas</h3>
+        </div>
+        <span class="encounter-badge badge-explore">EXPLORACIÓN / EXTRACCIÓN</span>
+      </div>
+
+      <div class="narration" data-tag="DESCRIPCIÓN DE AMBIENTE">
+        <p>El primer hexágono fuera del Umbral es un cementerio de torres de comunicación pre-colapso, la mayoría dobladas por el tiempo y el viento. El suelo cruje bajo los pasos: cables, plásticos endurecidos, paneles solares fragmentados. MOTE activa automáticamente sus sensores de análisis. Su indicador parpadea en azul —hay recursos aquí.</p>
+      </div>
+
+      <div class="mechanic" data-tag="TIRADA DE EXTRACCIÓN — HEX A-1">
+        <div class="roll-row">
+          <span class="roll-label">EXTRACCIÓN</span>
+          <span class="roll-desc"><span class="dice-call">D100</span> en tabla de Ferral + <span class="dice-call">D20+Terreno</span> vs CD8. MOTE asiste: +1D6 si el brazo derecho está equipado con herramienta de análisis (viene por defecto).</span>
+          <span class="roll-result"></span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">01–40</span>
+          <span class="roll-desc">Chatarra básica: 1D6×2 créditos en materiales reciclables.</span>
+          <span class="roll-result partial">Resultado bajo</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">41–75</span>
+          <span class="roll-desc">Cable de fibra óptica pre-colapso (15 cr en mercado) + 1D4 créditos extra.</span>
+          <span class="roll-result partial">Resultado medio</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">76–100</span>
+          <span class="roll-desc">Panel de procesamiento intacto (vale 30 cr, o puede usarse para actualizar MOTE más tarde).</span>
+          <span class="roll-result success">Resultado óptimo</span>
+        </div>
+      </div>
+
+      <p><strong>Tutorial de Simbiosis:</strong> Después de la extracción, si el jugador elige pasar tiempo calibrando a MOTE (acción de descanso corto, 1 turno), Simbiosis sube a 7. Explicar al jugador el efecto: con Simbiosis ≥7, las tiradas asistidas por MOTE tienen ventaja (tira el dado dos veces y quédate el mejor resultado).</p>
+
+    </section>
+
+    <!-- E03 -->
+    <section id="enc-03">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 03</div>
+          <h3>Hexágono A-2 — Los Restos</h3>
+        </div>
+        <span class="encounter-badge badge-hazard">PELIGRO AMBIENTAL</span>
+      </div>
+
+      <div class="narration" data-tag="DESCRIPCIÓN DE AMBIENTE">
+        <p>El segundo hexágono huele diferente. Hay un sabor metálico en el aire que MOTE detecta antes que tú: partículas ferrosas en suspensión, posiblemente de un incendio industrial antiguo. El suelo es inestable — hay huecos cubiertos por capas de ceniza endurecida que pueden ceder bajo peso. En el centro del hexágono, los restos de lo que parece haber sido un vehículo de exploración. Reciente. Meses, no años.</p>
+      </div>
+
+      <div class="mechanic" data-tag="PELIGRO — SUELO INESTABLE">
+        <div class="roll-row">
+          <span class="roll-label">MOVIMIENTO</span>
+          <span class="roll-desc">Al cruzar el hexágono, tirar <span class="dice-call">D20+Terreno</span> vs CD10. MOTE puede escanear la ruta antes si el jugador lo indica (acción de movimiento gastada): baja la CD a 7.</span>
+          <span class="roll-result"></span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">ÉXITO</span>
+          <span class="roll-desc">Cruce sin incidentes. MOTE detecta las huellas de un robot de carga —el de Sael Renn— dirigiéndose al noreste. Simbiosis +1 por iniciativa del robot.</span>
+          <span class="roll-result success">+Pista, +Simbiosis</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">FALLO</span>
+          <span class="roll-desc">El jugador cae en un hueco de ceniza. Daño: 1D6 al personaje. MOTE interviene automáticamente (primera acción autónoma de protección → Simbiosis +1). La caída ralentiza: pierdes 1 turno del Acto I.</span>
+          <span class="roll-result fail">-1D6 HP, +Simbiosis</span>
+        </div>
+      </div>
+
+      <div class="mechanic" data-tag="INSPECCIÓN — VEHÍCULO DESTRUIDO">
+        <div class="roll-row">
+          <span class="roll-label">ANÁLISIS</span>
+          <span class="roll-desc"><span class="dice-call">D20+Código</span> vs CD9 para analizar los restos del vehículo con MOTE. Éxito: era un explorador de Nexo Abierto, destruido hace unos dos meses. Las marcas de daño son inconfundibles: impacto de peso masivo. GRÚA-7 estuvo aquí.</span>
+          <span class="roll-result success">Éxito: señal de alarma narrativa</span>
+        </div>
+      </div>
+
+      <div class="warn">
+        <p>Si el jugador se detiene demasiado en este hexágono (más de 2 acciones de exploración), tirar D100: con 01–30, una Guarda Clase I del sector se acerca desde el norte. CD de combate o evasión: D20+Terreno vs CD13. Es un encuentro opcional que introduce el sistema de combate antes del jefe.</p>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- ACTO II -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="act-marker">
+      <div class="act-num">II</div>
+      <div class="act-info">
+        <div class="act-label">ACTO SEGUNDO</div>
+        <div class="act-name">La Instalación Delta-4</div>
+      </div>
+      <div class="act-line"></div>
+    </div>
+
+    <p>El segundo acto introduce la instalación industrial donde GRÚA-7 opera. La tensión aumenta. El jugador aprende que el Primordial no es solo un obstáculo: es una amenaza que tiene memoria de movimientos y patrulla de forma predecible —pero predecible no significa fácil.</p>
+
+    <div class="hex-map">
+      <div class="hex-step"><div class="hex">HEX B-1</div></div>
+      <div class="arrow">──▶</div>
+      <div class="hex-step"><div class="hex danger">HEX B-2</div></div>
+      <div class="arrow">──▶</div>
+      <div class="hex-step"><div class="hex boss">DELTA-4 CORE</div></div>
+    </div>
+
+    <!-- E04 -->
+    <section id="enc-04">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 04</div>
+          <h3>La Antena de Señal</h3>
+        </div>
+        <span class="encounter-badge badge-explore">HACKEO / INFORMACIÓN</span>
+      </div>
+
+      <div class="narration" data-tag="DESCRIPCIÓN DE AMBIENTE">
+        <p>En el perímetro norte de Delta-4 hay una antena de transmisión que todavía emite. Baja potencia, señal fragmentada. MOTE la detecta a 200 metros. Si es la señal del robot de carga de tu madre, significa que sigue activo —y que ella podría estar usando su batería restante para mantenerte una baliza.</p>
+      </div>
+
+      <div class="mechanic" data-tag="HACKEO DE ANTENA">
+        <div class="roll-row">
+          <span class="roll-label">INTENTO</span>
+          <span class="roll-desc"><span class="dice-call">D20+Código</span> vs CD13 para conectar MOTE a la antena y descifrar la señal. Con Simbiosis ≥7: tirada con ventaja (tira dos D20, quédate el mayor).</span>
+          <span class="roll-result"></span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">ÉXITO</span>
+          <span class="roll-desc">Confirma posición de Sael Renn: sótano del edificio principal, sector C. También: mapa parcial de los patrones de patrulla de GRÚA-7. En combate, GRÚA-7 pierde su acción de Detección Anticipada en la primera ronda.</span>
+          <span class="roll-result success">+Mapa + ventaja en boss</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">FALLO PARCIAL (10–12)</span>
+          <span class="roll-desc">Confirma posición de Sael Renn pero no los patrones. Sin ventaja táctica contra GRÚA-7.</span>
+          <span class="roll-result partial">Solo ubicación</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">FALLO TOTAL (&lt;10)</span>
+          <span class="roll-desc">La antena envía una señal de alerta. GRÚA-7 inicia patrulla activa: el jugador tiene 3 turnos para llegar al edificio principal antes de que el Primordial cubra el perímetro exterior.</span>
+          <span class="roll-result fail">Cuenta regresiva activa</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- E05 -->
+    <section id="enc-05">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 05</div>
+          <h3>La Guardia Dormida</h3>
+        </div>
+        <span class="encounter-badge badge-combat">COMBATE OPCIONAL</span>
+      </div>
+
+      <div class="narration" data-tag="DESCRIPCIÓN">
+        <p>En la entrada del edificio principal hay una unidad Guarda Clase I en modo de bajo consumo —no está apagada, solo durmiente. Sus sensores de movimiento siguen activos en un radio de 4 metros. Pasarla sin despertarla requiere habilidad. Combatirla es posible pero ruidoso: GRÚA-7 detecta el ruido de combate a menos de 400 metros.</p>
+      </div>
+
+      <div class="mechanic" data-tag="OPCIONES DE RESOLUCIÓN">
+        <div class="roll-row">
+          <span class="roll-label">EVASIÓN</span>
+          <span class="roll-desc"><span class="dice-call">D20+Terreno</span> vs CD11. MOTE en modo silencioso (el jugador debe activarlo explícitamente): añade +2 a la tirada.</span>
+          <span class="roll-result success">Recomendado</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">HACKEO</span>
+          <span class="roll-desc"><span class="dice-call">D20+Código</span> vs CD14 para acceder a su sistema y forzar reinicio completo. Silencioso, pero más difícil. Éxito: la unidad queda inactiva 10 turnos.</span>
+          <span class="roll-result partial">Difícil pero limpio</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">COMBATE</span>
+          <span class="roll-desc">Guarda: HP 18, Defensa 12, ataca con <span class="dice-call">D8+2</span>. GRÚA-7 detecta el ruido: pierde la sorpresa en el combate final — el jefe ya sabe que hay intrusos.</span>
+          <span class="roll-result fail">Alerta a GRÚA-7</span>
+        </div>
+      </div>
+
+      <p><strong>Ficha de Combate — Guarda Clase I:</strong> HP 18 · Defensa 12 · Velocidad 4 · Ataque: Proyectil de Impacto 1D8+2 · Habilidad especial: <em>Alarma</em> (si recibe 10+ daño en un turno, emite señal antes de apagarse — alertando a GRÚA-7).</p>
+
+    </section>
+
+    <!-- E06 -->
+    <section id="enc-06">
+      <div class="encounter-header">
+        <div>
+          <div class="encounter-num">ENCUENTRO 06</div>
+          <h3>El Sótano — Antes del Jefe</h3>
+        </div>
+        <span class="encounter-badge badge-social">NARRATIVO · PUNTO DE DESCANSO</span>
+      </div>
+
+      <div class="narration" data-tag="TEXTO DE REENCUENTRO — LEER O PARAFRASEAR">
+        <p>Bajas al sótano siguiendo la señal. La puerta está bloqueada desde adentro —señal de que quien la cerró todavía tenía el criterio suficiente para hacerlo. Golpeas con el código de emergencia que tu madre te enseñó cuando tenías diez años: tres golpes, pausa, dos golpes.</p>
+        <p>Silencio. Luego: dos golpes desde adentro.</p>
+        <p>La puerta se abre. Sael Renn tiene polvo en los cabellos y ojeras que hablan de días sin dormir bien, pero sus manos —siempre sus manos— están limpias. El robot de carga está en la esquina, con el indicador de batería parpadeando en rojo. Te mira a ti, luego a MOTE, y dice lo primero que dice siempre cuando te ve después de mucho tiempo: <strong>"Tardaste."</strong></p>
+      </div>
+
+      <p>Sael Renn está físicamente bien pero agotada. Puede responder preguntas sobre GRÚA-7 (ver tabla de información abajo). No puede acompañar al jugador en el combate —su robot de carga no está en condiciones de funcionar. Permanecerá en el sótano hasta que el Primordial sea desactivado.</p>
+
+      <div class="mechanic" data-tag="INFORMACIÓN DE SAEL RENN SOBRE GRÚA-7">
+        <div class="roll-row">
+          <span class="roll-label">GRATIS</span>
+          <span class="roll-desc">GRÚA-7 es un Extractor Clase II. Tenía directiva de gestión de recursos pesados en esta instalación. Sigue ejecutando esa directiva: procesa todo lo que considera "material no clasificado" — incluyendo robots y personas.</span>
+          <span class="roll-result partial">Info básica siempre</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">PUNTO DÉBIL</span>
+          <span class="roll-desc">Su articulación de cadera derecha lleva años con mantenimiento nulo. Si recibes daño de su Aplastamiento de Grúa, es porque entró en rango cercano. Mantente a distancia media y su brazo principal no alcanza. <strong>+2 a tiradas de ataque si el jugador actúa desde rango medio o lejano.</strong></span>
+          <span class="roll-result success">Ventaja táctica clave</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">NUCLEO DE CONTROL</span>
+          <span class="roll-desc">Para desactivarlo definitivamente (no solo derribar sus HP), hay que acceder a su núcleo de control en el lomo. Requiere <span class="dice-call">D20+Código CD16</span> mientras está inmovilizado o con menos de 20 HP restantes.</span>
+          <span class="roll-result success">Desactivación real</span>
+        </div>
+      </div>
+
+      <p><strong>Momento de descanso:</strong> El jugador puede usar este momento para consumir raciones (recupera HP) o kit de reparación (recupera HP de MOTE). Recomendado para el boss. También: si la Simbiosis está por debajo de 5 en este punto, MOTE reacciona al ver a Sael Renn —segundo momento de acción autónoma— y la Simbiosis sube 1.</p>
+
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- ACTO III -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="act-marker">
+      <div class="act-num">III</div>
+      <div class="act-info">
+        <div class="act-label">ACTO TERCERO</div>
+        <div class="act-name">La Desactivación</div>
+      </div>
+      <div class="act-line"></div>
+    </div>
+
+    <!-- BOSS -->
+    <section id="boss">
+      <div class="section-num">JEFE FINAL</div>
+      <h1 class="section-title">GRÚA-7 — <span class="hl-red">Extractor</span></h1>
+      <div class="title-bar"></div>
+
+      <div class="lore" data-tag="REGISTRO DE PRIMORDIAL · CLASE II · EXTRACTOR">
+        <p>Designación original: Unidad de Extracción y Carga Industrial GRU-A7, fabricada por Sievert Industrial Solutions para gestión de materiales pesados en instalaciones de procesamiento. Peso estimado: 4.2 toneladas. Altura activa: 5.8 metros. Brazos de carga: 2 (alcance 3 metros c/u). Directiva activa: <em>"Clasificar y procesar todo material en zona de operación."</em></p>
+        <p><strong>Estado actual:</strong> 83 años sin mantenimiento. Articulación de cadera derecha dañada. Núcleo de lógica con errores de clasificación severos — ya no distingue entre material inerte y seres vivos. Procesa ambos con igual eficiencia.</p>
+      </div>
+
+      <div class="boss-card" id="boss-card">
+        <div class="boss-name">GRÚA-7</div>
+        <div class="boss-class">PRIMORDIAL CLASE II · EXTRACTOR DE MATERIALES PESADOS · SIEVERT INDUSTRIAL</div>
+
+        <div class="boss-stats">
+          <div class="boss-stat">
+            <span class="stat-val">80</span>
+            <span class="stat-name">HP TOTAL</span>
+          </div>
+          <div class="boss-stat">
+            <span class="stat-val">15</span>
+            <span class="stat-name">DEFENSA</span>
+          </div>
+          <div class="boss-stat">
+            <span class="stat-val">2</span>
+            <span class="stat-name">CASILLAS/TURNO</span>
+          </div>
+          <div class="boss-stat">
+            <span class="stat-val">3</span>
+            <span class="stat-name">ACCIONES/TURNO</span>
+          </div>
+        </div>
+
+        <div class="boss-phase" data-phase="FASE I — HP 80 A 41">
+          <div class="phase-title">Operación Nominal</div>
+          <p>GRÚA-7 funciona dentro de sus parámetros operativos estándar. Predecible. Sus movimientos siguen un patrón de grilla que el jugador puede aprender después de 2 turnos de observación.</p>
+          <div class="boss-action">
+            <span class="action-name">BRAZO DE CARGA</span>
+            <span class="action-desc">Ataque principal · <span class="dice-call">D20+5</span> vs Defensa · Daño <span class="dice-call">1D12+3</span> · Alcance corto-medio. Si el jugador actúa desde rango medio o lejano (info de Sael): <strong>-4 a la tirada de ataque de GRÚA-7</strong>.</span>
+          </div>
+          <div class="boss-action">
+            <span class="action-name">CLASIFICACIÓN FORZADA</span>
+            <span class="action-desc">Intenta agarrar a MOTE · <span class="dice-call">D20+4</span> vs Defensa de MOTE · Si atrapa: daño automático <span class="dice-call">1D8</span> por turno hasta que el jugador libere a MOTE (<span class="dice-call">D20+Armazón CD13</span>) o GRÚA-7 recibe 15+ daño en un turno.</span>
+          </div>
+          <div class="boss-action">
+            <span class="action-name">DETECCIÓN ANTICIPADA</span>
+            <span class="action-desc">Reacción · Si el jugador no obtuvo el mapa de patrullas (E04): GRÚA-7 actúa antes en el siguiente turno (pierde iniciativa el jugador). Solo disponible si no fue alertado previamente.</span>
+          </div>
+        </div>
+
+        <div class="boss-phase" data-phase="FASE II — HP 40 A 21 — ACTIVACIÓN DE EMERGENCIA">
+          <div class="phase-title">Protocolo de Sobre-extracción</div>
+          <p>Al caer a 40 HP, GRÚA-7 entra en modo de sobre-extracción. Sus movimientos se vuelven más erráticos pero más poderosos. La articulación dañada empieza a fallar visiblemente — esto es clave para la estrategia del jugador.</p>
+          <div class="boss-action">
+            <span class="action-name">APLASTAMIENTO DE GRÚA</span>
+            <span class="action-desc">Nuevo en Fase II · Solo a corta distancia · Daño <span class="dice-call">2D8+4</span> · Afecta tanto al jugador como a MOTE si están en la misma casilla. <strong>Señal de alerta</strong>: antes de activarlo, GRÚA-7 emite un pitido de advertencia — el jugador puede reaccionar moviéndose si supera <span class="dice-call">D20+Terreno CD10</span>.</span>
+          </div>
+          <div class="boss-action">
+            <span class="action-name">DESCARGA DE CAMPO EM</span>
+            <span class="action-desc">Nueva en Fase II · Área de efecto 2 casillas de radio · Daño <span class="dice-call">1D6</span> a MOTE · Reduce Simbiosis en 1 automáticamente (sistemas electromagnéticos del robot interferidos). Recarga: 2 turnos.</span>
+          </div>
+          <div class="boss-action">
+            <span class="action-name">FALLO DE CADERA</span>
+            <span class="action-desc">Pasivo · En Fase II, cada vez que GRÚA-7 recibe 15+ daño en un turno: pierde su acción de movimiento el siguiente turno. Ventana táctica para reposicionarse o atacar el núcleo de control.</span>
+          </div>
+        </div>
+
+        <div class="boss-phase" data-phase="FASE III — HP 20 A 0 — COLAPSO INMINENTE">
+          <div class="phase-title">Desintegración de Protocolo</div>
+          <p>Con menos de 20 HP, GRÚA-7 entra en colapso operacional. Sus movimientos son erráticos y lentos. El núcleo de control en su lomo queda accesible para desactivación técnica. Esta es la única forma de obtener los mejores componentes: derribarlo por HP destruye partes valiosas; desactivarlo preserva el núcleo intacto.</p>
+          <div class="boss-action">
+            <span class="action-name">BARRIDO DESESPERADO</span>
+            <span class="action-desc">Ataca a todos los objetivos en rango cercano · <span class="dice-call">D20+3</span> vs cada objetivo · Daño <span class="dice-call">1D8</span>. Su precisión ha caído — penalización de -2 respecto a Fase I.</span>
+          </div>
+          <div class="boss-action">
+            <span class="action-name">ACCESO A NÚCLEO</span>
+            <span class="action-desc">Si el jugador está en rango y GRÚA-7 tiene &lt;20 HP o está inmovilizado: <span class="dice-call">D20+Código CD16</span> para desactivación técnica completa. Con info de Sael Renn: CD baja a 14. Éxito: GRÚA-7 se apaga ordenadamente. Componentes intactos.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="fases">
+      <h2>Guía Táctica para el Director</h2>
+
+      <p>GRÚA-7 es un oponente intimidante pero con debilidades claras que el jugador puede descubrir durante la aventura. El combate tiene tres caminos posibles de resolución, cada uno con recompensas distintas:</p>
+
+      <div class="mechanic" data-tag="RESOLUCIONES POSIBLES">
+        <div class="roll-row">
+          <span class="roll-label">DESTRUCCIÓN</span>
+          <span class="roll-desc">Reducir HP a 0 por combate directo. GRÚA-7 colapsa. Componentes dañados: solo piezas menores recuperables (Chatarra Prima de baja calidad). Simbiosis: sin cambios por resolución.</span>
+          <span class="roll-result partial">Recompensa básica</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">DESACTIVACIÓN TÉC.</span>
+          <span class="roll-desc">Usar acceso a núcleo con &lt;20 HP o inmovilización. Componentes preservados: Núcleo de Procesamiento Clase II (Chatarra Prima alta calidad) + Actuador de Brazo Pesado + 1D4 piezas adicionales. Simbiosis +1 si MOTE asistió la tirada.</span>
+          <span class="roll-result success">Recompensa óptima</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">HUIDA</span>
+          <span class="roll-desc">Si el jugador tiene menos del 30% HP y MOTE por debajo de 3 Simbiosis, puede intentar retirada. <span class="dice-call">D20+Terreno CD12</span>. Éxito: escapa con Sael Renn. Sin recompensas de componentes, pero la narrativa continúa — GRÚA-7 sigue activo y puede reaparecer.</span>
+          <span class="roll-result fail">Sin recompensas, historia continúa</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RECOMPENSAS -->
+    <section id="recompensas">
+      <h2>Recompensas</h2>
+
+      <div class="reward-box">
+        <div class="reward-row"><span>Créditos base (Contrato de El Umbral)</span><span>45 cr</span></div>
+        <div class="reward-row"><span>Bonus por contrato registrado en Intranet (E01)</span><span>+5 cr</span></div>
+        <div class="reward-row"><span>Chatarra Prima — Actuador de Brazo Pesado</span><span>+1D8 daño MOTE si se equipa en brazo derecho</span></div>
+        <div class="reward-row"><span>Núcleo de Procesamiento Clase II (desactivación técnica)</span><span>Vale 80 cr ó mejora MOTE a Niv. 2</span></div>
+        <div class="reward-row"><span>Reputación: El Umbral</span><span>+1 nivel · acceso a contratos de Nivel 2</span></div>
+        <div class="reward-row"><span>Simbiosis MOTE (si completó al menos 2 acciones autónomas)</span><span>+1 permanente (máximo logrado esta sesión)</span></div>
+        <div class="reward-row"><span>Sael Renn — Deuda de gratitud</span><span>Puede reparar MOTE gratis 1 vez / aventura futura</span></div>
+      </div>
+
+    </section>
+
+    <!-- EPILOGO -->
+    <section id="epilogo">
+      <h2>Epílogo</h2>
+
+      <div class="narration" data-tag="TEXTO DE CIERRE — LEER O PARAFRASEAR">
+        <p>La instalación Delta-4 queda en silencio por primera vez en ochenta y tres años. GRÚA-7 yace inactivo — ya no es una amenaza, ya no es un guardián demente, ya no es nada excepto un conjunto de componentes excepcionales esperando ser reutilizados. Tu madre lo mira desde la entrada del sótano con la expresión de alguien calculando cuántas horas de desmontaje representa lo que está viendo.</p>
+        <p>MOTE se coloca a tu lado. Su indicador de estado, ámbar desde hace semanas, pulsa una vez en azul. Luego se estabiliza ahí.</p>
+        <p>No es un final. Es la primera pieza de algo más grande. Sael Renn fue contratada por alguien en Nexo Abierto para recuperar el Núcleo de Procesamiento de este Primordial específico. Alguien que sabía que estaba aquí. Alguien que sabía que todavía funcionaba. El contrato estaba firmado con un seudónimo, pero el crédito era real y el número de cuenta tiene un prefijo que solo usan los servidores de Vórtex.</p>
+        <p><em>Alguien quería ese núcleo. Y todavía lo quiere.</em></p>
+      </div>
+
+      <blockquote>
+        "En el Yermo no existen los finales felices. Solo los finales que abren puertas a algo más interesante."
+        <cite>— Sael Renn, Mecánica, El Umbral</cite>
+      </blockquote>
+
+    </section>
+
+    <!-- RESUMEN -->
+    <section id="resumen-mecanicas" class="section-header">
+      <div class="section-num">APÉNDICE DE MÓDULO</div>
+      <h1 class="section-title">MECÁNICAS <span class="hl">INTRODUCIDAS</span></h1>
+      <div class="title-bar"></div>
+
+      <div class="mechanic" data-tag="CHECKLIST — MECÁNICAS APRENDIDAS EN ESTA AVENTURA">
+        <div class="roll-row">
+          <span class="roll-label">D20 + Atributo</span>
+          <span class="roll-desc">Tirada de comprobación central. Usada en E01, E03, E04, E05 y boss.</span>
+          <span class="roll-result success">✓ Tutorial E01</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">D100 + Extracción</span>
+          <span class="roll-desc">Sistema de extracción de recursos. Usada en E02.</span>
+          <span class="roll-result success">✓ Tutorial E02</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">Asistencia de Robot</span>
+          <span class="roll-desc">MOTE añade dados a las tiradas. Introducida en E02 y E04.</span>
+          <span class="roll-result success">✓ Tutorial E02</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">Escala de Simbiosis</span>
+          <span class="roll-desc">Sube y baja dinámicamente. Afecta ventajas en tirada desde 7+.</span>
+          <span class="roll-result success">✓ Tutorial E02–E06</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">Combate por Fases</span>
+          <span class="roll-desc">Jefe con tres fases y comportamientos distintos. Boss.</span>
+          <span class="roll-result success">✓ Tutorial Boss</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">Desactivación Técnica</span>
+          <span class="roll-desc">Alternativa al combate puro. D20+Código vs CD. Boss Fase III.</span>
+          <span class="roll-result success">✓ Tutorial Boss</span>
+        </div>
+        <div class="roll-row">
+          <span class="roll-label">Reputación de Nodo</span>
+          <span class="roll-desc">Primera ganancia de reputación en El Umbral. Abre contratos nuevos.</span>
+          <span class="roll-result success">✓ Recompensas</span>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="page-footer">
+      <span>YERMO CERO · Aventura 01: Señal Muerta · Módulo de Iniciación</span>
+      <span>Borrador v0.1 · Compatible con Manual del Jugador v0.1</span>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
