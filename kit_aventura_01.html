@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>YERMO CERO — Señal Muerta · Kit Interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#06080a;--surface:#0c1014;--surface2:#121820;--surface3:#1a2230;
+  --blue:#1464a0;--blue-bright:#2090d8;--cyan:#18c8c0;--cyan-dim:#0a5a56;
+  --amber:#d09020;--amber-bright:#f0b830;--rust:#c04820;--red:#c83020;
+  --green:#30a848;--green-dim:#1a6030;
+  --text:#b8c8d8;--text-dim:#607080;--text-bright:#e0eef8;
+  --border:#1a2838;--border-bright:#243444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Crimson Pro',serif;overflow:hidden;-webkit-tap-highlight-color:transparent;}
+
+/* ── LAYOUT ──────────────────────────────────── */
+.gw{display:flex;flex-direction:column;height:100vh;}
+.gh{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 .75rem;background:var(--surface);border-bottom:1px solid var(--border-bright);flex-shrink:0;gap:.5rem;}
+.gh-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.12em;color:var(--text-bright);white-space:nowrap;}
+.gh-title span{color:var(--cyan);}
+.gh-stats{display:flex;gap:.6rem;align-items:center;font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.08em;flex-wrap:wrap;}
+.hst{display:flex;gap:.2rem;align-items:center;}
+.hstv{color:var(--cyan);}
+.gh-acts{display:flex;gap:.3rem;flex-shrink:0;}
+.hbtn{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text-dim);background:none;border:1px solid var(--border);padding:.16rem .45rem;cursor:pointer;letter-spacing:.08em;transition:all .15s;text-decoration:none;display:inline-block;}
+.hbtn:hover{color:var(--cyan);border-color:var(--cyan-dim);}
+.hbtn.sv{border-color:var(--green-dim);color:var(--green);}
+.hbtn.sv:hover{background:rgba(48,168,72,.08);}
+.hbtn.ng{border-color:rgba(200,48,32,.3);color:#a07060;}
+.hbtn.ng:hover{color:var(--red);border-color:var(--red);}
+
+.gb{flex:1;display:flex;overflow:hidden;}
+
+/* ── MAP ─────────────────────────────────────── */
+.mw{flex:1;overflow:auto;position:relative;background:var(--bg);scrollbar-width:thin;scrollbar-color:var(--border-bright) var(--bg);}
+.mw::-webkit-scrollbar{width:5px;height:5px;}
+.mw::-webkit-scrollbar-thumb{background:var(--border-bright);}
+
+/* ── SIDE PANEL ──────────────────────────────── */
+.sp{width:268px;flex-shrink:0;overflow:hidden;background:var(--surface);border-left:1px solid var(--border-bright);display:flex;flex-direction:column;}
+.ptabs{display:flex;border-bottom:1px solid var(--border-bright);flex-shrink:0;}
+.ptab{flex:1;padding:.4rem 0;font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:var(--text-dim);background:none;border:none;cursor:pointer;transition:all .15s;border-bottom:2px solid transparent;}
+.ptab.on{color:var(--cyan);border-bottom-color:var(--cyan);background:rgba(24,200,192,.04);}
+.ptab:hover:not(.on){color:var(--text);}
+.tc{display:none;flex:1;overflow-y:auto;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.tc.on{display:flex;}
+.pb{padding:.75rem .9rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.pbt{font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.18em;color:var(--cyan);opacity:.6;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;}
+
+/* stats */
+.cname{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.08em;color:var(--text-bright);line-height:1;margin-bottom:.1rem;}
+.carch{font-family:'Share Tech Mono',monospace;font-size:.53rem;color:var(--amber);letter-spacing:.12em;margin-bottom:.55rem;opacity:.8;}
+.sbw{margin-bottom:.38rem;}
+.sbl{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text-dim);letter-spacing:.05em;margin-bottom:.15rem;}
+.sbl .v{color:var(--text-bright);}
+.sb{height:4px;background:var(--surface3);border-radius:1px;overflow:hidden;}
+.sbf{height:100%;border-radius:1px;transition:width .4s ease;}
+.hpf{background:linear-gradient(90deg,#c04030,#e06040);}
+.mtf{background:linear-gradient(90deg,#2090d8,#18c8c0);}
+.syf{background:linear-gradient(90deg,var(--rust),var(--amber-bright));box-shadow:0 0 5px rgba(208,144,32,.4);}
+.attrs{display:grid;grid-template-columns:1fr 1fr;gap:.22rem .45rem;margin-top:.38rem;}
+.am{display:flex;justify-content:space-between;align-items:center;font-family:'Share Tech Mono',monospace;font-size:.53rem;color:var(--text-dim);letter-spacing:.04em;}
+.am .av{color:var(--amber);font-size:.65rem;}
+.am .av.buff{color:var(--green);}
+
+.locn{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.1em;color:var(--cyan);line-height:1;margin-bottom:.12rem;}
+.locd{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.05em;line-height:1.5;}
+.loct{font-family:'Crimson Pro',serif;font-size:.78rem;color:var(--text-dim);font-style:italic;margin-top:.22rem;line-height:1.32;}
+
+/* action area */
+#aa{flex-shrink:0;}
+.dp{padding:.75rem .9rem;border-bottom:1px solid var(--border);background:rgba(32,144,216,.04);}
+.dpt{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--blue-bright);letter-spacing:.15em;margin-bottom:.35rem;opacity:.7;}
+.dpl{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:.05em;margin-bottom:.2rem;}
+.dpcd{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.07em;margin-bottom:.5rem;}
+.btnr{width:100%;padding:.48rem;background:rgba(32,144,216,.1);border:1px solid var(--blue);color:var(--cyan);font-family:'Bebas Neue',sans-serif;font-size:.88rem;letter-spacing:.2em;cursor:pointer;transition:all .15s;}
+.btnr:hover{background:rgba(32,144,216,.2);box-shadow:0 0 10px rgba(32,144,216,.3);}
+.btnrst{width:100%;padding:.35rem;background:rgba(48,168,72,.06);border:1px solid var(--green-dim);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.12em;cursor:pointer;transition:background .15s;margin-top:.35rem;}
+.btnrst:hover{background:rgba(48,168,72,.12);}
+.btnupg{width:100%;padding:.35rem;background:rgba(208,144,32,.06);border:1px solid rgba(208,144,32,.3);color:var(--amber);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.12em;cursor:pointer;transition:background .15s;margin-top:.35rem;}
+.btnupg:hover{background:rgba(208,144,32,.12);}
+
+/* log */
+.gl{flex:1;overflow-y:auto;padding:.45rem 0;min-height:70px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.le{padding:.16rem .9rem;font-size:.78rem;line-height:1.5;border-left:2px solid transparent;}
+.le.st{border-left-color:var(--blue-bright);color:var(--text-bright);font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.04em;}
+.le.nrr{color:var(--text-dim);font-style:italic;font-family:'Crimson Pro',serif;font-size:.8rem;}
+.le.dc{font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--amber);letter-spacing:.04em;}
+.le.ok{color:var(--green);font-family:'Share Tech Mono',monospace;font-size:.58rem;}
+.le.fl{color:#e08060;font-family:'Share Tech Mono',monospace;font-size:.58rem;}
+.le.rs{color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:.58rem;}
+.le.dg{border-left-color:var(--red);color:#e06050;font-family:'Share Tech Mono',monospace;font-size:.6rem;}
+.le.mv{color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.53rem;opacity:.65;}
+.le.lt{color:var(--amber);font-family:'Share Tech Mono',monospace;font-size:.58rem;}
+.le.sy{color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.5rem;opacity:.4;border-left-color:var(--border-bright);}
+
+/* ── INVENTORY TAB ───────────────────────────── */
+.inv-grid{display:flex;flex-direction:column;}
+.inv-item{display:flex;align-items:center;gap:.55rem;padding:.45rem .9rem;border-bottom:1px solid rgba(255,255,255,.03);transition:background .12s;}
+.inv-item:hover{background:rgba(255,255,255,.015);}
+.inv-ico{width:26px;height:26px;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;}
+.inv-inf{flex:1;min-width:0;}
+.inv-nm{font-family:'Share Tech Mono',monospace;font-size:.57rem;color:var(--text);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inv-ds{font-family:'Crimson Pro',serif;font-size:.7rem;color:var(--text-dim);font-style:italic;line-height:1.25;margin-top:.08rem;}
+.inv-qty{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--amber);flex-shrink:0;}
+.inv-use{font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--green);background:rgba(48,168,72,.08);border:1px solid var(--green-dim);padding:.12rem .35rem;cursor:pointer;letter-spacing:.08em;flex-shrink:0;transition:background .12s;}
+.inv-use:hover{background:rgba(48,168,72,.18);}
+.inv-empty{padding:1.5rem .9rem;font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.1em;text-align:center;opacity:.45;}
+
+/* MOTE slots */
+.mslots{display:flex;flex-direction:column;gap:.35rem;margin-top:.45rem;}
+.mslot{display:flex;align-items:center;gap:.45rem;padding:.38rem .45rem;border:1px solid var(--border);background:rgba(0,0,0,.2);}
+.slic{font-size:.7rem;width:18px;text-align:center;flex-shrink:0;}
+.sllb{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text-dim);letter-spacing:.08em;min-width:48px;}
+.slv{font-family:'Share Tech Mono',monospace;font-size:.55rem;flex:1;}
+.sle{color:var(--text-dim);opacity:.4;}
+.slf{color:var(--cyan);}
+.mcaps{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.05em;line-height:1.85;}
+.mcap-row{display:flex;justify-content:space-between;padding:.12rem 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.mcap-row span:last-child{color:var(--cyan);}
+
+/* ── MINOR COMBAT ────────────────────────────── */
+#mcm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:850;align-items:center;justify-content:center;padding:.75rem;}
+#mcm.on{display:flex;}
+.mcc{background:var(--surface2);border:1px solid rgba(200,48,32,.3);width:100%;max-width:440px;padding:1.1rem;position:relative;}
+.mcc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.mcen{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.08em;color:#e05030;margin-bottom:.08rem;}
+.mccl{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text-dim);letter-spacing:.14em;margin-bottom:.65rem;}
+.mca{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.35rem;margin:.65rem 0;}
+.mcb{padding:.45rem .25rem;border:1px solid var(--border-bright);background:var(--surface2);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.05em;cursor:pointer;transition:all .15s;text-align:center;}
+.mcb:hover:not(:disabled){background:var(--surface3);border-color:var(--blue);color:var(--cyan);}
+.mcb:disabled{opacity:.3;cursor:not-allowed;}
+.mcb span{display:block;font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.08em;margin-bottom:.05rem;}
+.mcl{background:var(--surface);border:1px solid var(--border);padding:.45rem .6rem;max-height:75px;overflow-y:auto;margin-top:.5rem;scrollbar-width:thin;}
+.mcll{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.02em;line-height:1.55;}
+.mcll.pl{color:var(--cyan);}
+.mcll.en{color:#e08060;}
+.mcll.sys{color:var(--amber);}
+
+/* ── UPGRADE MODAL ───────────────────────────── */
+#upm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:870;align-items:center;justify-content:center;padding:.75rem;}
+#upm.on{display:flex;}
+.upc{background:var(--surface2);border:1px solid rgba(208,144,32,.3);width:100%;max-width:460px;padding:1.25rem;position:relative;max-height:90vh;overflow-y:auto;scrollbar-width:thin;}
+.upc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent);}
+.upt{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--amber);margin-bottom:.08rem;}
+.upst{font-family:'Share Tech Mono',monospace;font-size:.52rem;color:var(--text-dim);letter-spacing:.14em;margin-bottom:1.1rem;}
+.upsr{display:flex;align-items:center;gap:.65rem;padding:.6rem .65rem;border:1px solid var(--border);background:rgba(0,0,0,.2);margin-bottom:.4rem;}
+.usic{font-size:1rem;flex-shrink:0;width:22px;text-align:center;}
+.usif{flex:1;}
+.usilb{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.09em;margin-bottom:.16rem;}
+.usicur{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--cyan);letter-spacing:.05em;}
+.usieff{font-family:'Crimson Pro',serif;font-size:.72rem;color:var(--text-dim);font-style:italic;margin-top:.08rem;}
+.usb{font-family:'Share Tech Mono',monospace;font-size:.52rem;background:rgba(208,144,32,.08);border:1px solid rgba(208,144,32,.3);color:var(--amber);padding:.25rem .5rem;cursor:pointer;letter-spacing:.09em;flex-shrink:0;transition:background .15s;}
+.usb:hover:not(:disabled){background:rgba(208,144,32,.18);}
+.usb:disabled{opacity:.3;cursor:not-allowed;color:var(--text-dim);border-color:var(--border);}
+.upn2{border:1px solid rgba(200,48,32,.3);padding:.65rem;margin-top:.65rem;background:rgba(200,48,32,.04);}
+.upn2t{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;color:#e05030;margin-bottom:.25rem;}
+.upcl{width:100%;margin-top:.85rem;padding:.4rem;background:var(--surface3);border:1px solid var(--border-bright);color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.12em;cursor:pointer;}
+
+/* ── COMBAT MODAL ────────────────────────────── */
+#cm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:900;overflow-y:auto;align-items:flex-start;justify-content:center;padding:.75rem;}
+#cm.on{display:flex;}
+.cmc{background:linear-gradient(160deg,#08080a 0%,#0c1018 100%);border:1px solid rgba(200,48,32,.4);box-shadow:0 0 50px rgba(200,48,32,.1),inset 0 0 30px rgba(200,48,32,.04);width:100%;max-width:500px;padding:1.25rem;margin:auto;position:relative;}
+.cmc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),var(--amber),var(--red),transparent);}
+.cmen{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.08em;color:#e05030;text-shadow:0 0 20px rgba(200,48,32,.6);margin-bottom:.08rem;}
+.cmec{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text-dim);letter-spacing:.14em;margin-bottom:.22rem;}
+.cmpt{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--red);letter-spacing:.12em;background:rgba(200,48,32,.1);border:1px solid rgba(200,48,32,.2);display:inline-block;padding:.1rem .4rem;margin-bottom:.65rem;}
+.cmccs{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.65rem 0;}
+.cmmini{background:rgba(0,0,0,.3);border:1px solid var(--border-bright);padding:.5rem .6rem;}
+.cmmn{font-family:'Share Tech Mono',monospace;font-size:.52rem;color:var(--text-dim);letter-spacing:.07em;margin-bottom:.3rem;}
+.cmacts{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin:.65rem 0;}
+.cmb{padding:.5rem .4rem;border:1px solid var(--border-bright);background:var(--surface2);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.05em;cursor:pointer;transition:all .15s;text-align:center;line-height:1.35;}
+.cmb:hover:not(:disabled){background:var(--surface3);border-color:var(--blue);color:var(--cyan);}
+.cmb:disabled{opacity:.3;cursor:not-allowed;}
+.cmb .cbn{display:block;font-family:'Bebas Neue',sans-serif;font-size:.88rem;letter-spacing:.1em;margin-bottom:.06rem;}
+.cmb .cbd{opacity:.6;font-size:.52rem;}
+.cmb.flee{border-color:rgba(200,48,32,.3);color:#c08070;}
+.cmb.flee:hover:not(:disabled){border-color:var(--red);color:#e08060;background:rgba(200,48,32,.08);}
+.cmlog{background:var(--surface);border:1px solid var(--border);padding:.5rem .6rem;max-height:80px;overflow-y:auto;margin-top:.65rem;scrollbar-width:thin;}
+.cmll{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.03em;line-height:1.5;}
+.cmll.pl{color:var(--cyan);}
+.cmll.en{color:#e08060;}
+.cmll.sys{color:var(--amber);}
+.cmll.win{color:var(--green);}
+.cmll.los{color:var(--red);}
+.cmob{display:none;padding:.6rem;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.15em;margin-top:.6rem;border:1px solid;}
+.cmob.win{color:var(--green);border-color:var(--green-dim);background:rgba(48,168,72,.06);}
+.cmob.los{color:var(--red);border-color:rgba(200,48,32,.3);background:rgba(200,48,32,.06);}
+
+/* ── DICE OVERLAY ────────────────────────────── */
+#do{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:800;align-items:center;justify-content:center;flex-direction:column;}
+#do.on{display:flex;}
+.df{font-family:'VT323',monospace;font-size:7rem;color:var(--cyan);text-shadow:0 0 30px rgba(24,200,192,.8),0 0 60px rgba(24,200,192,.4);line-height:1;min-width:3ch;text-align:center;}
+.dty{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--text-dim);letter-spacing:.2em;margin-top:.4rem;}
+.drl{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--amber);letter-spacing:.15em;margin-top:.85rem;opacity:0;transition:opacity .3s;}
+.drl.on{opacity:1;}
+
+/* ── TOAST ───────────────────────────────────── */
+#toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--cyan-dim);color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.12em;padding:.35rem .9rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+#toast.on{opacity:1;}
+
+/* ── LEGEND ──────────────────────────────────── */
+.mleg{position:absolute;bottom:.65rem;left:.65rem;background:rgba(6,8,10,.88);border:1px solid var(--border-bright);padding:.4rem .6rem;backdrop-filter:blur(4px);}
+.mlt{font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--text-dim);letter-spacing:.14em;margin-bottom:.3rem;}
+.mli{display:flex;align-items:center;gap:.3rem;font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--text-dim);letter-spacing:.04em;margin-bottom:.16rem;}
+.ld{width:7px;height:7px;border:1px solid;flex-shrink:0;}
+.ldn{border-color:#186870;background:rgba(24,104,112,.3);}
+.ldb{border-color:#802020;background:rgba(128,32,32,.3);}
+.ldf{border-color:#183020;background:rgba(24,48,32,.3);}
+.ldr{border-color:#2a1808;background:rgba(42,24,8,.3);}
+.ldg{border-color:#181818;background:rgba(0,0,0,.8);}
+.ldp{border-color:var(--cyan);background:var(--cyan);border-radius:50%;}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:640px){
+  .gb{flex-direction:column;}
+  .mw{flex:0 0 50vh;}
+  .sp{width:100%;flex:1;overflow:hidden;}
+  .tc{overflow-y:auto;}
+  .gh-stats{display:none;}
+  .mleg{bottom:.35rem;left:.35rem;}
+  .gh-title{font-size:.85rem;}
+}
+@media(max-width:380px){
+  .df{font-size:5rem;}
+  .cmacts{grid-template-columns:1fr;}
+  .cmccs{grid-template-columns:1fr;}
+  .mca{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="gw">
+
+<!-- HEADER -->
+<header class="gh">
+  <div class="gh-title">YERMO CERO · <span>SEÑAL MUERTA</span></div>
+  <div class="gh-stats">
+    <div class="hst">T<span class="hstv" id="ht">1</span></div>
+    <div class="hst">FASE <span class="hstv" id="hf">EXPL.</span></div>
+    <div class="hst">SIM <span class="hstv" id="hs">6/10</span></div>
+  </div>
+  <div class="gh-acts">
+    <button class="hbtn sv" onclick="saveGame()">💾 GUARDAR</button>
+    <button class="hbtn" onclick="loadGame()">↩ CARGAR</button>
+    <button class="hbtn ng" onclick="newGame()">✕ NUEVA</button>
+    <a href="manual_del_jugador.html" class="hbtn">↩ MANUAL</a>
+    <a href="aventura_01_senal_muerta.html" class="hbtn">GUÍA ↗</a>
+  </div>
+</header>
+
+<!-- BODY -->
+<div class="gb">
+
+  <!-- MAP -->
+  <div class="mw" id="mw">
+    <svg id="hm"></svg>
+    <div class="mleg">
+      <div class="mlt">LEYENDA</div>
+      <div class="mli"><div class="ld ldp"></div>Posición</div>
+      <div class="mli"><div class="ld ldn"></div>Nodo</div>
+      <div class="mli"><div class="ld ldb"></div>Peligro</div>
+      <div class="mli"><div class="ld ldf"></div>Ferral</div>
+      <div class="mli"><div class="ld ldr"></div>Ruinas</div>
+      <div class="mli"><div class="ld ldg"></div>Sin explorar</div>
+    </div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div class="sp">
+    <div class="ptabs">
+      <button class="ptab on" data-tab="stats">ESTADO</button>
+      <button class="ptab" data-tab="inv">MOCHILA</button>
+      <button class="ptab" data-tab="mote">MOTE</button>
+    </div>
+
+    <!-- TAB ESTADO -->
+    <div class="tc on" id="tc-stats">
+      <div class="pb">
+        <div class="pbt"><span>CHATARRERO</span><span id="cr-disp" style="color:var(--green);font-size:.55rem;">50 cr</span></div>
+        <div class="cname">Kael Renn</div>
+        <div class="carch">Desguazador · El Umbral</div>
+        <div class="sbw">
+          <div class="sbl"><span>HP</span><span class="v"><span id="hpv">20</span>/20</span></div>
+          <div class="sb"><div class="sbf hpf" id="hpb" style="width:100%"></div></div>
+        </div>
+        <div class="attrs">
+          <div class="am"><span>CÓDIGO</span><span class="av" id="a-cod">4</span></div>
+          <div class="am"><span>ARMAZÓN</span><span class="av" id="a-arm">5</span></div>
+          <div class="am"><span>TERRENO</span><span class="av" id="a-ter">6</span></div>
+          <div class="am"><span>CONTACTOS</span><span class="av" id="a-con">5</span></div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="pbt"><span>MOTE · ENSAMBLADO</span><span id="m-lvbdg" style="color:var(--text-dim);">Niv.1</span></div>
+        <div class="sbw">
+          <div class="sbl"><span>HP</span><span class="v"><span id="mhpv">15</span>/<span id="mmxhp">15</span></span></div>
+          <div class="sb"><div class="sbf mtf" id="mhpb" style="width:100%"></div></div>
+        </div>
+        <div class="sbw">
+          <div class="sbl"><span>SIMBIOSIS</span><span class="v"><span id="symv">6</span>/10</span></div>
+          <div class="sb"><div class="sbf syf" id="symb" style="width:60%"></div></div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="pbt">UBICACIÓN</div>
+        <div class="locn" id="locn">EL UMBRAL</div>
+        <div class="locd" id="locd">Hex (1,4) · Nodo</div>
+        <div class="loct" id="loct">Tu punto de partida.</div>
+      </div>
+      <div id="aa"></div>
+      <div class="pb" style="flex:1;display:flex;flex-direction:column;min-height:75px;padding:.45rem 0 0;">
+        <div class="pbt" style="padding:0 .9rem;">REGISTRO</div>
+        <div class="gl" id="gl"></div>
+      </div>
+    </div>
+
+    <!-- TAB MOCHILA -->
+    <div class="tc" id="tc-inv">
+      <div class="pb">
+        <div class="pbt"><span>INVENTARIO</span><span id="inv-cnt" style="color:var(--text-dim);">0 items</span></div>
+      </div>
+      <div class="inv-grid" id="inv-grid"></div>
+    </div>
+
+    <!-- TAB MOTE -->
+    <div class="tc" id="tc-mote">
+      <div class="pb">
+        <div class="pbt"><span>MÓDULOS</span><span id="m-nv" style="color:var(--amber);">Niv.1</span></div>
+        <div class="mslots" id="mslots"></div>
+        <button class="btnupg" id="btnupg" onclick="openUpgrade()" style="display:none;">⚙ TALLER DE MEJORAS</button>
+      </div>
+      <div class="pb" style="flex:1;">
+        <div class="pbt">CAPACIDADES</div>
+        <div class="mcaps" id="mcaps"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- DICE OVERLAY -->
+<div id="do"><div class="df" id="dface">20</div><div class="dty" id="dty">D20</div><div class="drl" id="drl"></div></div>
+
+<!-- MINOR COMBAT -->
+<div id="mcm">
+  <div class="mcc">
+    <div class="mcen" id="mc-name">GUARDA CLASE I</div>
+    <div class="mccl" id="mc-cls">PRIMORDIAL · SEGURIDAD PERIMETRAL</div>
+    <div style="margin-bottom:.5rem;">
+      <div class="sbl" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;"><span>HP</span><span style="color:#e06040;"><span id="mc-hp">18</span>/18</span></div>
+      <div class="sb" style="height:5px;"><div class="sbf" id="mc-hpb" style="width:100%;background:linear-gradient(90deg,#601010,#c03020);"></div></div>
+    </div>
+    <div class="mca">
+      <button class="mcb" onclick="mcAct('attack')"><span>Atacar</span>D20+Arm</button>
+      <button class="mcb" onclick="mcAct('evade')"><span>Evadir</span>D20+Ter</button>
+      <button class="mcb" onclick="mcAct('hack')"><span>Hackear</span>D20+Cód</button>
+    </div>
+    <div class="mcl" id="mc-log"></div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div id="upm">
+  <div class="upc">
+    <div class="upt">TALLER DE MEJORAS</div>
+    <div class="upst">TALLER DE SAEL RENN · EL UMBRAL</div>
+    <div id="upsc"></div>
+    <div class="upn2" id="upn2">
+      <div class="upn2t">▲ UPGRADE A NIV. 2</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--text-dim);letter-spacing:.05em;margin-bottom:.45rem;line-height:1.7;">
+        Requiere: <span style="color:var(--amber);">Núcleo de Procesamiento ×1</span><br>
+        Efecto: MOTE +5 maxHP · +3 HP · Slot Sistema desbloqueado
+      </div>
+      <button class="usb" id="btn-niv2" onclick="upgradeNiv2()">INSTALAR NÚCLEO</button>
+    </div>
+    <button class="upcl" onclick="closeUpgrade()">CERRAR TALLER</button>
+  </div>
+</div>
+
+<!-- COMBAT MODAL -->
+<div id="cm">
+  <div class="cmc">
+    <div class="cmen">GRÚA-7</div>
+    <div class="cmec">PRIMORDIAL CLASE II · EXTRACTOR · SIEVERT INDUSTRIAL</div>
+    <div class="cmpt" id="cm-pt">FASE I — OPERACIÓN NOMINAL</div>
+    <div>
+      <div class="sbl" style="margin-bottom:.22rem;font-family:'Share Tech Mono',monospace;font-size:.5rem;">
+        <span style="color:var(--text-dim);letter-spacing:.08em;">HP GRÚA-7</span>
+        <span style="color:#e06040;font-size:.6rem;"><span id="ehpv">80</span>/80</span>
+      </div>
+      <div class="sb" style="height:6px;"><div class="sbf" id="ehpb" style="width:100%;background:linear-gradient(90deg,#601010,#c03020);"></div></div>
+    </div>
+    <div class="cmccs">
+      <div class="cmmini"><div class="cmmn">KAEL RENN</div>
+        <div class="sbw"><div class="sbl"><span style="font-size:.48rem;">HP</span><span class="v" style="font-size:.48rem;"><span id="c-hp">20</span>/20</span></div><div class="sb"><div class="sbf hpf" id="c-hpb" style="width:100%"></div></div></div>
+      </div>
+      <div class="cmmini"><div class="cmmn">MOTE</div>
+        <div class="sbw"><div class="sbl"><span style="font-size:.48rem;">HP</span><span class="v" style="font-size:.48rem;"><span id="c-mhp">15</span>/<span id="c-mmx">15</span></span></div><div class="sb"><div class="sbf mtf" id="c-mhpb" style="width:100%"></div></div></div>
+        <div class="sbw" style="margin-top:.22rem;"><div class="sbl"><span style="font-size:.48rem;">SIM</span><span class="v" style="font-size:.48rem;"><span id="c-sym">6</span>/10</span></div><div class="sb"><div class="sbf syf" id="c-symb" style="width:60%"></div></div></div>
+      </div>
+    </div>
+    <div class="cmacts">
+      <button class="cmb" onclick="cAct('attack')"><span class="cbn">Atacar</span><span class="cbd" id="cbd-atk">D20+Arm(5) vs DEF</span></button>
+      <button class="cmb" onclick="cAct('hack')"><span class="cbn">Hackear</span><span class="cbd" id="cbd-hck">D20+Cód vs CD14</span></button>
+      <button class="cmb" onclick="cAct('repair')"><span class="cbn">Reparar MOTE</span><span class="cbd">D20+Arm vs CD10</span></button>
+      <button class="cmb flee" onclick="cAct('flee')"><span class="cbn">Huir</span><span class="cbd">D20+Ter(6) vs CD12</span></button>
+    </div>
+    <div class="cmob" id="cm-ob"></div>
+    <div class="cmlog" id="cm-log"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ENGINE -->
+<script>
+'use strict';
+const CFG={cols:12,rows:9,size:44,pad:28};
+const S3=Math.sqrt(3);
+const SK='yc_sm_v2';
+
+const ITEMS={
+  chatarra:   {name:'Chatarra Básica',         ico:'⬡',col:'#607080',desc:'Reciclable. Vale ~3 cr cada una.'},
+  cable_fibra:{name:'Cable Fibra Óptica',       ico:'〰',col:'#4090c0',desc:'Vale 15 cr o mejora Sensor de MOTE.'},
+  panel_nano: {name:'Panel de Procesamiento',  ico:'◈',col:'#2090d8',desc:'Vale 30 cr o mejora Sistema de MOTE.'},
+  actuador:   {name:'Actuador de Brazo',        ico:'⚙',col:'#c84030',desc:'Pieza Primordial. Mejora Brazo de MOTE.'},
+  nucleo_proc:{name:'Núcleo de Procesamiento', ico:'◉',col:'#e07020',desc:'Pieza única. Vale 80 cr o sube MOTE a Niv.2.'},
+  bateria:    {name:'Batería de Emergencia',   ico:'⚡',col:'#30a848',desc:'Uso único. Sim +2, MOTE +3 HP.'},
+  kit_rep:    {name:'Kit de Reparación',        ico:'🔧',col:'#20a080',desc:'Uso único. MOTE +6 HP.'},
+};
+
+const SLOTS={
+  sensor:{lbl:'SENSOR',ico:'📡',empty:'Sin módulo',req:'cable_fibra',cost:10,eff:'Código efectivo +1',key:'sUpg'},
+  brazo: {lbl:'BRAZO', ico:'⚙', empty:'Compuesto Libre',req:'actuador',cost:0, eff:'Ataque +D6 asistido',key:'bUpg'},
+  sistema:{lbl:'SISTEMA',ico:'💾',empty:'🔒 Niv.2 requerido',req:'panel_nano',cost:15,eff:'Simbiosis efect. +2',key:'siUpg',niv2:true},
+};
+
+const TR={
+  wasteland:{fill:'#0e0b06',stroke:'#261c0e',sym:'·', name:'Yermo',   tc:'#382a14'},
+  ruins:    {fill:'#0c0905',stroke:'#281408',sym:'⬡', name:'Ruinas',  tc:'#382010'},
+  scrap:    {fill:'#09090d',stroke:'#181828',sym:'◈', name:'Ferrería',tc:'#202840'},
+  ferral:   {fill:'#07090b',stroke:'#101e28',sym:'◆', name:'Ferral',  tc:'#1a3848'},
+  toxic:    {fill:'#070b06',stroke:'#142010',sym:'○', name:'Tóxico',  tc:'#1e3018'},
+  bunker:   {fill:'#0a0a0c',stroke:'#1c202a',sym:'▣', name:'Búnker',  tc:'#2a3040'},
+  node:     {fill:'#050810',stroke:'#145060',sym:'⬡', name:'Nodo',    tc:'#2090a0'},
+  boss:     {fill:'#0e0508',stroke:'#601018',sym:'✕', name:'PELIGRO', tc:'#c03020'},
+};
+
+const STORY={
+  '1,4':{ter:'node',name:'EL UMBRAL',safe:true,desc:'Nodo sin requisitos. Zona segura. Taller disponible.',
+    ev(st){return{title:'El Umbral — Zona Segura',narr:'El Umbral. Nadie te pide credenciales. El ruido del mercado, el olor a aceite quemado. Casi reconfortante.',
+      fx(){const hh=Math.min(3,st.player.maxHp-st.player.hp),mh=Math.min(3,st.mote.maxHp-st.mote.hp);st.player.hp+=hh;st.mote.hp+=mh;return[`HP +${hh}`,'MOTE +'+mh+' HP'];}
+    };}
+  },
+  '2,3':{ter:'wasteland',name:'PATRULLA A-0',safe:false,desc:'Señal de movimiento mecánico. Guarda activa.',
+    ev(st){return{title:'Enc.01b — Guarda Clase I',narr:'MOTE detecta movimiento antes que vos. Una Guarda Clase I avanza en tu dirección. Su directiva: eliminar intrusiones.',
+      mc:{name:'GUARDA CLASE I',cls:'PRIMORDIAL · SEGURIDAD PERIMETRAL',hp:18,maxHp:18,def:12,atk:()=>rollD(8)+1,loot:{chatarra:2}}
+    };}
+  },
+  '3,3':{ter:'ferral',name:'ANTENAS A-1',safe:false,desc:'Torres de comunicación pre-colapso. Recursos detectados.',
+    ev(st){return{title:'Enc.02 — Llanura de Antenas',narr:'El suelo cruje bajo tus pasos: cables, plásticos, paneles solares fragmentados. MOTE activa sus sensores.',
+      dice:{sides:20,bonus:st.player.terreno,blabel:`Terreno(${st.player.terreno})`,cd:8,
+        onR(tot,st2){if(tot>=8){const cr=(rollD(6)+2)*2;st2.player.credits+=cr;addItem(st2,'cable_fibra',1);st2.mote.simbiosis=Math.min(10,st2.mote.simbiosis+1);return{ok:1,txt:`Éxito (${tot} vs CD8) — +${cr} cr. Cable Fibra ×1. Simbiosis +1.`};}st2.player.credits+=4;return{ok:0,txt:`Fallo (${tot} vs CD8) — +4 cr.`};}
+      }
+    };}
+  },
+  '4,4':{ter:'bunker',name:'BÚNKER B-0',safe:false,desc:'Estructura sellada. Posibles suministros.',
+    ev(st){return{title:'Búnker B-0 — Estructura Sellada',narr:'Una compuerta de acero sellada. La cerradura electrónica sigue activa, alimentada por un generador que lleva décadas en modo mínimo.',
+      dice:{sides:20,bonus:st.player.armazon,blabel:`Armazón(${st.player.armazon})`,cd:12,
+        onR(tot,st2){if(tot>=12){addItem(st2,'panel_nano',1);addItem(st2,'bateria',1);const cr=rollD(6)*3;st2.player.credits+=cr;return{ok:1,txt:`Éxito (${tot} vs CD12) — Panel Nano + Batería + ${cr} cr.`};}addItem(st2,'chatarra',2);return{ok:0,txt:`Fallo (${tot} vs CD12) — Cerradura resiste. Chatarra del perímetro ×2.`};}
+      }
+    };}
+  },
+  '5,4':{ter:'ruins',name:'LOS RESTOS',safe:false,desc:'Suelo inestable. Restos de vehículo reciente.',
+    ev(st){return{title:'Enc.03 — Los Restos',narr:'Sabor metálico en el aire. Suelo inestable — ceniza sobre huecos. Restos de un vehículo de exploración de meses atrás. Las marcas de daño son inconfundibles.',
+      dice:{sides:20,bonus:st.player.terreno,blabel:`Terreno(${st.player.terreno})`,cd:10,
+        onR(tot,st2){if(tot>=10){st2.mote.simbiosis=Math.min(10,st2.mote.simbiosis+1);addItem(st2,'chatarra',1);return{ok:1,txt:`Éxito (${tot} vs CD10) — Sin incidentes. Huellas al noreste. Simbiosis +1.`};}const d=rollD(4);st2.player.hp=Math.max(1,st2.player.hp-d);st2.mote.simbiosis=Math.min(10,st2.mote.simbiosis+1);return{ok:0,txt:`Fallo (${tot} vs CD10) — Caída en hueco. -${d} HP. MOTE interviene. Simbiosis +1.`};}
+      }
+    };}
+  },
+  '6,5':{ter:'toxic',name:'SEÑAL PETROSA',safe:false,desc:'Anomalía electromagnética. Señal de origen desconocido.',
+    ev(st){return{title:'Señal Petrosa — Anomalía EM',narr:'MOTE detecta una señal EM periódica. No es un Primordial — el patrón es demasiado regular. Alguien la está emitiendo con un propósito.',
+      dice:{sides:20,bonus:st.player.codigo,blabel:`Código(${st.player.codigo})`,cd:11,
+        onR(tot,st2){if(tot>=11){st2.player.hackedAntena=true;addItem(st2,'panel_nano',1);return{ok:1,txt:`Éxito (${tot} vs CD11) — Señal de tu madre descifrada. Delta-4 confirmado. Panel Nano + ventaja táctica.`};}return{ok:0,txt:`Fallo (${tot} vs CD11) — No descifrable. MOTE registra el patrón.`};}
+      }
+    };}
+  },
+  '7,3':{ter:'wasteland',name:'SECTOR B-1',safe:false,desc:'Terreno abierto. Señal débil al este.',
+    ev(st){return{title:'Sector B-1 — Señal',narr:'Terreno despejado. MOTE registra señal débil al este — posiblemente el robot de carga de tu madre. La antena de Delta-4 debe estar cerca.',fx(){return['Señal de robot de carga al este'];}};},
+  },
+  '8,4':{ter:'toxic',name:'ZONA DELTA',safe:false,desc:'Perímetro de Delta-4. Campos EM de Primordial.',
+    ev(st){return{title:'Enc.04 — Zona Delta',narr:'El aire sabe distinto. MOTE detecta campos EM residuales — señal inconfundible de Primordial activo. La antena de transmisión es visible.',
+      dice:{sides:20,bonus:st.player.codigo,blabel:`Código(${st.player.codigo})`,cd:13,
+        onR(tot,st2){if(tot>=13){st2.player.hackedAntena=true;return{ok:1,txt:`Éxito (${tot} vs CD13) — Antena hackeada. Madre: sótano sector C. DEF GRÚA-7 -2 en ronda 1.`};}return{ok:0,txt:`Fallo (${tot} vs CD13) — Alerta enviada. Sin ventaja.`};}
+      }
+    };}
+  },
+  '9,3':{ter:'boss',name:'DELTA-4',safe:false,desc:'Instalación industrial. GRÚA-7 opera aquí.',
+    ev(st){return{title:'⚠ DELTA-4 — GRÚA-7 DETECTADO',narr:'La instalación se extiende ante vos. Ochenta y tres años de silencio industrial, interrumpido solo por el chirrido de articulaciones que no deberían seguir funcionando. GRÚA-7 te ha detectado.',tCombat:true};},
+  },
+};
+
+const REVENTS=[
+  {narr:'Terreno despejado. Solo viento y polvo.',fx:null},
+  {narr:'Restos de chatarra básica.',fx(st){const c=rollD(6)*2;st.player.credits+=c;addItem(st,'chatarra',1);return[`+${c} cr · Chatarra ×1`];}},
+  {narr:'Señal EM no identificada. MOTE la registra.',fx:null},
+  {narr:'Ruidos mecánicos en la distancia. Una Guarda, alejándose.',fx:null},
+  {narr:'Restos de un Chatarrero anterior. Kit de reparación intacto.',fx(st){addItem(st,'kit_rep',1);return['Kit de Reparación ×1'];}},
+  {narr:'Zona de baja radiación. MOTE activa filtros.',fx(st){st.player.hp=Math.max(1,st.player.hp-1);return['-1 HP (radiación)'];}},
+  {narr:'Depósito sellado. Demasiado pesado. Lo anotás para volver.',fx:null},
+  {narr:'Una Bestia de Carga pasa a lo lejos, su perfil colosal recortado contra el cielo.',fx:null},
+  {narr:'Cable de fibra óptica enredado en los restos de una antena.',fx(st){addItem(st,'cable_fibra',1);return['Cable Fibra Óptica ×1'];}},
+  {narr:'Batería de emergencia sellada. Sistema de carga intacto.',fx(st){addItem(st,'bateria',1);return['Batería de Emergencia ×1'];}},
+  {narr:'Zona de silencio absoluto. MOTE apaga sus ventiladores por iniciativa propia.',fx(st){st.mote.simbiosis=Math.min(10,st.mote.simbiosis+1);return['Simbiosis +1 (iniciativa MOTE)'];}},
+  {narr:'Restos de escombros recientes. Alguien estuvo aquí hace poco.',fx(st){const c=rollD(4)*2;st.player.credits+=c;return[`+${c} cr`];}},
+  {narr:'Tormenta de polvo EM. MOTE protege los sistemas críticos.',fx(st){st.player.hp=Math.max(1,st.player.hp-2);st.mote.simbiosis=Math.min(10,st.mote.simbiosis+1);return['-2 HP (tormenta)','Simbiosis +1 (protección MOTE)'];}},
+  {narr:'Campo de resonancia armónica. MOTE vibra suavemente durante minutos.',fx:null},
+];
+
+function mkState(){return{
+  player:{hp:20,maxHp:20,codigo:4,armazon:5,terreno:6,contactos:5,credits:50,hackedAntena:false},
+  mote:{hp:15,maxHp:15,simbiosis:6,level:1,sUpg:false,bUpg:false,siUpg:false},
+  inv:{},pos:{col:1,row:4},
+  explored:new Set(['1,4']),visited:new Set(),
+  pendingDice:null,phase:'explore',turn:1,
+  combat:{enemyHp:80,enemyMaxHp:80,phase:1,round:1,over:false,victory:false,def:15},
+  mc:{active:false,enemy:null},
+};}
+let S=mkState();
+
+function addItem(st,id,n=1){st.inv[id]=(st.inv[id]||0)+n;renderInv();}
+function remItem(st,id,n=1){if(!(st.inv[id]>=n))return false;st.inv[id]-=n;if(st.inv[id]<=0)delete st.inv[id];renderInv();return true;}
+function hasItem(st,id,n=1){return(st.inv[id]||0)>=n;}
+function invCnt(st){return Object.values(st.inv).reduce((a,b)=>a+b,0);}
+
+function rollD(s){return Math.floor(Math.random()*s)+1;}
+function key(c,r){return`${c},${r}`;}
+function inB(c,r){return c>=0&&c<CFG.cols&&r>=0&&r<CFG.rows;}
+function effCod(){return S.player.codigo+(S.mote.sUpg?1:0);}
+function effSim(){return Math.min(10,S.mote.simbiosis+(S.mote.siUpg?2:0));}
+
+function hxC(col,row){const odd=row%2!==0;return{x:CFG.size*S3*(col+(odd?.5:0))+CFG.pad,y:CFG.size*1.5*row+CFG.pad};}
+function hxP(cx,cy){return Array.from({length:6},(_,i)=>{const a=Math.PI/3*i-Math.PI/6;return`${(cx+CFG.size*Math.cos(a)).toFixed(1)},${(cy+CFG.size*Math.sin(a)).toFixed(1)}`}).join(' ');}
+function nbrs(col,row){return row%2===0?[[col-1,row-1],[col,row-1],[col+1,row],[col,row+1],[col-1,row+1],[col-1,row]]:[[col,row-1],[col+1,row-1],[col+1,row],[col+1,row+1],[col,row+1],[col-1,row]];}
+function isAdj(c1,r1,c2,r2){return nbrs(c1,r1).some(([c,r])=>c===c2&&r===r2);}
+function getTer(col,row){const k=key(col,row);if(STORY[k])return STORY[k].ter;const h=Math.abs((col*1543+row*739+col*row*97))%100;if(h<30)return'wasteland';if(h<46)return'ruins';if(h<60)return'scrap';if(h<73)return'ferral';if(h<86)return'toxic';return'bunker';}
+
+function svEl(t,a={}){const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
+
+// SAVE/LOAD
+function saveGame(){try{const d={...S,explored:[...S.explored],visited:[...S.visited]};localStorage.setItem(SK,JSON.stringify(d));toast('Partida guardada ✓');}catch(e){toast('Error al guardar');}}
+function loadGame(){try{const r=localStorage.getItem(SK);if(!r){toast('Sin partida guardada');return;}const d=JSON.parse(r);S={...d,explored:new Set(d.explored),visited:new Set(d.visited),pendingDice:null};if(!S.inv)S.inv={};['sUpg','bUpg','siUpg'].forEach(k=>{if(S.mote[k]===undefined)S.mote[k]=false;});rMap();updUI();renderInv();renderMoteTab();resetAA();document.getElementById('gl').innerHTML='';log('↩ Partida cargada','sy');toast('Partida cargada ✓');}catch(e){toast('Error al cargar');}}
+function newGame(){if(!confirm('¿Nueva partida? Se perderá el progreso no guardado.'))return;S=mkState();nbrs(1,4).forEach(([c,r])=>{if(inB(c,r))S.explored.add(key(c,r));});['gl','cm-log','mc-log'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});rMap();updUI();renderInv();renderMoteTab();resetAA();scrollP();log('▶ SEÑAL MUERTA — Nueva Partida','st');log('Tu madre desapareció en Delta-4 hace tres semanas.','nrr');log('Hacé click en un hex adyacente iluminado para moverte.','sy');}
+
+// MAP
+function rMap(){
+  const svgW=CFG.size*S3*(CFG.cols+.5)+CFG.pad*2, svgH=CFG.size*(CFG.rows*1.5+.5)+CFG.pad*2;
+  const svg=document.getElementById('hm');
+  svg.setAttribute('width',svgW);svg.setAttribute('height',svgH);svg.innerHTML='';
+  const defs=svEl('defs');defs.innerHTML='<filter id="gc"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="gr"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  svg.appendChild(defs);
+  for(let r=0;r<CFG.rows;r++)for(let c=0;c<CFG.cols;c++)svg.appendChild(bHex(c,r));
+  svg.appendChild(bPlayer());
+}
+
+function bHex(col,row){
+  const k=key(col,row);const{x,y}=hxC(col,row);
+  const exp=S.explored.has(k);const isCur=S.pos.col===col&&S.pos.row===row;
+  const story=STORY[k];const ter=getTer(col,row);const t=TR[ter];
+  const canMv=exp&&isAdj(S.pos.col,S.pos.row,col,row)&&!isCur&&S.phase==='explore';
+  const g=svEl('g',{'data-col':col,'data-row':row});
+  let fill=exp?t.fill:'#040403',stroke=exp?(isCur?'#18c8c0':canMv?'#304858':t.stroke):'#0d0b09',sw=isCur?'2':canMv?'1.5':'1';
+  if(story&&exp){if(ter==='boss'){stroke='#802020';sw='2';}else if(ter==='node'){stroke='#186870';sw='1.5';}}
+  const poly=svEl('polygon',{points:hxP(x,y),fill,stroke,'stroke-width':sw});
+  g.appendChild(poly);
+  if(exp){
+    const sym=svEl('text',{x,y:y+(story?4:2),'text-anchor':'middle','dominant-baseline':'middle',fill:t.tc,'font-size':story?'10':'16','font-family':'Share Tech Mono,monospace','pointer-events':'none',opacity:'0.5'});
+    sym.textContent=t.sym;g.appendChild(sym);
+    if(story){
+      const lbl=svEl('text',{x,y:y-8,'text-anchor':'middle','dominant-baseline':'middle',fill:ter==='boss'?'#c84030':ter==='node'?'#18b8b0':'#a09080','font-size':'6.5','font-family':'Bebas Neue,sans-serif','letter-spacing':'0.8','pointer-events':'none',filter:ter==='boss'?'url(#gr)':ter==='node'?'url(#gc)':'none'});
+      lbl.textContent=story.name;g.appendChild(lbl);
+      if(S.visited.has(k)){g.appendChild(svEl('circle',{cx:x+CFG.size*.48,cy:y-CFG.size*.48,r:'4',fill:'#204838',stroke:'#306050','stroke-width':'.5','pointer-events':'none'}));const ct=svEl('text',{x:x+CFG.size*.48,y:y-CFG.size*.48+1,'text-anchor':'middle','dominant-baseline':'middle',fill:'#50d090','font-size':'5','pointer-events':'none'});ct.textContent='✓';g.appendChild(ct);}
+    }
+    if(canMv)g.appendChild(svEl('polygon',{points:hxP(x,y),fill:'none',stroke:'#304860','stroke-width':'2',opacity:'.4','pointer-events':'none'}));
+  }
+  if(S.phase==='explore'){
+    g.style.cursor=canMv?'pointer':'default';
+    g.addEventListener('click',()=>onHex(col,row));
+    if(canMv){g.addEventListener('mouseenter',()=>{poly.setAttribute('fill','#121820');poly.setAttribute('stroke','#4a7090');});g.addEventListener('mouseleave',()=>{poly.setAttribute('fill',exp?t.fill:'#040403');poly.setAttribute('stroke',canMv?'#304858':t.stroke);});}
+  }
+  return g;
+}
+
+function bPlayer(){const{x,y}=hxC(S.pos.col,S.pos.row);const g=svEl('g',{id:'pt','pointer-events':'none'});g.appendChild(svEl('circle',{cx:x,cy:y,r:'11',fill:'none',stroke:'#18c8c0','stroke-width':'1',opacity:'.4',filter:'url(#gc)'}));g.appendChild(svEl('circle',{cx:x,cy:y,r:'7',fill:'#18c8c0',filter:'url(#gc)'}));const l=svEl('text',{x,y:y+1,'text-anchor':'middle','dominant-baseline':'middle',fill:'#04080a','font-size':'8','font-family':'Bebas Neue,sans-serif'});l.textContent='K';g.appendChild(l);return g;}
+
+// MOVEMENT
+function onHex(col,row){if(S.phase!=='explore')return;if(!S.explored.has(key(col,row)))return;if(!isAdj(S.pos.col,S.pos.row,col,row))return;moveTo(col,row);}
+
+function moveTo(col,row){
+  S.pos={col,row};S.turn++;
+  nbrs(col,row).forEach(([nc,nr])=>{if(inB(nc,nr))S.explored.add(key(nc,nr));});S.explored.add(key(col,row));
+  const story=STORY[key(col,row)];const t=TR[getTer(col,row)];
+  log(`→ [${story?story.name:t.name}] (${col},${row})`,'mv');
+  rMap();updUI();scrollP();
+  if(story&&!S.visited.has(key(col,row))){S.visited.add(key(col,row));trigEv(story.ev(S));}
+  else if(!story){trigRand(col,row);}
+  else{log('Zona ya explorada.','sy');if(story.safe)resetAA();}
+  try{saveGame();}catch(e){}
+}
+
+// EVENTS
+function trigEv(ev){
+  if(ev.tCombat){log(`⚠ ${ev.title}`,'dg');log(ev.narr,'nrr');S.phase='combat';updUI();setTimeout(()=>openCombat(),1400);return;}
+  if(ev.mc){log(`▶ ${ev.title}`,'st');log(ev.narr,'nrr');openMC(ev.mc);return;}
+  log(`▶ ${ev.title}`,'st');log(ev.narr,'nrr');
+  if(ev.dice){S.phase='event';S.pendingDice=ev.dice;showDP(ev.dice);}
+  else if(ev.fx){ev.fx().forEach(r=>log(`  ${r}`,'rs'));updUI();resetAA();}
+}
+
+function trigRand(col,row){const idx=Math.abs(col*31+row*17+S.turn*7)%REVENTS.length;const ev=REVENTS[idx];log(ev.narr,'nrr');if(ev.fx){ev.fx(S).forEach(r=>log(`  ${r}`,'lt'));updUI();renderInv();}resetAA();}
+
+// DICE
+function showDP(dice){
+  const b=dice.useCod?effCod():dice.bonus||0;
+  document.getElementById('aa').innerHTML=`<div class="dp"><div class="dpt">ACCIÓN REQUERIDA</div><div class="dpl">D${dice.sides} + ${dice.blabel||b}</div><div class="dpcd">CD: ${dice.cd}${dice.sides===20&&effSim()>=7?' · VENTAJA ✓':''}</div><button class="btnr" onclick="execRoll()">▶ TIRAR D${dice.sides}</button></div>`;
+}
+
+function execRoll(){
+  const dice=S.pendingDice;if(!dice)return;S.pendingDice=null;
+  let roll=rollD(dice.sides);
+  if(effSim()>=7&&dice.sides===20)roll=Math.max(roll,rollD(dice.sides));
+  const b=dice.useCod?effCod():(dice.bonus||0);const tot=roll+b;
+  animDice(dice.sides,roll,()=>{
+    log(`D${dice.sides}(${roll})+${b}=${tot} vs CD${dice.cd}`,'dc');
+    const res=dice.onR(tot,S);
+    log(`  ${res.txt}`,res.ok?'ok':'fl');
+    S.phase='explore';rMap();updUI();renderInv();resetAA();
+  });
+}
+
+function animDice(sides,fin,cb){
+  const ov=document.getElementById('do'),face=document.getElementById('dface'),ty=document.getElementById('dty'),rl=document.getElementById('drl');
+  ov.classList.add('on');face.style.color='var(--cyan)';ty.textContent=`D${sides}`;rl.classList.remove('on');rl.textContent='';
+  let t=0;const max=14;const iv=setInterval(()=>{face.textContent=rollD(sides);t++;if(t===max){clearInterval(iv);face.textContent=fin;face.style.color='#f0c840';rl.textContent=`→ RESULTADO: ${fin}`;rl.classList.add('on');setTimeout(()=>{ov.classList.remove('on');cb();},900);}},55);
+}
+
+// MINOR COMBAT
+let MC={};
+function openMC(enemy){
+  MC={...enemy,hp:enemy.maxHp,over:false};S.phase='minor_combat';
+  document.getElementById('mc-name').textContent=enemy.name;
+  document.getElementById('mc-cls').textContent=enemy.cls;
+  updMCUI();document.getElementById('mc-log').innerHTML='';
+  mcLog(`${enemy.name} activo.`,'sys');
+  document.querySelectorAll('.mcb').forEach(b=>b.disabled=false);
+  document.getElementById('mcm').classList.add('on');
+}
+
+function mcAct(act){
+  if(MC.over)return;document.querySelectorAll('.mcb').forEach(b=>b.disabled=true);
+  if(act==='attack'){const r=rollD(20),t=r+S.player.armazon;if(t>=MC.def){let d=rollD(6)+(S.mote.bUpg?rollD(6):0);MC.hp=Math.max(0,MC.hp-d);mcLog(`Ataque: ${t} vs DEF${MC.def} — HIT ${d}.`,'pl');}else mcLog(`Ataque: ${t} vs DEF${MC.def} — FALLO.`,'pl');}
+  else if(act==='evade'){const r=rollD(20),t=r+S.player.terreno;if(t>=12){mcLog(`Evasión: ${t} — Escapás.`,'pl');endMC('fled');return;}mcLog(`Evasión: ${t} — Fallo.`,'pl');}
+  else if(act==='hack'){const r=rollD(20),t=r+effCod();if(t>=12){MC.hp=0;mcLog(`Hackeo: ${t} vs CD12 — Sistema reiniciado.`,'pl');}else mcLog(`Hackeo: ${t} vs CD12 — Fallo.`,'pl');}
+  if(MC.hp<=0){endMC('victory');return;}
+  setTimeout(()=>{const d=MC.atk();S.player.hp=Math.max(1,S.player.hp-d);mcLog(`${MC.name} — ${d} daño.`,'en');updMCUI();updUI();document.querySelectorAll('.mcb').forEach(b=>b.disabled=false);},500);
+  updMCUI();
+}
+
+function endMC(res){
+  MC.over=true;document.querySelectorAll('.mcb').forEach(b=>b.disabled=true);
+  if(res==='victory'){Object.entries(MC.loot||{}).forEach(([id,n])=>{addItem(S,id,n);log(`  Loot: ${ITEMS[id].name} ×${n}`,'lt');});S.mote.simbiosis=Math.min(10,S.mote.simbiosis+1);mcLog('Victoria. Simbiosis +1.','sys');log('✓ Guarda desactivada.','ok');}
+  else log('Evasión exitosa.','rs');
+  S.phase='explore';updUI();renderInv();renderMoteTab();
+  setTimeout(()=>{document.getElementById('mcm').classList.remove('on');resetAA();},1200);
+}
+
+function updMCUI(){document.getElementById('mc-hp').textContent=MC.hp;document.getElementById('mc-hpb').style.width=((MC.hp/MC.maxHp)*100)+'%';}
+function mcLog(t,tp=''){const l=document.getElementById('mc-log');const d=document.createElement('div');d.className=`mcll ${tp}`;d.textContent=t;l.appendChild(d);l.scrollTop=l.scrollHeight;}
+
+// UPGRADES
+function openUpgrade(){renderUPM();document.getElementById('upm').classList.add('on');}
+function closeUpgrade(){document.getElementById('upm').classList.remove('on');}
+
+function renderUPM(){
+  const c=document.getElementById('upsc');c.innerHTML='';
+  ['sensor','brazo','sistema'].forEach(sk=>{
+    const sl=SLOTS[sk];const upd=S.mote[sl.key];const lck=sl.niv2&&S.mote.level<2;const hasR=hasItem(S,sl.req,1);const can=!upd&&!lck&&hasR;
+    c.innerHTML+=`<div class="upsr"><span class="usic">${sl.ico}</span><div class="usif"><div class="usilb">${sl.lbl}</div><div class="usicur">${upd?sl.eff:lck?'🔒 Requiere Niv.2':sl.empty}</div>${!upd&&!lck?`<div class="usieff">Req: ${ITEMS[sl.req].name}${sl.cost>0?` + ${sl.cost} cr`:''}</div>`:''}</div><button class="usb" onclick="applyUpg('${sk}')" ${can?'':'disabled'}>${upd?'✓ INST.':lck?'BLOQ.':'INSTALAR'}</button></div>`;
+  });
+  document.getElementById('btn-niv2').disabled=!hasItem(S,'nucleo_proc',1)||S.mote.level>=2;
+  if(S.mote.level>=2){document.getElementById('upn2').style.opacity='.4';document.getElementById('upn2').querySelector('.upn2t').textContent='▲ NIV.2 INSTALADO ✓';}
+}
+
+function applyUpg(sk){
+  const sl=SLOTS[sk];if(S.mote[sl.key]){return;}if(sl.niv2&&S.mote.level<2){toast('Requiere Niv.2');return;}if(!hasItem(S,sl.req,1)){toast('Sin el item');return;}if(sl.cost>0&&S.player.credits<sl.cost){toast('Sin créditos');return;}
+  remItem(S,sl.req,1);if(sl.cost>0)S.player.credits-=sl.cost;S.mote[sl.key]=true;
+  log(`▲ MOTE · ${sl.lbl}: ${sl.eff}`,'lt');toast(`${sl.lbl} instalado ✓`);
+  renderUPM();renderMoteTab();updUI();
+}
+
+function upgradeNiv2(){
+  if(!hasItem(S,'nucleo_proc',1)){toast('Sin Núcleo');return;}if(S.mote.level>=2){toast('Ya Niv.2');return;}
+  remItem(S,'nucleo_proc',1);S.mote.level=2;S.mote.maxHp+=5;S.mote.hp=Math.min(S.mote.maxHp,S.mote.hp+3);
+  log('▲ MOTE Niv.2. +5 maxHP. Slot Sistema desbloqueado.','lt');toast('MOTE · Niv.2 ✓');
+  renderUPM();renderMoteTab();updUI();
+}
+
+// COMBAT
+function openCombat(){
+  S.combat.def=S.player.hackedAntena?13:15;
+  updCUI();document.getElementById('cm').classList.add('on');
+  cLog('GRÚA-7 ACTIVO. Fase I.','sys');
+  if(S.player.hackedAntena)cLog('Antena hackeada: DEF reducida ronda 1.','sys');
+  enCBtns(true);
+}
+
+function cAct(act){if(S.combat.over)return;enCBtns(false);switch(act){case'attack':cAtk();break;case'hack':cHck();break;case'repair':cRep();break;case'flee':cFlee();break;}}
+
+function cAtk(){
+  const r=rollD(20),b=S.player.armazon,t=r+b,def=S.combat.def;
+  if(t>=def){let d=rollD(8)+2;if(S.mote.bUpg)d+=rollD(6);S.combat.enemyHp=Math.max(0,S.combat.enemyHp-d);cLog(`Ataque: ${t} vs DEF${def} — HIT ${d}.`,'pl');chkPh();}
+  else cLog(`Ataque: ${t} vs DEF${def} — FALLO.`,'pl');
+  S.combat.def=15;if(!chkVic())eTurn();
+}
+
+function cHck(){
+  const r=rollD(20),c=effCod(),t=r+c;const cd=S.combat.phase>=3?12:14;
+  if(t>=cd){if(S.combat.phase>=3){S.combat.enemyHp=0;S.combat.technicalDeact=true;cLog(`Hackeo: ${t} vs CD${cd} — ACCESO AL NÚCLEO. Desactivación técnica.`,'pl');chkVic();}else{S.combat.def=Math.max(10,S.combat.def-3);cLog(`Hackeo: ${t} vs CD${cd} — DEF -3 próxima ronda.`,'pl');eTurn();}}
+  else{cLog(`Hackeo: ${t} vs CD${cd} — FALLO.`,'pl');eTurn();}
+}
+
+function cRep(){const r=rollD(20),t=r+S.player.armazon;if(t>=10){const h=rollD(6);S.mote.hp=Math.min(S.mote.maxHp,S.mote.hp+h);cLog(`Reparación: ${t} vs CD10 — MOTE +${h} HP.`,'pl');}else cLog(`Reparación: ${t} vs CD10 — FALLO.`,'pl');eTurn();}
+
+function cFlee(){const r=rollD(20),t=r+S.player.terreno;if(t>=12){const d=rollD(4);S.player.hp=Math.max(1,S.player.hp-d);cLog(`Huida: ${t} — Escapás. -${d} HP.`,'pl');endC(false,true);}else{const d=rollD(6)+2;S.player.hp=Math.max(1,S.player.hp-d);cLog(`Huida fallida: ${t}. -${d} HP.`,'en');if(chkDef())return;enCBtns(true);}updCUI();}
+
+function eTurn(){const ph=S.combat.phase;S.combat.round++;updCUI();setTimeout(()=>{
+  if(ph>=2){const e=rollD(6);S.mote.hp=Math.max(0,S.mote.hp-e);S.mote.simbiosis=Math.max(0,S.mote.simbiosis-1);cLog(`GRÚA-7 — EMP: MOTE -${e} HP. Simbiosis -1.`,'en');}
+  const ar=rollD(20)+5,pd=10+Math.floor(S.player.armazon/2);
+  if(ar>=pd||ph>=3){const d=ph===1?rollD(12)+3:ph===2?rollD(10)+2:rollD(8)+1;S.player.hp=Math.max(0,S.player.hp-d);cLog(`GRÚA-7 — ${ph===1?'Brazo de Carga':ph===2?'Aplastamiento':'Barrido'}: HIT ${d}.`,'en');}
+  else cLog(`GRÚA-7 — Ataque(${ar}) vs DEF${pd} — FALLO.`,'en');
+  updCUI();if(!chkDef())enCBtns(true);
+},650);}
+
+function chkPh(){const hp=S.combat.enemyHp,p=S.combat.phase;if(hp<=0)return;if(hp<=20&&p<3){S.combat.phase=3;cLog('⚠ FASE III — Núcleo accesible. Hackeo CD12.','sys');document.getElementById('cbd-hck').textContent='D20+Cód vs CD12 (NÚCLEO)';}else if(hp<=40&&p<2){S.combat.phase=2;cLog('⚠ FASE II — EMP activado.','sys');}}
+function chkVic(){if(S.combat.enemyHp<=0){endC(true,false);return true;}return false;}
+function chkDef(){if(S.player.hp<=0){S.player.hp=1;endC(false,false);return true;}return false;}
+
+function endC(vic,fled){
+  S.combat.over=true;enCBtns(false);
+  const ob=document.getElementById('cm-ob');ob.style.display='block';
+  if(vic){
+    const cr=100+rollD(20);S.player.credits+=cr;S.mote.simbiosis=Math.min(10,S.mote.simbiosis+1);
+    addItem(S,'actuador',1);
+    if(S.combat.technicalDeact)addItem(S,'nucleo_proc',1);else addItem(S,'chatarra',3);
+    ob.className='cmob win';ob.textContent='VICTORIA — GRÚA-7 DESACTIVADO';
+    cLog(`+${cr} cr. Simbiosis +1. Piezas recuperadas.`,'win');
+    cLog('Sael Renn está viva en el sótano.','win');
+    log('✓ GRÚA-7 desactivado. Sael Renn viva.','ok');
+    log(`+${cr} cr · Actuador · ${S.combat.technicalDeact?'Núcleo de Procesamiento':'Chatarra ×3'}`,'lt');
+  }else if(fled){ob.className='cmob los';ob.textContent='HUIDA — GRÚA-7 ACTIVO';log('Huiste. GRÚA-7 sigue activo.','fl');}
+  else{ob.className='cmob los';ob.textContent='DERROTA — RETIRADA FORZADA';log('HP crítico. MOTE te sacó.','fl');}
+  document.getElementById('cm-log').insertAdjacentHTML('afterend',`<button style="width:100%;margin-top:.45rem;padding:.4rem;background:var(--surface3);border:1px solid var(--border-bright);color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.12em;cursor:pointer;" onclick="closeC()">CERRAR COMBATE</button>`);
+  S.phase=vic?'over':'explore';updUI();updCUI();renderInv();renderMoteTab();
+  if(vic&&S.combat.technicalDeact){log('▶ FIN DE LA AVENTURA — Señal Muerta','st');log('Alguien en Nexo Abierto encargó ese núcleo. El prefijo de la cuenta: servidores de Vórtex.','nrr');}
+}
+
+function closeC(){document.getElementById('cm').classList.remove('on');resetAA();}
+
+function updCUI(){
+  const c=S.combat;
+  document.getElementById('ehpv').textContent=c.enemyHp;
+  document.getElementById('ehpb').style.width=((c.enemyHp/c.enemyMaxHp)*100)+'%';
+  const phs=['','FASE I — OPERACIÓN NOMINAL','FASE II — SOBRE-EXTRACCIÓN','FASE III — COLAPSO INMINENTE'];
+  document.getElementById('cm-pt').textContent=phs[c.phase]||phs[1];
+  document.getElementById('c-hp').textContent=S.player.hp;
+  document.getElementById('c-hpb').style.width=(S.player.hp/S.player.maxHp*100)+'%';
+  document.getElementById('c-mhp').textContent=S.mote.hp;
+  document.getElementById('c-mmx').textContent=S.mote.maxHp;
+  document.getElementById('c-mhpb').style.width=(S.mote.hp/S.mote.maxHp*100)+'%';
+  document.getElementById('c-sym').textContent=S.mote.simbiosis;
+  document.getElementById('c-symb').style.width=(S.mote.simbiosis/10*100)+'%';
+}
+
+function cLog(t,tp=''){const l=document.getElementById('cm-log');const d=document.createElement('div');d.className=`cmll ${tp}`;d.textContent=t;l.appendChild(d);l.scrollTop=l.scrollHeight;}
+function enCBtns(on){document.querySelectorAll('.cmb').forEach(b=>b.disabled=!on);}
+
+// UI
+function updUI(){
+  const{player:p,mote:m,pos,turn}=S;
+  document.getElementById('ht').textContent=turn;
+  document.getElementById('hf').textContent={explore:'EXPL.',event:'EVENTO',minor_combat:'COMBATE',combat:'COMBATE',over:'FIN'}[S.phase]||'?';
+  document.getElementById('hs').textContent=`${m.simbiosis}/10`;
+  document.getElementById('hpv').textContent=p.hp;
+  document.getElementById('hpb').style.width=(p.hp/p.maxHp*100)+'%';
+  document.getElementById('cr-disp').textContent=`${p.credits} cr`;
+  document.getElementById('mhpv').textContent=m.hp;
+  document.getElementById('mmxhp').textContent=m.maxHp;
+  document.getElementById('mhpb').style.width=(m.hp/m.maxHp*100)+'%';
+  document.getElementById('symv').textContent=m.simbiosis;
+  document.getElementById('symb').style.width=(m.simbiosis/10*100)+'%';
+  const codEl=document.getElementById('a-cod');codEl.textContent=m.sUpg?p.codigo+1:p.codigo;codEl.className='av'+(m.sUpg?' buff':'');
+  document.getElementById('m-lvbdg').textContent=`Niv.${m.level}`;
+  document.getElementById('m-nv').textContent=`Niv.${m.level}`;
+  const k=key(pos.col,pos.row);const story=STORY[k];const t=TR[getTer(pos.col,pos.row)];
+  document.getElementById('locn').textContent=story?story.name:t.name.toUpperCase();
+  document.getElementById('locd').textContent=`Hex (${pos.col},${pos.row}) · ${story?story.ter:'yermo'}`;
+  document.getElementById('loct').textContent=story?story.desc:'Terreno del Yermo abierto.';
+  const atU=pos.col===1&&pos.row===4;
+  const btnU=document.getElementById('btnupg');if(btnU)btnU.style.display=atU?'block':'none';
+}
+
+function renderInv(){
+  const g=document.getElementById('inv-grid');const cnt=invCnt(S);
+  document.getElementById('inv-cnt').textContent=`${cnt} item${cnt===1?'':'s'}`;
+  if(cnt===0){g.innerHTML='<div class="inv-empty">MOCHILA VACÍA<br><br>Explorá el Yermo para encontrar recursos.</div>';return;}
+  g.innerHTML='';
+  for(const[id,qty]of Object.entries(S.inv)){if(qty<=0)continue;const item=ITEMS[id];if(!item)continue;const usable=id==='bateria'||id==='kit_rep';
+    g.innerHTML+=`<div class="inv-item"><div class="inv-ico" style="border-color:${item.col};color:${item.col};">${item.ico}</div><div class="inv-inf"><div class="inv-nm">${item.name}</div><div class="inv-ds">${item.desc}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;"><div class="inv-qty">×${qty}</div>${usable?`<button class="inv-use" onclick="useItem('${id}')">USAR</button>`:''}</div></div>`;}
+}
+
+function useItem(id){
+  if(!hasItem(S,id,1)){toast('Sin el item');return;}
+  if(id==='bateria'){S.mote.simbiosis=Math.min(10,S.mote.simbiosis+2);S.mote.hp=Math.min(S.mote.maxHp,S.mote.hp+3);remItem(S,id,1);log('Batería usada — Simbiosis +2, MOTE +3 HP','rs');}
+  else if(id==='kit_rep'){S.mote.hp=Math.min(S.mote.maxHp,S.mote.hp+6);remItem(S,id,1);log('Kit Reparación — MOTE +6 HP','rs');}
+  updUI();renderInv();toast('Item usado ✓');
+}
+
+function renderMoteTab(){
+  const sd=document.getElementById('mslots');sd.innerHTML='';
+  ['sensor','brazo','sistema'].forEach(sk=>{const sl=SLOTS[sk];const upd=S.mote[sl.key];const lck=sl.niv2&&S.mote.level<2;sd.innerHTML+=`<div class="mslot"><span class="slic">${sl.ico}</span><span class="sllb">${sl.lbl}</span><span class="slv ${upd?'slf':'sle'}">${upd?sl.eff:lck?'🔒 NIV.2':sl.empty}</span></div>`;});
+  const caps=document.getElementById('mcaps');
+  const rows=[
+    ['HP MOTE',`${S.mote.hp}/${S.mote.maxHp}`],
+    ['Simbiosis',`${S.mote.simbiosis}/10${S.mote.siUpg?` (ef. ${effSim()})`:''}`],
+    ['Código efectivo',`${effCod()}`],
+    ['Ventaja en tiradas',`${effSim()>=7?'SÍ (SIM≥7)':'No'}`],
+    ['Nivel MOTE',`${S.mote.level}`],
+    ['Ataque asistido',`D8+2${S.mote.bUpg?' +D6':''}`],
+  ];
+  caps.innerHTML=rows.map(([k,v])=>`<div class="mcap-row"><span>${k}</span><span>${v}</span></div>`).join('');
+  const atU=S.pos.col===1&&S.pos.row===4;
+  document.getElementById('btnupg').style.display=atU?'block':'none';
+}
+
+function log(t,tp=''){const g=document.getElementById('gl');const e=document.createElement('div');e.className=`le ${tp}`;e.textContent=t;g.appendChild(e);g.scrollTop=g.scrollHeight;}
+
+function resetAA(){
+  const aa=document.getElementById('aa');const k=key(S.pos.col,S.pos.row);const story=STORY[k];
+  const atU=S.pos.col===1&&S.pos.row===4;
+  if(story&&story.safe){aa.innerHTML=`<div class="dp"><div class="dpl" style="color:var(--green);">ZONA SEGURA</div><div class="dpcd">Descansá o mejorá a MOTE.</div><button class="btnrst" onclick="doRest()">⬡ DESCANSAR</button>${atU?'<button class="btnupg" onclick="openUpgrade()">⚙ TALLER DE MEJORAS</button>':''}</div>`;}
+  else aa.innerHTML='';
+}
+
+function doRest(){const hh=Math.min(5,S.player.maxHp-S.player.hp),mh=Math.min(4,S.mote.maxHp-S.mote.hp);S.player.hp+=hh;S.mote.hp+=mh;S.turn++;log(`Descanso. +${hh} HP, MOTE +${mh} HP.`,'rs');updUI();}
+function scrollP(){const{x,y}=hxC(S.pos.col,S.pos.row);const w=document.getElementById('mw');w.scrollTo({left:Math.max(0,x-w.clientWidth/2),top:Math.max(0,y-w.clientHeight/2),behavior:'smooth'});}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200);}
+
+// TABS
+document.querySelectorAll('.ptab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+    document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById(`tc-${tab}`).classList.add('on');
+    if(tab==='inv')renderInv();
+    if(tab==='mote')renderMoteTab();
+  });
+});
+
+// INIT
+function init(){
+  nbrs(1,4).forEach(([c,r])=>{if(inB(c,r))S.explored.add(key(c,r));});
+  rMap();updUI();renderInv();renderMoteTab();resetAA();scrollP();
+  log('▶ SEÑAL MUERTA — Aventura 01','st');
+  log('Tu madre desapareció en Delta-4 hace tres semanas. Señal activa.','nrr');
+  log('Click en hex adyacente iluminado para moverte.','sy');
+  log('Tab MOCHILA para items · MOTE para módulos.','sy');
+  const r=localStorage.getItem(SK);if(r)log('↩ Partida guardada detectada — click CARGAR para restaurar.','sy');
+}
+
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
