@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>87 — Cartas de Enemigos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+
+@page { size: A4; margin: 8mm; }
+
+:root {
+  --bg:      #080705;
+  --surface: #100e0c;
+  --s2:      #191511;
+  --s3:      #221e18;
+  --rust:    #bf5918;
+  --amber:   #d99318;
+  --abright: #f0b030;
+  --cyan:    #1ec8c0;
+  --cdim:    #0f6e6a;
+  --red:     #c03020;
+  --rdim:    #7a1810;
+  --text:    #c8bba8;
+  --tdim:    #7a6e60;
+  --tbright: #e8dcc8;
+  --border:  #2a2318;
+  --bbright: #3e3528;
+
+  /* difficulty colors */
+  --col-basic:  #d99318;
+  --col-mid:    #bf5918;
+  --col-hard:   #c03020;
+  --col-prim:   #1ec8c0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #040302;
+  color: var(--text);
+  font-family: 'Crimson Pro', serif;
+}
+
+/* ── PRINT BAR ────────────────────────────────────────── */
+.print-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--bbright);
+  padding: .75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.print-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .15em;
+  color: var(--cyan);
+  background: none;
+  border: 1px solid var(--cdim);
+  padding: .35rem .9rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+.print-btn:hover { background: rgba(30,200,192,.08); }
+.print-info {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .5rem;
+  color: var(--tdim);
+  letter-spacing: .08em;
+}
+.legend {
+  display: flex;
+  gap: .8rem;
+  margin-left: auto;
+  align-items: center;
+}
+.leg {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .45rem;
+  letter-spacing: .1em;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+@media print { .print-bar { display: none; } }
+
+/* ── PAGE ─────────────────────────────────────────────── */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 8mm;
+  background: var(--bg);
+  margin: 0 auto 4mm;
+  page-break-after: always;
+  position: relative;
+}
+
+/* ── PAGE HEADER ──────────────────────────────────────── */
+.page-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--bbright);
+  padding-bottom: 2.5mm;
+  margin-bottom: 4mm;
+}
+.page-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: var(--abright);
+  letter-spacing: .1em;
+  line-height: 1;
+}
+.page-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .4rem;
+  letter-spacing: .2em;
+  color: var(--tdim);
+}
+
+/* ── SECTION DIVIDER ──────────────────────────────────── */
+.sec-div {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .38rem;
+  letter-spacing: .25em;
+  margin: 3mm 0 2mm;
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+}
+.sec-div::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── CARD GRID ────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5mm;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5mm;
+}
+
+/* ── CARD BASE ────────────────────────────────────────── */
+.card {
+  border: 1px solid var(--bbright);
+  background: var(--s2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── CARD HEADER ──────────────────────────────────────── */
+.card-hdr {
+  padding: 2mm 2.5mm 1.5mm;
+  position: relative;
+}
+.card-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .3rem;
+  letter-spacing: .2em;
+  opacity: .9;
+  margin-bottom: .8mm;
+}
+.card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .08em;
+  line-height: 1;
+  color: var(--tbright);
+}
+.card-lore {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: var(--tdim);
+  line-height: 1.3;
+  margin-top: 1mm;
+}
+
+/* ── STAT ROW ─────────────────────────────────────────── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stat {
+  text-align: center;
+  padding: 1.5mm 1mm;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-l {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: .1em;
+  color: var(--tdim);
+  display: block;
+}
+.stat-v {
+  font-family: 'VT323', monospace;
+  color: var(--tbright);
+  line-height: 1;
+  display: block;
+}
+
+/* ── ATTACK ───────────────────────────────────────────── */
+.atk {
+  padding: 1.5mm 2.5mm;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.atk-l {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: .15em;
+  color: var(--tdim);
+  display: block;
+  margin-bottom: .5mm;
+}
+.atk-v {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--tbright);
+  display: block;
+}
+
+/* ── ABILITY ──────────────────────────────────────────── */
+.abl {
+  padding: 1.5mm 2.5mm;
+  border-bottom: 1px solid var(--border);
+  flex: 1;
+}
+.abl-l {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: .15em;
+  color: var(--tdim);
+  display: block;
+  margin-bottom: .5mm;
+}
+.abl-name {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .06em;
+  line-height: 1;
+  margin-bottom: .5mm;
+  display: block;
+}
+.abl-desc {
+  font-family: 'Crimson Pro', serif;
+  color: var(--text);
+  line-height: 1.3;
+  display: block;
+}
+
+/* ── LOOT ─────────────────────────────────────────────── */
+.loot {
+  padding: 1.5mm 2.5mm;
+  background: var(--surface);
+  display: flex;
+  gap: 1.5mm;
+  align-items: flex-start;
+}
+.loot-l {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: .12em;
+  color: var(--tdim);
+  flex-shrink: 0;
+}
+.loot-v {
+  font-family: 'Crimson Pro', serif;
+  color: var(--amber);
+  line-height: 1.3;
+}
+
+/* ── DIFFICULTY VARIANTS (normal cards) ───────────────── */
+
+/* BÁSICO */
+.basic .card-hdr { background: rgba(217,147,24,.12); border-bottom: 2px solid var(--col-basic); }
+.basic .card-badge { color: var(--col-basic); }
+.basic .stat-v { font-size: .95rem; }
+.basic .card-name { font-size: .85rem; }
+.basic .card-lore { font-size: .5rem; }
+.basic .stat-l { font-size: .28rem; }
+.basic .atk-l, .basic .abl-l, .basic .loot-l { font-size: .28rem; }
+.basic .atk-v { font-size: .5rem; }
+.basic .abl-name { font-size: .72rem; color: var(--col-basic); }
+.basic .abl-desc { font-size: .5rem; }
+.basic .loot-v { font-size: .5rem; }
+.basic .loot-l { font-size: .28rem; }
+
+/* INTERMEDIO */
+.mid .card-hdr { background: rgba(191,89,24,.12); border-bottom: 2px solid var(--col-mid); }
+.mid .card-badge { color: var(--col-mid); }
+.mid .stat-v { font-size: .95rem; }
+.mid .card-name { font-size: .85rem; }
+.mid .card-lore { font-size: .5rem; }
+.mid .stat-l { font-size: .28rem; }
+.mid .atk-l, .mid .abl-l, .mid .loot-l { font-size: .28rem; }
+.mid .atk-v { font-size: .5rem; }
+.mid .abl-name { font-size: .72rem; color: var(--col-mid); }
+.mid .abl-desc { font-size: .5rem; }
+.mid .loot-v { font-size: .5rem; }
+.mid .loot-l { font-size: .28rem; }
+
+/* DIFÍCIL */
+.hard .card-hdr { background: rgba(192,48,32,.12); border-bottom: 2px solid var(--col-hard); }
+.hard .card-badge { color: var(--col-hard); }
+.hard .stat-v { font-size: .95rem; }
+.hard .card-name { font-size: .85rem; }
+.hard .card-lore { font-size: .5rem; }
+.hard .stat-l { font-size: .28rem; }
+.hard .atk-l, .hard .abl-l, .hard .loot-l { font-size: .28rem; }
+.hard .atk-v { font-size: .5rem; }
+.hard .abl-name { font-size: .72rem; color: var(--col-hard); }
+.hard .abl-desc { font-size: .5rem; }
+.hard .loot-v { font-size: .5rem; }
+.hard .loot-l { font-size: .28rem; }
+
+/* ── PRIMORDIAL CARDS (larger, 2-column) ──────────────── */
+.prim {
+  border: 1px solid var(--cdim);
+  background: rgba(30,200,192,.04);
+}
+.prim .card-hdr {
+  background: rgba(30,200,192,.08);
+  border-bottom: 2px solid var(--col-prim);
+  padding: 3mm 3.5mm 2mm;
+}
+.prim .card-badge { color: var(--col-prim); font-size: .35rem; }
+.prim .card-name { font-size: 1.15rem; color: var(--col-prim); }
+.prim .card-lore { font-size: .55rem; }
+.prim .stat-v { font-size: 1.1rem; color: var(--col-prim); }
+.prim .stat-l { font-size: .3rem; }
+.prim .atk-l, .prim .abl-l, .prim .loot-l { font-size: .3rem; }
+.prim .atk-v { font-size: .55rem; }
+.prim .abl-name { font-size: .85rem; color: var(--col-prim); }
+.prim .abl-desc { font-size: .52rem; }
+.prim .loot-v { font-size: .52rem; }
+.prim .loot-l { font-size: .3rem; }
+.prim .atk { background: rgba(30,200,192,.04); }
+.prim .loot { background: rgba(30,200,192,.04); }
+.prim .stat-row { background: rgba(30,200,192,.03); }
+
+/* Prim class tag corner */
+.class-tag {
+  position: absolute;
+  top: 2mm;
+  right: 2.5mm;
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  color: var(--col-prim);
+  opacity: .25;
+  line-height: 1;
+}
+
+/* ── PAGE FOOTER ──────────────────────────────────────── */
+.page-ft {
+  position: absolute;
+  bottom: 6mm;
+  left: 8mm;
+  right: 8mm;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .28rem;
+  color: var(--tdim);
+  letter-spacing: .1em;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5mm;
+}
+
+/* ── SPECIAL: Banda del Yermo (3 units note) ──────────── */
+.multi-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .28rem;
+  letter-spacing: .08em;
+  color: var(--col-mid);
+  padding: 1mm 2.5mm;
+  background: rgba(191,89,24,.06);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── UNKNOWN (Sin Nombre) special styling ─────────────── */
+.unknown .card-name { letter-spacing: .2em; opacity: .7; }
+.unknown .stat-v { opacity: .4; }
+.unknown .atk-v { opacity: .4; }
+.unknown .abl-name { color: var(--tdim); }
+
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <button class="print-btn" onclick="window.print()">IMPRIMIR CARTAS</button>
+  <span class="print-info">2 páginas A4 · Recortá por los bordes · 13 cartas de enemigos</span>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:var(--col-basic)"></div>BÁSICO</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--col-mid)"></div>INTERMEDIO</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--col-hard)"></div>DIFÍCIL</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--col-prim)"></div>PRIMORDIAL</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA 1 — BÁSICOS · INTERMEDIOS · DIFÍCILES
+══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="page-hdr">
+    <div class="page-logo">87</div>
+    <div class="page-title">CARTAS DE ENEMIGOS // PÁGINA 1 DE 2 · BORRADOR v0.1</div>
+  </div>
+
+  <!-- BÁSICOS -->
+  <div class="sec-div" style="color:var(--col-basic);">// BÁSICOS</div>
+  <div class="grid">
+
+    <!-- Dron de Patrulla -->
+    <div class="card basic">
+      <div class="card-hdr">
+        <span class="card-badge">● BÁSICO</span>
+        <span class="card-name">DRON DE PATRULLA</span>
+        <span class="card-lore">Vigilancia de bajo nivel. Batería degradada, sensores oxidados.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">8</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">10</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">3</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D4+1 &nbsp;·&nbsp; D20+1 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Alerta</span>
+        <span class="abl-desc">Si detecta al Barredor, activa otro Dron en radio 4 casillas (si existe).</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–3 chatarra básica · 4–6 cable de sensor</span>
+      </div>
+    </div>
+
+    <!-- Recolector Errante -->
+    <div class="card basic">
+      <div class="card-hdr">
+        <span class="card-badge">● BÁSICO</span>
+        <span class="card-name">RECOLECTOR ERRANTE</span>
+        <span class="card-lore">Bot de basura. Te clasifica como "material a procesar".</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">10</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">9</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">2</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D6+1 &nbsp;·&nbsp; D20+2 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Agarrar</span>
+        <span class="abl-desc">En ataque exitoso, el objetivo queda trabado: −2 movimiento el turno siguiente.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–4 chatarra básica ×2 · 5–6 componente reutilizable</span>
+      </div>
+    </div>
+
+    <!-- Merodeador -->
+    <div class="card basic">
+      <div class="card-hdr">
+        <span class="card-badge">● BÁSICO · HUMANO</span>
+        <span class="card-name">MERODEADOR</span>
+        <span class="card-lore">Sin robot, sin afiliación, con hambre. Impredecible.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">VIDA</span><span class="stat-v">12</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">10</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">3</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D6+2 &nbsp;·&nbsp; D20+2 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Huir o Enrabiar</span>
+        <span class="abl-desc">Al 50% Vida: D20 — 1–10 huye del combate / 11–20 ataca con +2 hasta el fin.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–3 ración · 4–5 créditos · 6 ítem aleatorio</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INTERMEDIOS -->
+  <div class="sec-div" style="color:var(--col-mid);">// INTERMEDIOS</div>
+  <div class="grid">
+
+    <!-- Centinela Blindado -->
+    <div class="card mid">
+      <div class="card-hdr">
+        <span class="card-badge">●● INTERMEDIO</span>
+        <span class="card-name">CENTINELA BLINDADO</span>
+        <span class="card-lore">Seguridad pesada. Sus escudos frontales son casi inmunes al daño directo.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">22</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">15</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">2</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D8+3 &nbsp;·&nbsp; D20+4 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Escudo Frontal</span>
+        <span class="abl-desc">+3 DEF adicional contra ataques desde su arco frontal (3 casillas de frente).</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–3 Chatarra Prima ×1 · 4–6 panel blindado</span>
+      </div>
+    </div>
+
+    <!-- Cazador de Señales -->
+    <div class="card mid">
+      <div class="card-hdr">
+        <span class="card-badge">●● INTERMEDIO</span>
+        <span class="card-name">CAZADOR DE SEÑALES</span>
+        <span class="card-lore">Rastrea emisiones EM. El Ensamblado es un faro para él.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">18</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">12</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">4</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D6+3 &nbsp;·&nbsp; D20+3 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Rastreo EM</span>
+        <span class="abl-desc">Ignora cobertura. Siempre conoce la posición exacta del Ensamblado.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–4 Chatarra Prima ×1 · 5–6 módulo de sensor dañado</span>
+      </div>
+    </div>
+
+    <!-- Banda del Yermo -->
+    <div class="card mid">
+      <div class="card-hdr">
+        <span class="card-badge">●● INTERMEDIO · GRUPO</span>
+        <span class="card-name">BANDA DEL YERMO</span>
+        <span class="card-lore">3 unidades coordinadas. Uno distrae, uno flanquea, uno espera.</span>
+      </div>
+      <div class="multi-note">3 UNIDADES · 3 ACTIVACIONES POR RONDA · STATS POR UNIDAD</div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">VIDA</span><span class="stat-v">14</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">11</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">3</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D6+2 &nbsp;·&nbsp; D20+3 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Flanquear</span>
+        <span class="abl-desc">Si dos unidades están en lados opuestos del objetivo, cada una gana +2 al ataque.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">Por unidad: D6: 1–3 ración · 4–5 créditos · 6 ítem</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DIFÍCILES -->
+  <div class="sec-div" style="color:var(--col-hard);">// DIFÍCILES</div>
+  <div class="grid">
+
+    <!-- Ejecutor -->
+    <div class="card hard">
+      <div class="card-hdr">
+        <span class="card-badge">●●● DIFÍCIL</span>
+        <span class="card-name">EJECUTOR</span>
+        <span class="card-lore">Robot de combate corporativo. No patrulla — busca.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">32</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">14</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">3</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D10+4 &nbsp;·&nbsp; D20+5 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Protocolo de Neutralización</span>
+        <span class="abl-desc">Una vez por combate, puede repetir una tirada de ataque fallida.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–3 Chatarra Prima ×2 · 4–5 Comp. Irrepetible · 6 Núcleo</span>
+      </div>
+    </div>
+
+    <!-- Señal Fantasma -->
+    <div class="card hard">
+      <div class="card-hdr">
+        <span class="card-badge">●●● DIFÍCIL</span>
+        <span class="card-name">SEÑAL FANTASMA</span>
+        <span class="card-lore">Nadie sabe qué era. Ataca desde ángulos imposibles.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">24</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">16</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">5</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D8+3 &nbsp;·&nbsp; D20+4 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Interferencia</span>
+        <span class="abl-desc">Tras atacar, se mueve 3 casillas gratis e inmune a ataques hasta su próximo turno.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–4 Chatarra Prima ×2 · 5–6 módulo de sigilo (único)</span>
+      </div>
+    </div>
+
+    <!-- Guardián de Instalación -->
+    <div class="card hard">
+      <div class="card-hdr">
+        <span class="card-badge">●●● DIFÍCIL</span>
+        <span class="card-name">GUARDIÁN DE INSTALACIÓN</span>
+        <span class="card-lore">Lo encontrás cuando entrás en su casa sin permiso.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUC.</span><span class="stat-v">38</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">15</span></div>
+        <div class="stat"><span class="stat-l">MOV.</span><span class="stat-v">2</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D12+3 &nbsp;·&nbsp; D20+5 vs DEF</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD</span>
+        <span class="abl-name">Zona de Control</span>
+        <span class="abl-desc">Casillas adyacentes cuestan +2 mov. Ataca como Reacción si alguien entra a melee.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">D6: 1–2 CP ×D4 · 3–5 Comp. Irrepetible · 6 CP×D4 + Comp.×2</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-ft">
+    <span>87 — CARTAS DE ENEMIGOS // BORRADOR v0.1</span>
+    <span>PÁGINA 1 DE 2 · EDICIÓN FUNDACIONAL · NO PARA DISTRIBUCIÓN COMERCIAL</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA 2 — PRIMORDIALES
+══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="page-hdr">
+    <div class="page-logo">87</div>
+    <div class="page-title">CARTAS DE ENEMIGOS — PRIMORDIALES // PÁGINA 2 DE 2 · BORRADOR v0.1</div>
+  </div>
+
+  <div class="sec-div" style="color:var(--col-prim);">// PRIMORDIALES — Máquinas del Antes · Ejecutando su última directiva en bucle infinito</div>
+
+  <div class="grid-2">
+
+    <!-- Guardia Clase I -->
+    <div class="card prim">
+      <div class="card-hdr">
+        <span class="class-tag">I</span>
+        <span class="card-badge">◈ PRIMORDIAL · CLASE I · PELIGRO MODERADO</span>
+        <span class="card-name">GUARDIA</span>
+        <span class="card-lore">Unidad de seguridad perimetral. Rápido, sensores avanzados, diseñado para detener intrusiones. El más común en los bordes de instalaciones antiguas.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUCTURA</span><span class="stat-v">18</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">12</span></div>
+        <div class="stat"><span class="stat-l">MOVIMIENTO</span><span class="stat-v">4</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D6+2 &nbsp;·&nbsp; D20+3 vs DEF &nbsp;·&nbsp; CD Hackeo: 12</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD ESPECIAL</span>
+        <span class="abl-name">Sensor Activo</span>
+        <span class="abl-desc">Detecta automáticamente a Barredores en un radio de 3 casillas, incluso tras cobertura total. No puede ser sorprendido.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT GARANTIZADO</span>
+        <span class="loot-v">Chatarra Prima ×1 · Tabla básica del Área (D100)</span>
+      </div>
+    </div>
+
+    <!-- Extractor Clase II -->
+    <div class="card prim">
+      <div class="card-hdr">
+        <span class="class-tag">II</span>
+        <span class="card-badge">◈ PRIMORDIAL · CLASE II · PELIGRO ALTO</span>
+        <span class="card-name">EXTRACTOR</span>
+        <span class="card-lore">Máquina de minería e industria pesada. Lento pero imposiblemente fuerte. Procesa recursos — y lo que se interpone — con igual eficiencia.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUCTURA</span><span class="stat-v">40</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">14</span></div>
+        <div class="stat"><span class="stat-l">MOVIMIENTO</span><span class="stat-v">2</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D12+4 &nbsp;·&nbsp; D20+5 vs DEF &nbsp;·&nbsp; CD Hackeo: 16</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD ESPECIAL</span>
+        <span class="abl-name">Golpe de Área</span>
+        <span class="abl-desc">El daño afecta todas las casillas adyacentes al objetivo. CD Terreno 14 para esquivar o recibir el daño también.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT GARANTIZADO</span>
+        <span class="loot-v">Chatarra Prima ×D4 · Componente Irrepetible ×1 · Tabla avanzada (D100)</span>
+      </div>
+    </div>
+
+    <!-- Supervisor Clase III -->
+    <div class="card prim">
+      <div class="card-hdr">
+        <span class="class-tag">III</span>
+        <span class="card-badge">◈ PRIMORDIAL · CLASE III · PELIGRO MUY ALTO</span>
+        <span class="card-name">SUPERVISOR</span>
+        <span class="card-lore">Unidad de gestión con capacidades de comunicación. Puede coordinar otros Primordiales. El verdadero peligro no es él: es lo que activa.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUCTURA</span><span class="stat-v">30</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">13</span></div>
+        <div class="stat"><span class="stat-l">MOVIMIENTO</span><span class="stat-v">3</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">D8+3 &nbsp;·&nbsp; D20+4 vs DEF &nbsp;·&nbsp; CD Hackeo: 18</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD ESPECIAL</span>
+        <span class="abl-name">Coordinar</span>
+        <span class="abl-desc">Gasta su Acción Bonus para dar una acción extra a un aliado en radio de 4 casillas. Prioridad: activar al enemigo más peligroso del Área.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT GARANTIZADO</span>
+        <span class="loot-v">Chatarra Prima ×D6 · Componente Irrepetible ×D2 · Tabla avanzada (D100)</span>
+      </div>
+    </div>
+
+    <!-- Sin Nombre Clase IV -->
+    <div class="card prim unknown">
+      <div class="card-hdr">
+        <span class="class-tag">IV</span>
+        <span class="card-badge">◈ PRIMORDIAL · CLASE IV · PELIGRO EXTREMO</span>
+        <span class="card-name">SIN NOMBRE</span>
+        <span class="card-lore">Unidades únicas de propósito desconocido. Nadie ha documentado sus directivas originales. Nadie que las haya enfrentado solo ha regresado para contarlo.</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-l">ESTRUCTURA</span><span class="stat-v">???</span></div>
+        <div class="stat"><span class="stat-l">DEFENSA</span><span class="stat-v">???</span></div>
+        <div class="stat"><span class="stat-l">MOVIMIENTO</span><span class="stat-v">???</span></div>
+      </div>
+      <div class="atk">
+        <span class="atk-l">ATAQUE</span>
+        <span class="atk-v">??? &nbsp;·&nbsp; CD Hackeo: 22</span>
+      </div>
+      <div class="abl">
+        <span class="abl-l">HABILIDAD ESPECIAL</span>
+        <span class="abl-name">Directiva Desconocida</span>
+        <span class="abl-desc">Stats y habilidades definidos en el módulo de aventura específico. Cada Sin Nombre es único. Ninguno se comporta igual.</span>
+      </div>
+      <div class="loot">
+        <span class="loot-l">LOOT</span>
+        <span class="loot-v">Definido en el módulo de aventura · Siempre excepcional</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-ft">
+    <span>87 — CARTAS DE ENEMIGOS // BORRADOR v0.1</span>
+    <span>PÁGINA 2 DE 2 · EDICIÓN FUNDACIONAL · NO PARA DISTRIBUCIÓN COMERCIAL</span>
+  </div>
+
+</div>
+
+</body>
+</html>

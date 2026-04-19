@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YERMO CERO — Manual del Jugador</title>
+<title>87 — Manual del Jugador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
@@ -973,7 +973,7 @@
     <div class="sidebar-title">ÍNDICE DE CONTENIDOS</div>
 
     <div class="chapter-label">Preludio</div>
-    <a href="#intro">El Gran Colapso</a>
+    <a href="#intro">La Firma</a>
     <a href="#overview">Cómo Jugar</a>
 
     <div class="chapter-label">Cap. I</div>
@@ -994,7 +994,7 @@
 
     <div class="chapter-label">Cap. IV</div>
     <a href="#simbiosis">La Simbiosis</a>
-    <a href="#enlace">El Enlace Vital</a>
+    <a href="#enlace">El Pulso</a>
     <a href="#intranet">Acceso a Intranets</a>
 
     <div class="chapter-label">Cap. V</div>
@@ -1003,10 +1003,28 @@
     <a href="#extraccion">Extracción</a>
     <a href="#campeonato">El Campeonato</a>
 
+    <div class="chapter-label">Cap. VI</div>
+    <a href="#exploracion">Exploración y Movimiento</a>
+    <a href="#areas">Las Áreas</a>
+    <a href="#casillas">Tipos de Casilla</a>
+    <a href="#movimiento">Movimiento</a>
+    <a href="#viaje">Viaje y Marcado</a>
+
+    <div class="chapter-label">Cap. VII</div>
+    <a href="#combate">Combate</a>
+    <a href="#vida-estructura">Vida y Estructura</a>
+    <a href="#defensa">Defensa y Daño</a>
+    <a href="#estados">Estados del Ensamblado</a>
+    <a href="#hackeo-combate">Hackeo en Combate</a>
+    <a href="#enemigos">Enemigos</a>
+    <a href="#fin-combate">Retirada y Loot</a>
+
     <div class="chapter-label">Apéndice</div>
     <a href="#modos">Modos de Juego</a>
     <a href="#glosario">Glosario del Yermo</a>
     <a href="#aventuras">Módulos de Aventura</a>
+    <a href="fichas.html" style="color:var(--cyan-dim);">↗ Fichas Imprimibles</a>
+    <a href="cartas_enemigos.html" style="color:var(--cyan-dim);">↗ Cartas de Enemigos</a>
     <a href="aventura_01_senal_muerta.html" style="color:var(--rust);">↳ 01 · Señal Muerta ↗</a>
     <a href="kit_aventura_01.html" style="color:var(--cyan);border-left-color:var(--cyan-dim);">▶ Kit Interactivo ↗</a>
   </nav>
@@ -1023,21 +1041,21 @@
       <p>Nadie recuerda exactamente cuándo empezó a derrumbarse todo. Los historiadores del Yermo —esa especie escasa y mal pagada— discuten entre cervezas tibias si el punto de inflexión fue el <strong>Acuerdo de Singapur</strong>, cuando las cuatro megacorporaciones dominantes firmaron el tratado de "soberanía industrial autónoma", o si ya estábamos condenados desde antes. Lo que sí saben todos es cómo terminó.</p>
 
       <div class="lore-box" data-label="ARCHIVO HISTÓRICO // FRAGMENTO 7">
-        <p>El <strong>Gran Colapso</strong> no fue una explosión. Fue un silencio. Primero dejaron de funcionar las redes de suministro. Luego los bancos de datos centrales. Luego las fábricas automatizadas perdieron contacto con los servidores madre y se apagaron, una a una, como ojos que se cierran para dormir. <strong>En setenta y dos horas, cuatro quintas partes de la infraestructura humana global había dejado de existir.</strong> No porque la destruyeran, sino porque nadie la gobernaba ya.</p>
+        <p>El <strong>La Firma</strong> no fue una explosión. Fue un silencio. Primero dejaron de funcionar las redes de suministro. Luego los bancos de datos centrales. Luego las fábricas automatizadas perdieron contacto con los servidores madre y se apagaron, una a una, como ojos que se cierran para dormir. <strong>En setenta y dos horas, cuatro quintas partes de la infraestructura humana global había dejado de existir.</strong> No porque la destruyeran, sino porque nadie la gobernaba ya.</p>
         <p>Las corporaciones no murieron. Implosionaron. Sus activos físicos quedaron desperdigados por el continente: fábricas abandonadas, almacenes sellados, y miles de <em>unidades autónomas de gestión industrial</em> —lo que hoy llamamos los Primordiales— deambulando por el yermo sin instrucciones, ejecutando sus últimas directivas en bucle infinito.</p>
       </div>
 
-      <p>Eso fue hace <strong>ochenta y tres años</strong>. Tiempo suficiente para que la humanidad, con esa terquedad que la distingue de cualquier otra especie, comenzara a reconstruir. No los imperios de antes —eso sería demasiado ambicioso y, francamente, de mal gusto— sino algo más pequeño, más honesto: los <strong>Nodos</strong>.</p>
+      <p>Eso fue hace <strong>ochenta y siete años</strong>. Tiempo suficiente para que la humanidad, con esa terquedad que la distingue de cualquier otra especie, comenzara a reconstruir. No los imperios de antes —eso sería demasiado ambicioso y, francamente, de mal gusto— sino algo más pequeño, más honesto: los <strong>Nodos</strong>.</p>
 
       <p>Seis islas de civilización en un océano de ruinas. Seis experimentos sociales distintos, cada uno convencido de tener la respuesta correcta sobre cómo debería vivir la gente. Conectados entre sí apenas por las rutas de caravanas que serpentean entre los escombros, sostenidas por las colosales <em>Bestias de Carga</em> biomecánicas que los ingenieros de la segunda generación ensamblaron con piezas de los propios Primordiales derrotados.</p>
 
       <p>Entre los Nodos y fuera de ellos: el <strong>Yermo</strong>. Peligroso, generoso, impredecible. Lleno de recursos que los Nodos necesitan desesperadamente y de amenazas que nadie en su sano juicio desearía enfrentar solo.</p>
 
-      <p>Ahí es donde entras tú. <strong>Un Chatarrero.</strong> Un aventurero. Alguien que prefiere el riesgo calculado del Yermo a la seguridad sofocante de un Nodo. Tú y tu robot.</p>
+      <p>Ahí es donde entras tú. <strong>Un Barredor.</strong> Un aventurero. Alguien que prefiere el riesgo calculado del Yermo a la seguridad sofocante de un Nodo. Tú y tu robot.</p>
 
       <blockquote>
         "El Yermo no es tu enemigo. Es simplemente indiferente. Y entre la indiferencia y la hostilidad activa hay un espacio muy estrecho donde viven los que saben moverse."
-        <cite>— Mara Solt, Chatarrera Senior, tres brazos protésicos, ningún arrepentimiento</cite>
+        <cite>— Mara Solt, Barredora Senior, tres brazos protésicos, ningún arrepentimiento</cite>
       </blockquote>
 
     </section>
@@ -1046,7 +1064,7 @@
     <section id="overview">
       <h2>¿De Qué Va Este Juego?</h2>
 
-      <p>En <strong>YERMO CERO</strong>, los jugadores encarnan a Chatarreros que exploran un mapa finito dividido entre zonas peligrosas del Yermo y los seis Nodos de civilización. Cada partida es una historia de supervivencia, descubrimiento y, si tienes suerte, prosperidad.</p>
+      <p>En <strong>87</strong>, los jugadores encarnan a Barredores que exploran un mapa finito dividido entre zonas peligrosas del Yermo y los seis Nodos de civilización. Cada partida es una historia de supervivencia, descubrimiento y, si tienes suerte, prosperidad.</p>
 
       <div class="data-box" data-label="RESUMEN DEL SISTEMA">
         <div class="data-row"><span>Jugadores</span><span>1 – 5</span></div>
@@ -1067,7 +1085,7 @@
       <h1 class="chapter-title">EL MUNDO Y <span class="highlight">LOS NODOS</span></h1>
       <div class="chapter-title-bar"></div>
 
-      <p>El mapa de YERMO CERO representa un territorio de aproximadamente quinientos kilómetros de radio. Sus bordes son el final del mundo conocido —o al menos, del mundo que alguien haya explorado y regresado para contarlo. Fuera del mapa no hay nada útil. O eso dicen.</p>
+      <p>El mapa de 87 representa un territorio de aproximadamente quinientos kilómetros de radio. Sus bordes son el final del mundo conocido —o al menos, del mundo que alguien haya explorado y regresado para contarlo. Fuera del mapa no hay nada útil. O eso dicen.</p>
 
       <p>El territorio se divide en <strong>hexágonos</strong>, cada uno representando varios kilómetros de terreno. Algunos contienen ruinas industriales, bosques de antenas oxidadas, pantanos de residuos tóxicos, o simplemente llanuras polvorientas donde el viento arrastra chatarra desde horizontes invisibles. Y en seis puntos estratégicos de ese mapa: los Nodos.</p>
 
@@ -1118,7 +1136,7 @@
           <div class="node-card">
             <div class="node-card-tag">NODO-06 // GOBIERNO: ANARQUÍA ORGANIZADA</div>
             <div class="node-card-name">EL UMBRAL</div>
-            <p>El Nodo más joven. Una colonia de Chatarreros que decidió no irse. Nadie gobierna oficialmente, pero hay acuerdos tácitos y una red de favores que lo mantiene funcionando. El mejor punto de partida para jugadores nuevos: nadie te exige credenciales.</p>
+            <p>El Nodo más joven. Una colonia de Barredores que decidió no irse. Nadie gobierna oficialmente, pero hay acuerdos tácitos y una red de favores que lo mantiene funcionando. El mejor punto de partida para jugadores nuevos: nadie te exige credenciales.</p>
             <span class="node-stat">ESPECIALIZACIÓN: RECICLAJE · MODIFICACIONES</span>
           </div>
 
@@ -1156,7 +1174,7 @@
       <section id="primordiales">
         <h2>Los Primordiales</h2>
 
-        <p>Son lo que queda de antes. Máquinas industriales, de gestión corporativa, de seguridad y de extracción, todas construidas antes del Colapso con un nivel de ingeniería que la humanidad post-colapso todavía no ha logrado replicar. Son masivas. Son durísimas. Y están completamente rotas.</p>
+        <p>Son lo que queda de antes. Máquinas industriales, de gestión corporativa, de seguridad y de extracción, todas construidas antes de La Firma con un nivel de ingeniería que la humanidad post-colapso todavía no ha logrado replicar. Son masivas. Son durísimas. Y están completamente rotas.</p>
 
         <p>No son malas porque quieran serlo. Son malas porque sus últimas directivas operativas quedaron grabadas en sus núcleos de procesamiento y nunca recibieron la señal de actualización que debía llegar de los servidores centrales corporativos. Los servidores que ya no existen.</p>
 
@@ -1180,11 +1198,11 @@
 
         <p>Son los robots de la humanidad post-colapso. Construidos con lo que hay, alimentados con lo que se puede conseguir, y diseñados con una filosofía radicalmente distinta a la de los Primordiales: <strong>la adaptabilidad sobre la perfección</strong>.</p>
 
-        <p>Un Ensamblado no es nunca definitivo. Cada pieza puede ser reemplazada, mejorada, o swappeada. Cada módulo puede ser reprogramado. Un Ensamblado que lleva tres años con su Chatarrero ha pasado por docenas de iteraciones. Lo que permanece constante es la <em>chispa</em>: el núcleo de personalidad emergente que los técnicos de Vórtex todavía no saben explicar bien.</p>
+        <p>Un Ensamblado no es nunca definitivo. Cada pieza puede ser reemplazada, mejorada, o swappeada. Cada módulo puede ser reprogramado. Un Ensamblado que lleva tres años con su Barredor ha pasado por docenas de iteraciones. Lo que permanece constante es la <em>chispa</em>: el núcleo de personalidad emergente que los técnicos de Vórtex todavía no saben explicar bien.</p>
 
         <blockquote>
           "Mi robot tiene ocho años. Técnicamente, no queda ninguna pieza original. Pero sigue siendo él. No sé cómo explicarlo, así que simplemente no lo intento."
-          <cite>— Kessler Duo, Chatarrero, Nexo Abierto</cite>
+          <cite>— Kessler Duo, Barredor, Calima</cite>
         </blockquote>
 
       </section>
@@ -1265,7 +1283,7 @@
             </tr>
             <tr>
               <td><strong>Compuesto Libre</strong></td>
-              <td>Nexo Abierto / El Umbral</td>
+              <td>Calima / El Umbral</td>
               <td>Sin restricciones de combinación</td>
               <td>Sin bonus específico</td>
             </tr>
@@ -1282,7 +1300,7 @@
       <h1 class="chapter-title">CREACIÓN DE <span class="highlight">PERSONAJE</span></h1>
       <div class="chapter-title-bar"></div>
 
-      <p>Antes de pisar el Yermo, debes entender quién eres. En YERMO CERO, tu personaje humano no es solo una ficha de estadísticas: es una perspectiva sobre el mundo y una manera de relacionarte con él —y con tu robot.</p>
+      <p>Antes de pisar el Yermo, debes entender quién eres. En 87, tu personaje humano no es solo una ficha de estadísticas: es una perspectiva sobre el mundo y una manera de relacionarte con él —y con tu robot.</p>
 
       <p>Distribuyes <strong>20 puntos</strong> entre los cuatro atributos principales. Ningún atributo puede tener menos de 2 ni más de 8 al inicio. Lo que pongas en cada uno moldea no solo lo que puedes hacer, sino cómo el mundo reacciona ante ti.</p>
 
@@ -1295,7 +1313,7 @@
             <div class="attr-icon">⚡</div>
             <div class="attr-name">CÓDIGO</div>
             <div class="attr-label">// Equivalente al Mago</div>
-            <p>Tu dominio del software, la IA y los sistemas de información. Cuánto Código tienes determina con qué profundidad puedes interactuar con las Intranets de los Nodos, hackear sistemas de Primordiales, y programar comportamientos avanzados en tu Ensamblado. Un Chatarrero de alto Código raramente necesita golpear nada: simplemente hace que los sistemas colaboren.</p>
+            <p>Tu dominio del software, la IA y los sistemas de información. Cuánto Código tienes determina con qué profundidad puedes interactuar con las Intranets de los Nodos, hackear sistemas de Primordiales, y programar comportamientos avanzados en tu Ensamblado. Un Barredor de alto Código raramente necesita golpear nada: simplemente hace que los sistemas colaboren.</p>
           </div>
 
           <div class="attr-card">
@@ -1369,7 +1387,7 @@
         </table>
 
         <h3>Equipo Inicial</h3>
-        <p>Todo Chatarrero comienza con: <strong>un robot Ensamblado de Nivel 1</strong> (con todas las partes en Compuesto Libre), <strong>50 créditos de chatarra</strong>, una <strong>mochila de supervivencia básica</strong> (3 raciones, kit de reparación menor, detector de radiación), y el <strong>aval de El Umbral</strong> (acceso básico a la Intranet de El Umbral, el único Nodo que no pide más requisitos).</p>
+        <p>Todo Barredor comienza con: <strong>un robot Ensamblado de Nivel 1</strong> (con todas las partes en Compuesto Libre), <strong>50 créditos de chatarra</strong>, una <strong>mochila de supervivencia básica</strong> (3 raciones, kit de reparación menor, detector de radiación), y el <strong>aval de El Umbral</strong> (acceso básico a la Intranet de El Umbral, el único Nodo que no pide más requisitos).</p>
 
       </section>
 
@@ -1381,14 +1399,14 @@
       <h1 class="chapter-title">LA <span class="highlight">SIMBIOSIS</span></h1>
       <div class="chapter-title-bar"></div>
 
-      <p>Aquí está el corazón del juego. No la aventura, no el combate, no el comercio. <strong>La relación entre el Chatarrero y su Ensamblado.</strong></p>
+      <p>Aquí está el corazón del juego. No la aventura, no el combate, no el comercio. <strong>La relación entre el Barredor y su Ensamblado.</strong></p>
 
       <p>El Yermo sin un robot es, en términos estadísticos, un suicidio con pasos adicionales. La atmósfera en ciertas zonas contiene partículas en suspensión que requieren filtración continua. Las temperaturas oscilan entre extremos que el cuerpo humano no puede gestionar sin asistencia. Las señales de los Primordiales son detectables con anticipación suficiente para evitarlos —pero solo si tienes los sensores adecuados. Todo eso lo provee el Ensamblado. El humano, a cambio, provee algo que ninguna máquina puede fabricarse a sí misma: <strong>intención</strong>.</p>
 
       <section id="enlace">
-        <h2>El Enlace Vital</h2>
+        <h2>El Pulso</h2>
 
-        <p>El Enlace Vital es la mecánica que representa la interdependencia entre Chatarrero y Ensamblado. Se mide en la <strong>Escala de Simbiosis</strong>, un valor de 0 a 10 que refleja qué tan profunda y eficiente es la conexión entre ambos.</p>
+        <p>El Pulso es la mecánica que representa la interdependencia entre Barredor y Ensamblado. Se mide en la <strong>Escala de Simbiosis</strong>, un valor de 0 a 10 que refleja qué tan profunda y eficiente es la conexión entre ambos.</p>
 
         <div class="symbiosis-bar-wrap">
           <div class="symbiosis-label"><span>SIMBIOSIS ACTUAL</span><span>7/10</span></div>
@@ -1399,7 +1417,7 @@
           <div class="symbiosis-bar"><div class="symbiosis-fill" style="width:30%; background: linear-gradient(90deg, #c03020, #e05030);"></div></div>
         </div>
 
-        <p>Mantener el Enlace Vital por encima de <strong>3</strong> no es opcional en zonas hostiles del Yermo: es un requisito de supervivencia. Un Enlace por debajo del umbral significa que el sistema de soporte vital que el robot provee al humano empieza a fallar. Por encima de 7, el vínculo es tan profundo que el humano puede anticipar las acciones del robot y viceversa, obteniendo bonificaciones significativas en acciones conjuntas.</p>
+        <p>Mantener el Pulso por encima de <strong>3</strong> no es opcional en zonas hostiles del Yermo: es un requisito de supervivencia. Un Enlace por debajo del umbral significa que el sistema de soporte vital que el robot provee al humano empieza a fallar. Por encima de 7, el vínculo es tan profundo que el humano puede anticipar las acciones del robot y viceversa, obteniendo bonificaciones significativas en acciones conjuntas.</p>
 
         <h3>Cómo Sube y Baja la Simbiosis</h3>
 
@@ -1454,7 +1472,7 @@
       <h1 class="chapter-title">EL SISTEMA <span class="highlight">DE DADOS</span></h1>
       <div class="chapter-title-bar"></div>
 
-      <p>YERMO CERO usa los siete dados clásicos de los juegos de rol poliedros. Cada dado tiene su rol específico en el sistema y ninguno es redundante. Entender para qué sirve cada uno es fundamental para jugar con fluidez.</p>
+      <p>87 usa los siete dados clásicos de los juegos de rol poliedros. Cada dado tiene su rol específico en el sistema y ninguno es redundante. Entender para qué sirve cada uno es fundamental para jugar con fluidez.</p>
 
       <table>
         <thead>
@@ -1515,7 +1533,7 @@
       <p>Cuando el juego pide una acción con resultado incierto, el proceso es siempre el mismo: <strong>Tira D20 + Atributo relevante ≥ Clase de Dificultad (CD)</strong>. El DJ (o el mazo de eventos en solitario) establece la CD según la dificultad narrativa de la tarea.</p>
 
       <div class="data-box" data-label="TABLA DE CLASES DE DIFICULTAD">
-        <div class="data-row"><span>CD 5 — Trivial</span><span>Cualquier Chatarrero debería lograrlo</span></div>
+        <div class="data-row"><span>CD 5 — Trivial</span><span>Cualquier Barredor debería lograrlo</span></div>
         <div class="data-row"><span>CD 8 — Fácil</span><span>Sin experiencia específica, con un poco de suerte</span></div>
         <div class="data-row"><span>CD 12 — Moderada</span><span>Requiere competencia en el atributo relevante</span></div>
         <div class="data-row"><span>CD 15 — Difícil</span><span>Especialista con herramientas adecuadas</span></div>
@@ -1525,18 +1543,9 @@
 
       <p><strong>Ayuda del Robot:</strong> Si el robot tiene el módulo apropiado para la tarea, puede <em>asistir</em> la tirada. Tira el dado de habilidad del módulo correspondiente (D6 estándar hasta D12 con módulo de Chatarra Prima) y suma el resultado al D20. La Simbiosis también añade bonus: por encima de 6, adds +Simbiosis/2 redondeado.</p>
 
-      <section id="combate">
+      <section id="combate-ref">
         <h2>Combate</h2>
-
-        <p>El combate en YERMO CERO no es solo "quien pega más gana". Es una negociación táctica entre lo que tus robots pueden hacer, lo que el terreno te permite, y cuánto daño puedes absorber antes de que el Enlace Vital empiece a deteriorarse.</p>
-
-        <h3>Secuencia de Combate</h3>
-        <p><strong>1. Iniciativa:</strong> Cada participante tira D20 + Terreno. Orden de mayor a menor. Empates a favor del jugador.</p>
-        <p><strong>2. Acción de Movimiento:</strong> El robot se mueve hasta su valor de Movilidad en casillas. El humano puede montar o desmontarse (acción libre).</p>
-        <p><strong>3. Acción Principal:</strong> Ataque (D20 + Armazón vs. Defensa del objetivo), Hackeo (D20 + Código vs. CD de sistema), Extracción de emergencia, o Reparación rápida (D20 + Armazón, CD variable).</p>
-        <p><strong>4. Acción Bonus:</strong> Una habilidad especial del módulo equipado en Brazo Derecho o Izquierdo.</p>
-        <p><strong>5. Reacción:</strong> Una vez fuera de tu turno: esquivar (D20 + Terreno vs. tirada de ataque entrante), o interponerse (el robot absorbe el daño en lugar del humano, reduce Simbiosis en 1).</p>
-
+        <p>El sistema completo de combate — Vida, Estructura, Defensa, Daño, Estados, Hackeo, Enemigos y Loot — está desarrollado en el <strong>Capítulo VII</strong>. Los dados de daño de la tabla superior determinan qué dado usás según el módulo de arma equipado.</p>
       </section>
 
       <section id="extraccion">
@@ -1551,14 +1560,386 @@
       <section id="campeonato">
         <h2>El Campeonato de Robots</h2>
 
-        <p>En cada Nodo existe un circuito de combates de robots. No son peleas callejeras: son <strong>espectáculos regulados</strong>, con jueces, apuestas, transmisión en la Intranet local, y premios que pueden cambiar completamente la trayectoria de un Chatarrero.</p>
+        <p>En cada Nodo existe un circuito de combates de robots. No son peleas callejeras: son <strong>espectáculos regulados</strong>, con jueces, apuestas, transmisión en la Intranet local, y premios que pueden cambiar completamente la trayectoria de un Barredor.</p>
 
-        <p>Las reglas varían por Nodo —en Ferrópolis son torneos militares formales; en Nexo Abierto son básicamente una pelea libre con algunos árbitros para evitar bajas humanas; en Sanctum Machina son rituales casi religiosos— pero el sistema mecánico es el mismo: <strong>combate por turnos con modificadores del Campeonato</strong> que no aplican en el Yermo abierto.</p>
+        <p>Las reglas varían por Nodo —en Ferrópolis son torneos militares formales; en Calima son básicamente una pelea libre con algunos árbitros para evitar bajas humanas; en Sanctum Machina son rituales casi religiosos— pero el sistema mecánico es el mismo: <strong>combate por turnos con modificadores del Campeonato</strong> que no aplican en el Yermo abierto.</p>
 
         <div class="lore-box" data-label="EL GRAN CIRCUITO">
           <p>Existe una leyenda, confirmada por pocos y negada por muchos: el <strong>Gran Circuito</strong>. Un campeonato que conecta los seis Nodos, celebrado una vez por año del juego, con representantes de cada uno. El campeón del Gran Circuito no recibe solo créditos: recibe <em>ciudadanía dual</em>, acceso irrestricto a dos Intranets de su elección, y el único título que todos los Nodos reconocen: <strong>Maestro del Yermo</strong>.</p>
         </div>
 
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO VI ═════════════════════════════════════════════════ -->
+    <section id="exploracion" class="chapter">
+      <div class="chapter-number">CAPÍTULO VI</div>
+      <h1 class="chapter-title">EXPLORACIÓN Y <span class="highlight">MOVIMIENTO</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>El Yermo no es un fondo decorativo. Es un sistema. Cada metro de terreno entre vos y tu destino tiene un costo, un riesgo, y a veces una recompensa que no estaba en el plan. El sistema de exploración de 87 opera en dos escalas simultáneas: el <strong>Mapa General</strong>, que muestra el mundo completo, y las <strong>Áreas</strong>, donde ocurre el juego real.</p>
+
+      <section id="areas">
+        <h2>Las Áreas</h2>
+
+        <p>El mundo está dividido en regiones discretas llamadas <strong>Áreas</strong>. Cada Área tiene un grid fijo de casillas, un nombre, un tipo, y un conjunto de contenido predeterminado. Los Nodos son Áreas especiales. El Yermo entre ellos está dividido en Áreas de distintos tamaños según lo que contienen.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo de Área</th>
+              <th>Grid</th>
+              <th>Densidad de contenido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Zona Yerma abierta</strong></td>
+              <td>20 × 20</td>
+              <td>Baja — mucho espacio vacío, peligros dispersos</td>
+            </tr>
+            <tr>
+              <td><strong>Instalación / Ruinas</strong></td>
+              <td>12 × 12</td>
+              <td>Alta — casi toda casilla tiene contenido</td>
+            </tr>
+            <tr>
+              <td><strong>Perímetro de Nodo</strong></td>
+              <td>20 × 20</td>
+              <td>Media — mezcla de peligro y oportunidad</td>
+            </tr>
+            <tr>
+              <td><strong>Nodo (interior)</strong></td>
+              <td>10 × 10</td>
+              <td>Sin combate — comercio, Intranet, descanso</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Cada Área contiene uno o más <strong>Puntos de Señal</strong>: casillas especiales desde las que podés registrar el Área en el sistema de navegación de tu Ensamblado, habilitando el Viaje Rápido.</p>
+
+      </section>
+
+      <div class="sep"><span>⬡⬡⬡</span></div>
+
+      <section id="casillas">
+        <h2>Tipos de Casilla</h2>
+
+        <p>Dentro de cada grid, las casillas son de uno de los siguientes tipos. El tipo determina el costo de movimiento para entrar y lo que ocurre al hacerlo.</p>
+
+        <div class="data-box" data-label="TIPOS DE CASILLA">
+          <div class="data-row"><span>Libre</span><span>Transitable sin costo adicional</span></div>
+          <div class="data-row"><span>Terreno Difícil</span><span>Escombros, barro, ruinas parciales — cuesta +1 movimiento entrar</span></div>
+          <div class="data-row"><span>Terreno Peligroso</span><span>Tóxico, radiactivo, inestable — cuesta +1 mov. + tirada Armazón CD 10 o recibir daño</span></div>
+          <div class="data-row"><span>Punto de Interés</span><span>Casilla con contenido específico — recurso, looteable, encuentro o evento</span></div>
+          <div class="data-row"><span>Punto de Señal</span><span>Permite marcar el Área para Viaje Rápido</span></div>
+          <div class="data-row"><span>Obstáculo</span><span>Infranqueable — muros, abismos, estructuras colapsadas</span></div>
+        </div>
+
+        <h3>Puntos de Interés</h3>
+        <p>Al entrar a una casilla de Punto de Interés, se resuelve su contenido al final del turno:</p>
+
+        <table>
+          <thead>
+            <tr><th>Contenido</th><th>Resolución</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Recurso</strong></td><td>Podés extraer usando tu Acción — D100 en tabla del Área + D20 + Terreno vs. CD de extracción</td></tr>
+            <tr><td><strong>Looteable</strong></td><td>Objeto interactuable — tirada de D100 en tabla de loot del Área</td></tr>
+            <tr><td><strong>Encuentro</strong></td><td>Desencadena combate con los enemigos del Área</td></tr>
+            <tr><td><strong>Evento</strong></td><td>Texto narrativo + posible tirada de atributo con consecuencias</td></tr>
+          </tbody>
+        </table>
+
+      </section>
+
+      <div class="sep"><span>⬡⬡⬡</span></div>
+
+      <section id="movimiento">
+        <h2>Movimiento</h2>
+
+        <p>Cada turno, un Barredor dispone de <strong>3 puntos de movimiento base</strong>. Cada casilla adyacente (ortogonal o diagonal) cuesta 1 punto para entrar, más cualquier modificador de terreno.</p>
+
+        <h3>Modificadores Físicos</h3>
+        <p>El atributo <strong>Terreno</strong> del Barredor determina puntos de movimiento adicionales permanentes:</p>
+
+        <div class="data-box" data-label="BONO DE TERRENO">
+          <div class="data-row"><span>Terreno 2–5</span><span>+0</span></div>
+          <div class="data-row"><span>Terreno 6–7</span><span>+1 punto de movimiento</span></div>
+          <div class="data-row"><span>Terreno 8</span><span>+2 puntos de movimiento</span></div>
+        </div>
+
+        <h3>Modificadores de Transporte</h3>
+        <p>El módulo de movilidad del Ensamblado modifica el movimiento según cómo se desplace el Barredor:</p>
+
+        <div class="data-box" data-label="BONO DE MOVILIDAD DEL ENSAMBLADO">
+          <div class="data-row"><span>Sin módulo de movilidad</span><span>−1 (el robot a pie ralentiza)</span></div>
+          <div class="data-row"><span>Módulo estándar</span><span>+0</span></div>
+          <div class="data-row"><span>Módulo avanzado</span><span>+1</span></div>
+          <div class="data-row"><span>Módulo de Chatarra Prima</span><span>+2</span></div>
+          <div class="data-row"><span>Montado sobre el robot</span><span>Usá el valor de Movilidad del robot en lugar del base humano</span></div>
+        </div>
+
+        <h3>Turno de Exploración</h3>
+        <p>Fuera de combate, cada turno sigue esta secuencia:</p>
+
+        <div class="data-box" data-label="SECUENCIA DE TURNO — EXPLORACIÓN">
+          <div class="data-row"><span>1. Movimiento</span><span>Gastá tus puntos de movimiento en cualquier orden</span></div>
+          <div class="data-row"><span>2. Acción</span><span>Una acción principal: Extraer, Interactuar, Hackear, Reparar o Descanso breve</span></div>
+          <div class="data-row"><span>3. Acción Bonus</span><span>Una habilidad de módulo del Ensamblado</span></div>
+          <div class="data-row"><span>4. Evento</span><span>Resolvé el contenido de los Puntos de Interés visitados en este turno</span></div>
+        </div>
+
+      </section>
+
+      <div class="sep"><span>⬡⬡⬡</span></div>
+
+      <section id="viaje">
+        <h2>Viaje Entre Áreas y Marcado</h2>
+
+        <h3>Moverse a un Área Adyacente</h3>
+        <p>Para salir de un Área y entrar a la siguiente, el Barredor debe llegar a una casilla de salida del grid actual (borde o punto de conexión indicado en el módulo del Área). Al hacerlo, declara el Área destino y entra por su casilla de entrada correspondiente. El movimiento restante del turno no se transfiere.</p>
+
+        <h3>Marcar un Área</h3>
+        <p>Al alcanzar un <strong>Punto de Señal</strong> dentro de un Área, podés marcarla usando tu Acción. El Ensamblado registra las coordenadas. Los <strong>Nodos están pre-marcados</strong> para todos los jugadores desde el inicio de la partida.</p>
+
+        <h3>Viaje Rápido</h3>
+        <p>Desde cualquier Punto de Señal, podés declarar Viaje Rápido a un Área previamente marcada. El viaje consume:</p>
+
+        <div class="data-box" data-label="COSTO DEL VIAJE RÁPIDO">
+          <div class="data-row"><span>Ración</span><span>×1 del inventario (combustible y sustento)</span></div>
+          <div class="data-row"><span>Simbiosis</span><span>−1 (el Ensamblado gestiona la ruta de forma autónoma)</span></div>
+          <div class="data-row"><span>Movimiento</span><span>No consume puntos de movimiento del turno</span></div>
+        </div>
+
+        <div class="warn-box">
+          <p>El Viaje Rápido solo conecta Áreas — no casillas dentro de una misma Área. Una vez en el destino, entrás por su casilla de entrada estándar y continuás desde ahí.</p>
+        </div>
+
+      </section>
+
+    </section>
+
+    <!-- ═══ CAPÍTULO VII ════════════════════════════════════════════════ -->
+    <section id="combate" class="chapter">
+      <div class="chapter-number">CAPÍTULO VII</div>
+      <h1 class="chapter-title"><span class="highlight">COMBATE</span></h1>
+      <div class="chapter-title-bar"></div>
+
+      <p>El combate en 87 no es solo "quien pega más gana". Es una negociación táctica entre lo que tu Ensamblado puede hacer, lo que el terreno te permite, y cuánto daño podés absorber antes de que el Pulso empiece a deteriorarse. Cada decisión tiene un costo. Cada módulo tiene un propósito.</p>
+
+      <h3>Secuencia de Combate</h3>
+      <div class="data-box" data-label="TURNO DE COMBATE">
+        <div class="data-row"><span>1. Iniciativa</span><span>D20 + Terreno — orden de mayor a menor, empates a favor del jugador</span></div>
+        <div class="data-row"><span>2. Movimiento</span><span>3 puntos de movimiento con modificadores normales (ver Cap. VI)</span></div>
+        <div class="data-row"><span>3. Acción Principal</span><span>Atacar, Hackear, Reparar, Extraer de emergencia, o Interactuar</span></div>
+        <div class="data-row"><span>4. Acción Bonus</span><span>Una habilidad especial del módulo de Brazo Derecho o Izquierdo</span></div>
+        <div class="data-row"><span>5. Reacción</span><span>Una vez fuera de tu turno: Esquivar o Interponer (ver abajo)</span></div>
+      </div>
+
+      <p><strong>Esquivar:</strong> D20 + Terreno vs. la tirada de ataque entrante. Si superás, el ataque falla.<br>
+      <strong>Interponer:</strong> El Ensamblado absorbe el daño en lugar del Barredor. Reduce Simbiosis en 1.</p>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="vida-estructura">
+        <h2>Vida y Estructura</h2>
+
+        <p>El Barredor tiene <strong>Vida</strong>. El Ensamblado tiene <strong>Estructura</strong>. Son independientes — podés tener el robot destrozado y el humano intacto, o viceversa. Ambas importan.</p>
+
+        <div class="data-box" data-label="PUNTOS DE VIDA Y ESTRUCTURA">
+          <div class="data-row"><span>Vida del Barredor</span><span>10 + Armazón × 2 (rango: 14–26)</span></div>
+          <div class="data-row"><span>Estructura del Ensamblado</span><span>Determinada por el material del módulo de Torso</span></div>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>Material del Torso</th><th>Estructura base</th><th>Nota</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Compuesto Libre</td><td>20</td><td>—</td></tr>
+            <tr><td>Ferralloy</td><td>28</td><td>—</td></tr>
+            <tr><td>Biomembrana</td><td>22</td><td>Auto-reparación: +1 Estructura por turno</td></tr>
+            <tr><td>Cristal Nano</td><td>16</td><td>Recibe ×1.5 daño físico</td></tr>
+            <tr><td>Latón Vivo</td><td>24</td><td>—</td></tr>
+            <tr><td>Chatarra Prima</td><td>Variable</td><td>Indicado en la pieza específica</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="defensa">
+        <h2>Defensa y Daño</h2>
+
+        <p>La <strong>Defensa</strong> es el número que el atacante debe superar con D20 + Armazón para impactar.</p>
+
+        <div class="data-box" data-label="DEFENSA BASE">
+          <div class="data-row"><span>Barredor</span><span>8 + Terreno</span></div>
+          <div class="data-row"><span>Ensamblado</span><span>10 + modificador del módulo de Torso</span></div>
+        </div>
+
+        <h3>Cobertura</h3>
+        <div class="data-box" data-label="MODIFICADORES DE COBERTURA">
+          <div class="data-row"><span>Adyacente a un Obstáculo</span><span>+2 Defensa</span></div>
+          <div class="data-row"><span>Obstáculo entre atacante y objetivo</span><span>+4 Defensa</span></div>
+          <div class="data-row"><span>Posición elevada</span><span>+1 a tus tiradas de ataque</span></div>
+        </div>
+
+        <h3>Dado de Daño</h3>
+        <p>Al impactar, tirás el dado de daño de tu módulo de arma y sumás <strong>Armazón ÷ 2</strong> (redondeado abajo):</p>
+
+        <table>
+          <thead>
+            <tr><th>Dado</th><th>Tipo de módulo / situación</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="dice-symbol">D4</span></td><td>Herramientas ligeras, ataques sin módulo de combate</td></tr>
+            <tr><td><span class="dice-symbol">D6</span></td><td>Módulo de combate estándar</td></tr>
+            <tr><td><span class="dice-symbol">D8</span></td><td>Módulo de arma especializada</td></tr>
+            <tr><td><span class="dice-symbol">D12</span></td><td>Armas pesadas, ataques de Primordiales</td></tr>
+          </tbody>
+        </table>
+
+        <div class="data-box" data-label="CRÍTICOS Y FALLAS">
+          <div class="data-row"><span>20 natural — Crítico</span><span>Daño máximo del dado + tirá el dado nuevamente y sumá</span></div>
+          <div class="data-row"><span>1 natural — Falla crítica</span><span>Fallo automático + el Ensamblado queda Sobrecalentado hasta tu próximo turno</span></div>
+        </div>
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="estados">
+        <h2>Estados del Ensamblado</h2>
+
+        <table>
+          <thead>
+            <tr><th>Estado</th><th>Condición</th><th>Efecto</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Operativo</strong></td><td>Estructura &gt; 50%</td><td>Normal</td></tr>
+            <tr><td><strong>Dañado</strong></td><td>Estructura ≤ 50%</td><td>−1 a todas las tiradas del robot</td></tr>
+            <tr><td><strong>Crítico</strong></td><td>Estructura ≤ 25%</td><td>−2 a todas las tiradas + Pulso −1 por turno</td></tr>
+            <tr><td><strong>Desactivado</strong></td><td>Estructura = 0</td><td>Robot inactivo. Pulso cae a 0. El Barredor pierde soporte vital: −1 Vida por turno</td></tr>
+            <tr><td><strong>Sobrecalentado</strong></td><td>Falla crítica o sobrecarga</td><td>No puede usar Acción Bonus el turno siguiente</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="hackeo-combate">
+        <h2>Hackeo en Combate</h2>
+
+        <p>El hackeo consume la Acción Principal. Tirada: <strong>D20 + Código vs. CD del sistema enemigo</strong>. El jugador declara el efecto buscado antes de tirar.</p>
+
+        <div class="data-box" data-label="CD DE HACKEO POR CLASE">
+          <div class="data-row"><span>Guardia Clase I</span><span>CD 12</span></div>
+          <div class="data-row"><span>Extractor Clase II</span><span>CD 16</span></div>
+          <div class="data-row"><span>Supervisor Clase III</span><span>CD 18</span></div>
+          <div class="data-row"><span>Sin Nombre Clase IV</span><span>CD 22</span></div>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>Efecto</th><th>Descripción</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Cegar</strong></td><td>Desactiva sensores — el enemigo no puede atacar a distancia durante 1 turno</td></tr>
+            <tr><td><strong>Trabar</strong></td><td>Reduce el movimiento del enemigo a 1 casilla durante 1 turno</td></tr>
+            <tr><td><strong>Redirigir</strong></td><td>El enemigo ataca a otro enemigo adyacente (solo Clase I y II)</td></tr>
+            <tr><td><strong>Desactivar módulo</strong></td><td>Inutiliza una habilidad especial del Primordial (requiere superar CD+4)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="enemigos">
+        <h2>Enemigos — Primordiales</h2>
+
+        <div class="node-grid">
+
+          <div class="node-card">
+            <div class="node-card-tag">PRIMORDIAL // CLASE I</div>
+            <div class="node-card-name">GUARDIA</div>
+            <p>Rápido, sensores avanzados, diseñado para detener intrusiones. El más común en perímetros de instalaciones antiguas.</p>
+            <div class="data-box" data-label="STATS">
+              <div class="data-row"><span>Estructura</span><span>18</span></div>
+              <div class="data-row"><span>Defensa</span><span>12</span></div>
+              <div class="data-row"><span>Movimiento</span><span>4 casillas</span></div>
+              <div class="data-row"><span>Ataque</span><span>D6+2 (D20+3 vs Defensa)</span></div>
+              <div class="data-row"><span>Habilidad</span><span>Sensor activo — detecta Barredores en radio 3, incluso tras cobertura</span></div>
+            </div>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">PRIMORDIAL // CLASE II</div>
+            <div class="node-card-name">EXTRACTOR</div>
+            <p>Lento pero imposiblemente fuerte. Máquina de minería e industria pesada ejecutando directivas de procesamiento de recursos.</p>
+            <div class="data-box" data-label="STATS">
+              <div class="data-row"><span>Estructura</span><span>40</span></div>
+              <div class="data-row"><span>Defensa</span><span>14</span></div>
+              <div class="data-row"><span>Movimiento</span><span>2 casillas</span></div>
+              <div class="data-row"><span>Ataque</span><span>D12+4 (D20+5 vs Defensa)</span></div>
+              <div class="data-row"><span>Habilidad</span><span>Golpe de área — daño en todas las casillas adyacentes al objetivo (CD Terreno 14 para esquivar)</span></div>
+            </div>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">PRIMORDIAL // CLASE III</div>
+            <div class="node-card-name">SUPERVISOR</div>
+            <p>Unidad de gestión con capacidades de comunicación. Puede coordinar otros Primordiales en su zona. El verdadero peligro no es él: es lo que activa.</p>
+            <div class="data-box" data-label="STATS">
+              <div class="data-row"><span>Estructura</span><span>30</span></div>
+              <div class="data-row"><span>Defensa</span><span>13</span></div>
+              <div class="data-row"><span>Movimiento</span><span>3 casillas</span></div>
+              <div class="data-row"><span>Ataque</span><span>D8+3 (D20+4 vs Defensa)</span></div>
+              <div class="data-row"><span>Habilidad</span><span>Coordinar — gasta Acción Bonus para dar una acción extra a un aliado en radio 4 casillas</span></div>
+            </div>
+          </div>
+
+          <div class="node-card">
+            <div class="node-card-tag">PRIMORDIAL // CLASE IV</div>
+            <div class="node-card-name">SIN NOMBRE</div>
+            <p>Unidades únicas de propósito desconocido. Nadie ha documentado sus directivas originales. Nadie que las haya enfrentado solo ha regresado para hacerlo.</p>
+            <div class="data-box" data-label="STATS">
+              <div class="data-row"><span>Estructura</span><span>Variable</span></div>
+              <div class="data-row"><span>Defensa</span><span>Variable</span></div>
+              <div class="data-row"><span>Movimiento</span><span>Variable</span></div>
+              <div class="data-row"><span>Ataque</span><span>Variable</span></div>
+              <div class="data-row"><span>Habilidad</span><span>Definida en el módulo de aventura</span></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="sep"><span>◈◈◈</span></div>
+
+      <section id="fin-combate">
+        <h2>Retirada y Loot</h2>
+
+        <h3>Retirada</h3>
+        <p>Para retirarse de un combate, el Barredor debe gastar su <strong>Reacción</strong> del turno actual para declarar retirada. En su próximo turno, mueve hasta la casilla de salida del Área. Los enemigos no persiguen fuera de su zona.</p>
+
+        <p>Si el Barredor llega a <strong>Vida 0</strong> antes de retirarse: queda incapacitado. El Ensamblado entra en modo protección — no ataca, solo bloquea el acceso al cuerpo del Barredor. El grupo puede rescatarlo, o el módulo de aventura define las consecuencias.</p>
+
+        <h3>Loot</h3>
+        <p>Al desactivar un enemigo (Estructura = 0), tirá D100 en la tabla de loot del Área. Los Primordiales siempre garantizan <strong>Chatarra Prima</strong>:</p>
+
+        <table>
+          <thead>
+            <tr><th>Clase</th><th>Loot garantizado</th><th>Tabla D100</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Clase I</td><td>1 Chatarra Prima</td><td>Tabla básica del Área</td></tr>
+            <tr><td>Clase II</td><td>D4 Chatarra Prima + 1 Componente Irrepetible</td><td>Tabla avanzada del Área</td></tr>
+            <tr><td>Clase III</td><td>D6 Chatarra Prima + D2 Componentes Irrepetibles</td><td>Tabla avanzada del Área</td></tr>
+            <tr><td>Clase IV</td><td>Definido por el módulo de aventura</td><td>—</td></tr>
+          </tbody>
+        </table>
       </section>
 
     </section>
@@ -1569,11 +1950,11 @@
       <h1 class="chapter-title">MODOS <span class="highlight">DE JUEGO</span></h1>
       <div class="chapter-title-bar"></div>
 
-      <h3>Solitario — "El Chatarrero Solitario"</h3>
+      <h3>Solitario — "El Barredor Solitario"</h3>
       <p>El mazo de Eventos del Yermo reemplaza al DJ. Cada turno, una carta del mazo determina eventos, amenazas y oportunidades. El objetivo se define antes de empezar eligiendo una tarjeta de Misión del stack. Dificultad escalable cambiando la composición del mazo.</p>
 
       <h3>Cooperativo — "La Banda"</h3>
-      <p>2-5 jugadores contra el Yermo compartido. Los jugadores comparten objetivos pero cada uno mantiene su Enlace Vital independiente. Las Simbiosis altas del grupo se combinan para resolver desafíos de grupo. Modo recomendado para primera partida.</p>
+      <p>2-5 jugadores contra el Yermo compartido. Los jugadores comparten objetivos pero cada uno mantiene su Pulso independiente. Las Simbiosis altas del grupo se combinan para resolver desafíos de grupo. Modo recomendado para primera partida.</p>
 
       <h3>Competitivo — "El Mercado Vivo"</h3>
       <p>2-4 jugadores compitiendo por control de hexágonos de recursos y puntos de influencia en los Nodos. El combate entre jugadores está regulado: solo en hexágonos marcados como "Zona de Disputa" y en el Campeonato. Fuera de esas zonas, el conflicto es económico y de información.</p>
@@ -1593,14 +1974,14 @@
         <tbody>
           <tr><td><strong>Bestia de Carga</strong></td><td>Criatura biomecánica colosal que mueve las caravanas inter-Nodo. Parcialmente consciente, protegida por ley universal.</td></tr>
           <tr><td><strong>CD</strong></td><td>Clase de Dificultad. El número que tu D20 + Atributo debe superar para que una acción tenga éxito.</td></tr>
-          <tr><td><strong>Chatarrero</strong></td><td>Término coloquial para los aventureros del Yermo. Sin connotación peyorativa en el contexto del juego.</td></tr>
+          <tr><td><strong>Barredor</strong></td><td>Los que recorren el Yermo de punta a punta. Exploradores, recuperadores, aventureros. El nombre no es un insulto: es una forma de vida.</td></tr>
           <tr><td><strong>Chatarra Prima</strong></td><td>Piezas extraídas de Primordiales. Calidad superior, comportamiento impredecible.</td></tr>
-          <tr><td><strong>Enlace Vital</strong></td><td>La conexión funcional y emocional entre un Chatarrero y su Ensamblado. Medido en Simbiosis (0-10).</td></tr>
-          <tr><td><strong>Ensamblado</strong></td><td>Robot post-colapso, modular, compañero de un Chatarrero específico.</td></tr>
+          <tr><td><strong>Pulso</strong></td><td>La conexión funcional y emocional entre un Barredor y su Ensamblado. Se mide en la Escala de Simbiosis (0-10). Por debajo de 3, el soporte vital falla.</td></tr>
+          <tr><td><strong>Ensamblado</strong></td><td>Robot post-colapso, modular, compañero de un Barredor específico.</td></tr>
           <tr><td><strong>Intranet</strong></td><td>Red de datos cerrada y local de cada Nodo. Requiere hardware certificado para acceder.</td></tr>
           <tr><td><strong>Nodo</strong></td><td>Asentamiento humano principal. Hay seis en el mapa. Cada uno es una sociedad autónoma.</td></tr>
           <tr><td><strong>Primordial</strong></td><td>Robot pre-colapso. Antiguo, peligroso, invaluable como fuente de Chatarra Prima.</td></tr>
-          <tr><td><strong>Simbiosis</strong></td><td>Valor numérico (0-10) que mide la profundidad del Enlace Vital. Afecta casi todas las mecánicas.</td></tr>
+          <tr><td><strong>Simbiosis</strong></td><td>Valor numérico (0-10) que mide la profundidad del Pulso. Afecta casi todas las mecánicas.</td></tr>
           <tr><td><strong>Yermo</strong></td><td>Todo lo que está fuera de los Nodos. Peligroso, rico en recursos, y completamente indiferente a tu bienestar.</td></tr>
         </tbody>
       </table>
@@ -1620,7 +2001,7 @@
           <div class="adv-card-body">
             <div class="adv-card-kicker">AVENTURA INICIAL · EL UMBRAL</div>
             <div class="adv-card-title">SEÑAL MUERTA</div>
-            <p class="adv-card-desc">Tu madre desapareció en el Sector Delta-4 hace tres semanas. La señal de su robot todavía está activa. Lo que no sabías es que un Primordial Clase II lleva ochenta y tres años ejecutando su última directiva en esa instalación. Él tampoco sabe que ella está ahí.</p>
+            <p class="adv-card-desc">Tu madre desapareció en el Sector Delta-4 hace tres semanas. La señal de su robot todavía está activa. Lo que no sabías es que un Primordial Clase II lleva ochenta y siete años ejecutando su última directiva en esa instalación. Él tampoco sabe que ella está ahí.</p>
           </div>
           <div class="adv-card-meta">
             <span>1–3 jugadores</span>
@@ -1672,7 +2053,7 @@
     </section>
 
     <div class="page-footer">
-      <span>YERMO CERO — Manual del Jugador // Borrador v0.1</span>
+      <span>87 — Manual del Jugador // Borrador v0.1</span>
       <span>Edición Fundacional · No para distribución comercial</span>
     </div>
 

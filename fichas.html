@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>87 — Fichas de Personaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+
+@page { size: A4; margin: 10mm; }
+
+:root {
+  --bg: #080705;
+  --surface: #100e0c;
+  --surface2: #191511;
+  --surface3: #221e18;
+  --rust: #bf5918;
+  --amber: #d99318;
+  --amber-bright: #f0b030;
+  --cyan: #1ec8c0;
+  --cyan-dim: #0f6e6a;
+  --red: #c03020;
+  --text: #c8bba8;
+  --text-dim: #7a6e60;
+  --text-bright: #e8dcc8;
+  --border: #2a2318;
+  --border-bright: #3e3528;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #040302;
+  color: var(--text);
+  font-family: 'Crimson Pro', serif;
+}
+
+/* ── PRINT BUTTON ─────────────────────────────────────── */
+.print-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-bright);
+  padding: .75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.print-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--cyan);
+  background: none;
+  border: 1px solid var(--cyan-dim);
+  padding: .35rem .9rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+.print-btn:hover { background: rgba(30,200,192,.08); }
+.print-info {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .52rem;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+}
+@media print { .print-bar { display: none; } }
+
+/* ── SHEET BASE ───────────────────────────────────────── */
+.sheet {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 10mm 12mm 14mm;
+  background: var(--bg);
+  position: relative;
+  margin: 0 auto 4mm;
+  page-break-after: always;
+}
+
+/* ── HEADER ───────────────────────────────────────────── */
+.sh {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--rust);
+  padding-bottom: 3mm;
+  margin-bottom: 5mm;
+}
+.sh-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  color: var(--amber-bright);
+  letter-spacing: .08em;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(217,147,24,.3);
+}
+.sh-title {
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .5rem;
+  letter-spacing: .2em;
+  color: var(--rust);
+  line-height: 1.6;
+}
+
+/* ── LABELS ───────────────────────────────────────────── */
+.lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .42rem;
+  letter-spacing: .2em;
+  color: var(--rust);
+  margin-bottom: 2mm;
+  margin-top: 4mm;
+}
+
+/* ── FIELD ROW ────────────────────────────────────────── */
+.fr { display: flex; gap: 3mm; margin-bottom: 4mm; }
+.f { flex: 1; }
+.f-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .38rem;
+  letter-spacing: .15em;
+  color: var(--text-dim);
+  margin-bottom: 1mm;
+}
+.f-line { border-bottom: 1px solid var(--border-bright); height: 5.5mm; }
+
+/* ── ATTRS ────────────────────────────────────────────── */
+.attrs { display: grid; grid-template-columns: repeat(4,1fr); gap: 2.5mm; margin-bottom: 4mm; }
+.attr {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2.5mm 2mm;
+  text-align: center;
+}
+.attr-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: .95rem;
+  letter-spacing: .08em;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: .8mm;
+}
+.attr-d {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .3rem;
+  color: var(--text-dim);
+  letter-spacing: .05em;
+  margin-bottom: 2mm;
+}
+.attr-v {
+  width: 11mm;
+  height: 11mm;
+  border: 2px solid var(--amber);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  font-size: 1.6rem;
+  color: var(--amber-bright);
+}
+
+/* ── TRACKER BOX ──────────────────────────────────────── */
+.trk {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2.5mm 3.5mm;
+  margin-bottom: 3mm;
+}
+.trk-top {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .4rem;
+  letter-spacing: .15em;
+  color: var(--rust);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2mm;
+}
+.trk-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .33rem;
+  letter-spacing: .08em;
+  color: var(--text-dim);
+  margin-top: 1.5mm;
+  display: flex;
+  gap: 8mm;
+}
+.trk-sub .danger { color: rgba(192,48,32,.8); }
+.trk-sub .bonus  { color: var(--cyan); }
+
+/* ── VIDA BOXES ───────────────────────────────────────── */
+.vida-row { display: flex; flex-wrap: wrap; gap: 1.2mm; }
+.vb {
+  width: 5mm;
+  height: 5mm;
+  border: 1px solid var(--border-bright);
+  background: var(--surface2);
+}
+.vb.d { border-color: rgba(192,48,32,.45); }
+
+/* ── PULSO NODES ──────────────────────────────────────── */
+.pulso-row { display: flex; gap: 1.5mm; align-items: center; }
+.pn {
+  width: 9mm;
+  height: 9mm;
+  border: 1px solid var(--border-bright);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  font-size: .7rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.pn.d { border-color: rgba(192,48,32,.5); color: rgba(192,48,32,.7); }
+.pn.b { border-color: var(--cyan-dim); color: var(--cyan); }
+
+/* ── INVENTORY ────────────────────────────────────────── */
+.inv { display: grid; grid-template-columns: repeat(4,1fr); gap: 2mm; margin-bottom: 4mm; }
+.inv-slot {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  height: 13mm;
+  padding: 1.5mm;
+}
+.inv-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .3rem;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+}
+
+/* ── NOTES ────────────────────────────────────────────── */
+.notes {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2.5mm 3mm;
+  min-height: 24mm;
+}
+.note-lines { display: flex; flex-direction: column; gap: 6mm; }
+.note-line { border-bottom: 1px solid var(--border); height: 6mm; }
+
+/* ── AREAS MARCADAS ───────────────────────────────────── */
+.areas { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.5mm; margin-bottom: 3mm; }
+.area-slot {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 1.5mm 2mm;
+}
+.area-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .3rem;
+  letter-spacing: .1em;
+  color: var(--cyan-dim);
+  margin-bottom: 1mm;
+}
+.area-line { border-bottom: 1px solid var(--border); height: 4mm; }
+
+/* ── FOOTER ───────────────────────────────────────────── */
+.ft {
+  position: absolute;
+  bottom: 7mm;
+  left: 12mm;
+  right: 12mm;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .3rem;
+  color: var(--text-dim);
+  letter-spacing: .1em;
+  border-top: 1px solid var(--border);
+  padding-top: 2mm;
+}
+
+/* ── ENSAMBLADO STATS MINI ────────────────────────────── */
+.stats3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.5mm; margin-bottom: 3mm; }
+.sm {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2mm 2.5mm;
+  text-align: center;
+}
+.sm-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .35rem;
+  letter-spacing: .12em;
+  color: var(--text-dim);
+  margin-bottom: 1.5mm;
+}
+.sm-v { border-bottom: 1px solid var(--border-bright); height: 6mm; }
+
+/* ── ESTRUCTURA BOXES ─────────────────────────────────── */
+.est-row { display: flex; flex-wrap: wrap; gap: 1mm; }
+.eb {
+  width: 4.5mm;
+  height: 4.5mm;
+  border: 1px solid var(--border-bright);
+  background: var(--surface2);
+}
+.eb.mid { border-color: rgba(217,147,24,.5); }
+.eb.low { border-color: rgba(192,48,32,.5); }
+
+/* ── ESTADO CHECKS ────────────────────────────────────── */
+.estados { display: flex; gap: 5mm; flex-wrap: wrap; margin-top: 2mm; }
+.est-item { display: flex; align-items: center; gap: 1.5mm; }
+.est-chk {
+  width: 4mm;
+  height: 4mm;
+  border: 1px solid var(--border-bright);
+  background: var(--surface2);
+  flex-shrink: 0;
+}
+.est-n {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .35rem;
+  letter-spacing: .08em;
+  color: var(--text-dim);
+}
+
+/* ── MODULE SLOTS ─────────────────────────────────────── */
+.modules { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; margin-bottom: 3mm; }
+.mod {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2.5mm 3mm;
+}
+.mod-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: .85rem;
+  letter-spacing: .1em;
+  color: var(--cyan);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1mm;
+  margin-bottom: 2mm;
+  line-height: 1;
+}
+.mod-fields { display: flex; flex-direction: column; gap: 1.5mm; }
+.mf { display: flex; align-items: center; gap: 2mm; }
+.mf-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .33rem;
+  letter-spacing: .08em;
+  color: var(--text-dim);
+  width: 17mm;
+  flex-shrink: 0;
+}
+.mf-line { flex: 1; border-bottom: 1px solid var(--border-bright); height: 4mm; }
+
+/* ── HABILIDADES AREA ─────────────────────────────────── */
+.hab {
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  padding: 2.5mm 3mm;
+  min-height: 18mm;
+  margin-bottom: 3mm;
+}
+
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <button class="print-btn" onclick="window.print()">IMPRIMIR FICHAS</button>
+  <span class="print-info">2 páginas A4 · Ficha de Barredor + Ficha de Ensamblado · Diseñado para impresión a doble cara</span>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA 1 — FICHA DE BARREDOR
+══════════════════════════════════════════════════════ -->
+<div class="sheet">
+
+  <div class="sh">
+    <div class="sh-logo">87</div>
+    <div class="sh-title">FICHA DE BARREDOR<br>BORRADOR v0.1 · NO PARA DISTRIBUCIÓN COMERCIAL</div>
+  </div>
+
+  <!-- Nombre / Arquetipo / Nodo -->
+  <div class="fr">
+    <div class="f" style="flex:3"><div class="f-lbl">NOMBRE DEL BARREDOR</div><div class="f-line"></div></div>
+    <div class="f" style="flex:2"><div class="f-lbl">ARQUETIPO</div><div class="f-line"></div></div>
+    <div class="f" style="flex:1.5"><div class="f-lbl">NODO BASE</div><div class="f-line"></div></div>
+  </div>
+
+  <!-- Atributos -->
+  <div class="lbl">// ATRIBUTOS &nbsp;&nbsp; Distribuí 20 puntos · mín 2 · máx 8</div>
+  <div class="attrs">
+    <div class="attr">
+      <div class="attr-n">CÓDIGO</div>
+      <div class="attr-d">Software · IA · Hackeo</div>
+      <div class="attr-v"></div>
+    </div>
+    <div class="attr">
+      <div class="attr-n">ARMAZÓN</div>
+      <div class="attr-d">Física · Hardware · Combate</div>
+      <div class="attr-v"></div>
+    </div>
+    <div class="attr">
+      <div class="attr-n">TERRENO</div>
+      <div class="attr-d">Exploración · Extracción · Mov.</div>
+      <div class="attr-v"></div>
+    </div>
+    <div class="attr">
+      <div class="attr-n">CONTACTOS</div>
+      <div class="attr-d">Redes · Reputación · Nodos</div>
+      <div class="attr-v"></div>
+    </div>
+  </div>
+
+  <!-- Vida -->
+  <div class="lbl">// VIDA &nbsp;&nbsp; 10 + ARMAZÓN × 2</div>
+  <div class="trk">
+    <div class="trk-top">
+      <span>PUNTOS DE VIDA</span>
+      <span>TOTAL: _____</span>
+    </div>
+    <div class="vida-row">
+      <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
+      <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
+      <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
+      <div class="vb"></div><div class="vb"></div><div class="vb"></div>
+      <div class="vb d"></div><div class="vb d"></div><div class="vb d"></div><div class="vb d"></div>
+      <div class="vb d"></div><div class="vb d"></div><div class="vb d"></div><div class="vb d"></div>
+    </div>
+    <div class="trk-sub">
+      <span class="danger">▲ CASILLAS ROJAS: zona crítica de Vida</span>
+      <span>Vida 0 → incapacitado</span>
+    </div>
+  </div>
+
+  <!-- Pulso -->
+  <div class="lbl">// PULSO — ESCALA DE SIMBIOSIS</div>
+  <div class="trk">
+    <div class="trk-top">
+      <span>SIMBIOSIS ACTUAL</span>
+      <span>VALOR: _____</span>
+    </div>
+    <div class="pulso-row">
+      <div class="pn d">0</div>
+      <div class="pn d">1</div>
+      <div class="pn d">2</div>
+      <div class="pn d">3</div>
+      <div class="pn">4</div>
+      <div class="pn">5</div>
+      <div class="pn">6</div>
+      <div class="pn b">7</div>
+      <div class="pn b">8</div>
+      <div class="pn b">9</div>
+      <div class="pn b">10</div>
+    </div>
+    <div class="trk-sub">
+      <span class="danger">▲ 0–3: soporte vital en riesgo · −1 Vida/turno sin robot activo</span>
+      <span class="bonus">▲ 7–10: bonificación de vínculo · +Simbiosis÷2 a tiradas conjuntas</span>
+    </div>
+  </div>
+
+  <!-- Inventario -->
+  <div class="lbl">// INVENTARIO</div>
+  <div class="inv">
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 01</div></div>
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 02</div></div>
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 03</div></div>
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 04</div></div>
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 05</div></div>
+    <div class="inv-slot"><div class="inv-lbl">ÍTEM 06</div></div>
+    <div class="inv-slot"><div class="inv-lbl">RACIONES ×___</div></div>
+    <div class="inv-slot"><div class="inv-lbl">CRÉDITOS</div></div>
+  </div>
+
+  <!-- Áreas marcadas -->
+  <div class="lbl">// ÁREAS MARCADAS — Viaje Rápido disponible</div>
+  <div class="areas">
+    <div class="area-slot"><div class="area-lbl">ÁREA 01</div><div class="area-line"></div></div>
+    <div class="area-slot"><div class="area-lbl">ÁREA 02</div><div class="area-line"></div></div>
+    <div class="area-slot"><div class="area-lbl">ÁREA 03</div><div class="area-line"></div></div>
+    <div class="area-slot"><div class="area-lbl">ÁREA 04</div><div class="area-line"></div></div>
+    <div class="area-slot"><div class="area-lbl">ÁREA 05</div><div class="area-line"></div></div>
+    <div class="area-slot"><div class="area-lbl">ÁREA 06</div><div class="area-line"></div></div>
+  </div>
+
+  <!-- Notas -->
+  <div class="lbl">// NOTAS / HISTORIAL / VÍNCULOS</div>
+  <div class="notes">
+    <div class="note-lines">
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <span>87 — FICHA DE BARREDOR // BORRADOR v0.1</span>
+    <span>EDICIÓN FUNDACIONAL · NO PARA DISTRIBUCIÓN COMERCIAL</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA 2 — FICHA DE ENSAMBLADO
+══════════════════════════════════════════════════════ -->
+<div class="sheet">
+
+  <div class="sh">
+    <div class="sh-logo">87</div>
+    <div class="sh-title">FICHA DE ENSAMBLADO<br>BORRADOR v0.1 · NO PARA DISTRIBUCIÓN COMERCIAL</div>
+  </div>
+
+  <!-- Nombre / Nivel / Barredor vinculado -->
+  <div class="fr">
+    <div class="f" style="flex:3"><div class="f-lbl">NOMBRE DEL ENSAMBLADO</div><div class="f-line"></div></div>
+    <div class="f" style="flex:.8"><div class="f-lbl">NIVEL</div><div class="f-line"></div></div>
+    <div class="f" style="flex:2.5"><div class="f-lbl">BARREDOR VINCULADO</div><div class="f-line"></div></div>
+  </div>
+
+  <!-- Stats base -->
+  <div class="lbl">// STATS BASE</div>
+  <div class="stats3">
+    <div class="sm"><div class="sm-lbl">ESTRUCTURA MÁX.</div><div class="sm-v"></div></div>
+    <div class="sm"><div class="sm-lbl">DEFENSA BASE</div><div class="sm-v"></div></div>
+    <div class="sm"><div class="sm-lbl">MOVILIDAD BASE</div><div class="sm-v"></div></div>
+  </div>
+
+  <!-- Estructura -->
+  <div class="lbl">// ESTRUCTURA &nbsp;&nbsp; Material Torso: _______________</div>
+  <div class="trk">
+    <div class="trk-top">
+      <span>PUNTOS DE ESTRUCTURA</span>
+      <span>__ / __</span>
+    </div>
+    <div class="est-row">
+      <div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div>
+      <div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div><div class="eb"></div>
+      <div class="eb mid"></div><div class="eb mid"></div><div class="eb mid"></div><div class="eb mid"></div><div class="eb mid"></div><div class="eb mid"></div><div class="eb mid"></div>
+      <div class="eb low"></div><div class="eb low"></div><div class="eb low"></div><div class="eb low"></div><div class="eb low"></div><div class="eb low"></div><div class="eb low"></div>
+    </div>
+    <div class="trk-sub">
+      <span style="color:rgba(217,147,24,.8);">▲ ÁMBAR: 50% → Estado DAÑADO (−1 tiradas)</span>
+      <span class="danger">▲ ROJO: 25% → Estado CRÍTICO (−2 tiradas · Pulso −1/turno)</span>
+    </div>
+  </div>
+
+  <!-- Estado -->
+  <div class="trk" style="margin-bottom:3mm;">
+    <div class="trk-top"><span>// ESTADO ACTUAL</span></div>
+    <div class="estados">
+      <div class="est-item"><div class="est-chk"></div><div class="est-n">OPERATIVO</div></div>
+      <div class="est-item"><div class="est-chk"></div><div class="est-n">DAÑADO</div></div>
+      <div class="est-item"><div class="est-chk"></div><div class="est-n">CRÍTICO</div></div>
+      <div class="est-item"><div class="est-chk"></div><div class="est-n">DESACTIVADO</div></div>
+      <div class="est-item"><div class="est-chk"></div><div class="est-n">SOBRECALENTADO</div></div>
+    </div>
+  </div>
+
+  <!-- Módulos -->
+  <div class="lbl">// MÓDULOS — 6 ZONAS</div>
+  <div class="modules">
+
+    <div class="mod">
+      <div class="mod-n">CABEZA / SENSOR</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">BONIFICACIÓN</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">DADO HABILIDAD</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">NOTAS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-n">TORSO / NÚCLEO</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">ESTRUCTURA BASE</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">DEF. MODIFICADOR</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">NOTAS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-n">BRAZO DERECHO</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">HERRAMIENTA</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">DADO DE DAÑO</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">ACCIÓN BONUS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-n">BRAZO IZQUIERDO</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">HERRAMIENTA</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">DADO DE DAÑO</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">ACCIÓN BONUS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-n">PIERNAS / MOVILIDAD</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">MOVILIDAD</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">TERRENOS</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">NOTAS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-n">SISTEMA / ENERGÍA</div>
+      <div class="mod-fields">
+        <div class="mf"><div class="mf-lbl">MATERIAL</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">ACCIONES/TURNO</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">BONIFICACIÓN</div><div class="mf-line"></div></div>
+        <div class="mf"><div class="mf-lbl">NOTAS</div><div class="mf-line"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Habilidades / Chatarra Prima -->
+  <div class="lbl">// HABILIDADES ESPECIALES · CHATARRA PRIMA</div>
+  <div class="hab">
+    <div class="note-lines">
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+    </div>
+  </div>
+
+  <!-- Notas -->
+  <div class="lbl">// HISTORIAL DEL ENSAMBLADO</div>
+  <div class="notes" style="min-height:18mm;">
+    <div class="note-lines">
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+      <div class="note-line"></div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <span>87 — FICHA DE ENSAMBLADO // BORRADOR v0.1</span>
+    <span>EDICIÓN FUNDACIONAL · NO PARA DISTRIBUCIÓN COMERCIAL</span>
+  </div>
+
+</div>
+
+</body>
+</html>

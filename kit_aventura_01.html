@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>YERMO CERO — Señal Muerta · Kit Interactivo</title>
+<title>87 — Señal Muerta · Kit Interactivo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
@@ -239,7 +239,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Crimso
 
 <!-- HEADER -->
 <header class="gh">
-  <div class="gh-title">YERMO CERO · <span>SEÑAL MUERTA</span></div>
+  <div class="gh-title">87 · <span>SEÑAL MUERTA</span></div>
   <div class="gh-stats">
     <div class="hst">T<span class="hstv" id="ht">1</span></div>
     <div class="hst">FASE <span class="hstv" id="hf">EXPL.</span></div>
@@ -511,7 +511,7 @@ const REVENTS=[
   {narr:'Restos de chatarra básica.',fx(st){const c=rollD(6)*2;st.player.credits+=c;addItem(st,'chatarra',1);return[`+${c} cr · Chatarra ×1`];}},
   {narr:'Señal EM no identificada. MOTE la registra.',fx:null},
   {narr:'Ruidos mecánicos en la distancia. Una Guarda, alejándose.',fx:null},
-  {narr:'Restos de un Chatarrero anterior. Kit de reparación intacto.',fx(st){addItem(st,'kit_rep',1);return['Kit de Reparación ×1'];}},
+  {narr:'Restos de un Barredor anterior. Kit de reparación intacto.',fx(st){addItem(st,'kit_rep',1);return['Kit de Reparación ×1'];}},
   {narr:'Zona de baja radiación. MOTE activa filtros.',fx(st){st.player.hp=Math.max(1,st.player.hp-1);return['-1 HP (radiación)'];}},
   {narr:'Depósito sellado. Demasiado pesado. Lo anotás para volver.',fx:null},
   {narr:'Una Bestia de Carga pasa a lo lejos, su perfil colosal recortado contra el cielo.',fx:null},
@@ -767,7 +767,7 @@ function endC(vic,fled){
   else{ob.className='cmob los';ob.textContent='DERROTA — RETIRADA FORZADA';log('HP crítico. MOTE te sacó.','fl');}
   document.getElementById('cm-log').insertAdjacentHTML('afterend',`<button style="width:100%;margin-top:.45rem;padding:.4rem;background:var(--surface3);border:1px solid var(--border-bright);color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.12em;cursor:pointer;" onclick="closeC()">CERRAR COMBATE</button>`);
   S.phase=vic?'over':'explore';updUI();updCUI();renderInv();renderMoteTab();
-  if(vic&&S.combat.technicalDeact){log('▶ FIN DE LA AVENTURA — Señal Muerta','st');log('Alguien en Nexo Abierto encargó ese núcleo. El prefijo de la cuenta: servidores de Vórtex.','nrr');}
+  if(vic&&S.combat.technicalDeact){log('▶ FIN DE LA AVENTURA — Señal Muerta','st');log('Alguien en Calima encargó ese núcleo. El prefijo de la cuenta: servidores de Vórtex.','nrr');}
 }
 
 function closeC(){document.getElementById('cm').classList.remove('on');resetAA();}

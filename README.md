@@ -1,8 +1,8 @@
-# YERMO CERO
+# 87
 
 **Juego de mesa de exploración, combate y supervivencia en un futuro distópico post-colapso.**
 
-Un mundo donde las megacorporaciones implosionaron y dejaron atrás seis asentamientos humanos, miles de kilómetros de yermo peligroso y robots antiguos que siguen ejecutando sus últimas directivas en bucle infinito. Los jugadores encarnan a Chatarreros que exploran ese mundo junto a sus robots compañeros, buscando recursos, sobreviviendo y construyendo algo que importe.
+Un mundo donde las megacorporaciones implosionaron y dejaron atrás seis asentamientos humanos, miles de kilómetros de yermo peligroso y robots antiguos que siguen ejecutando sus últimas directivas en bucle infinito. Los jugadores encarnan a Barredores que exploran ese mundo junto a sus robots compañeros, buscando recursos, sobreviviendo y construyendo algo que importe.
 
 ---
 
@@ -13,6 +13,8 @@ Un mundo donde las megacorporaciones implosionaron y dejaron atrás seis asentam
 | `manual_del_jugador.html` | Manual completo del juego — lore, mecánicas, creación de personaje, sistema de dados |
 | `aventura_01_senal_muerta.html` | Módulo de aventura 01 — historia, encuentros, jefe final GRÚA-7 |
 | `kit_aventura_01.html` | Kit interactivo jugable en el navegador — mapa hexagonal, inventario, combate |
+| `fichas.html` | Fichas imprimibles — Barredor y Ensamblado (2 páginas A4) |
+| `cartas_enemigos.html` | Cartas de enemigos imprimibles — 9 mobs + 4 Primordiales (2 páginas A4) |
 
 ---
 
@@ -52,14 +54,14 @@ Los tres archivos están interconectados. Podés navegar entre ellos desde el si
 
 ## El mundo
 
-El **Gran Colapso** ocurrió hace 83 años. Las cuatro megacorporaciones dominantes firmaron el Acuerdo de Singapur otorgándose soberanía industrial autónoma. En 72 horas, las redes de suministro, los bancos de datos y las fábricas automatizadas dejaron de funcionar. No por destrucción — por ausencia de gobierno.
+El **La Firma** ocurrió hace 87 años. Las cuatro megacorporaciones dominantes firmaron el Acuerdo de Singapur otorgándose soberanía industrial autónoma. En 72 horas, las redes de suministro, los bancos de datos y las fábricas automatizadas dejaron de funcionar. No por destrucción — por ausencia de gobierno.
 
 Hoy existen **seis Nodos** de civilización conectados por caravanas que transportan mercancías sobre Bestias de Carga biomecánicas colosales:
 
 | Nodo | Gobierno | Especialización |
 |---|---|---|
 | Ferrópolis | Dictadura militar | Metalurgia · Armamento |
-| Nexo Abierto | Mercado libre total | Comercio · Información |
+| Calima | Mercado libre total | Comercio · Información |
 | Vórtex | Tecnocracia | Software · IA |
 | Confluencia | Democracia directa | Agricultura · Biomedicina |
 | Sanctum Machina | Teocracia mecanicista | Robótica artesanal |
@@ -74,7 +76,7 @@ Entre los Nodos: el **Yermo**. Peligroso, generoso, indiferente.
 **Punto de partida:** El Umbral  
 **Jugadores:** 1–3 · **Duración:** 60–90 minutos · **Dificultad:** Iniciación
 
-Tu madre, Sael Renn, desapareció en el Sector Delta-4 hace tres semanas. La señal de su robot de carga sigue activa. Lo que no sabías es que un Primordial Clase II lleva ochenta y tres años ejecutando su última directiva en esa instalación.
+Tu madre, Sael Renn, desapareció en el Sector Delta-4 hace tres semanas. La señal de su robot de carga sigue activa. Lo que no sabías es que un Primordial Clase II lleva ochenta y siete años ejecutando su última directiva en esa instalación.
 
 **Estructura:** 3 actos · 6 encuentros de historia · 1 jefe final (GRÚA-7)
 
@@ -89,7 +91,7 @@ Tu madre, Sael Renn, desapareció en el Sector Delta-4 hace tres semanas. La se�
 | Manual del Jugador | ✓ Borrador v0.1 |
 | Aventura 01 — Señal Muerta | ✓ Borrador v0.1 |
 | Kit Interactivo Av.01 | ✓ Step 2 — funcional |
-| Aventura 02 — Nexo Abierto | 🔄 En desarrollo |
+| Aventura 02 — Calima | 🔄 En desarrollo |
 | Fichas de personaje y robot | 📋 Pendiente |
 | Mazo de Eventos (modo solitario) | 📋 Pendiente |
 | Tarjetas de módulos | 📋 Pendiente |
@@ -104,4 +106,4 @@ HTML · CSS · JavaScript vanilla — sin frameworks, sin dependencias, sin buil
 
 > *"El Yermo no es tu enemigo. Es simplemente indiferente. Y entre la indiferencia y la hostilidad activa hay un espacio muy estrecho donde viven los que saben moverse."*
 >
-> — Mara Solt, Chatarrera Senior, tres brazos protésicos, ningún arrepentimiento
+> — Mara Solt, Barredora Senior, tres brazos protésicos, ningún arrepentimiento
