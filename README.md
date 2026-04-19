@@ -54,7 +54,7 @@ Los tres archivos están interconectados. Podés navegar entre ellos desde el si
 
 ## El mundo
 
-El **La Firma** ocurrió hace 87 años. Las cuatro megacorporaciones dominantes firmaron el Acuerdo de Singapur otorgándose soberanía industrial autónoma. En 72 horas, las redes de suministro, los bancos de datos y las fábricas automatizadas dejaron de funcionar. No por destrucción — por ausencia de gobierno.
+**El Colapso** ocurrió hace 87 años. Las cuatro megacorporaciones dominantes firmaron el Acuerdo de Singapur otorgándose soberanía industrial autónoma. En 72 horas, las redes de suministro, los bancos de datos y las fábricas automatizadas dejaron de funcionar. No por destrucción — por ausencia de gobierno.
 
 Hoy existen **seis Nodos** de civilización conectados por caravanas que transportan mercancías sobre Bestias de Carga biomecánicas colosales:
 
