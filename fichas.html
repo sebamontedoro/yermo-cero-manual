@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>87 — Fichas de Personaje</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Orbitron:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 
 @page { size: A4; margin: 10mm; }
@@ -33,7 +33,7 @@
 body {
   background: #040302;
   color: var(--text);
-  font-family: 'Crimson Pro', serif;
+  font-family: 'Merriweather', serif;
 }
 
 /* ── PRINT BUTTON ─────────────────────────────────────── */
@@ -46,7 +46,7 @@ body {
   gap: 1rem;
 }
 .print-btn {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .6rem;
   letter-spacing: .15em;
   color: var(--cyan);
@@ -58,7 +58,7 @@ body {
 }
 .print-btn:hover { background: rgba(30,200,192,.08); }
 .print-info {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .52rem;
   color: var(--text-dim);
   letter-spacing: .08em;
@@ -86,7 +86,8 @@ body {
   margin-bottom: 5mm;
 }
 .sh-logo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
   font-size: 2.8rem;
   color: var(--amber-bright);
   letter-spacing: .08em;
@@ -95,7 +96,7 @@ body {
 }
 .sh-title {
   text-align: right;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .5rem;
   letter-spacing: .2em;
   color: var(--rust);
@@ -104,7 +105,7 @@ body {
 
 /* ── LABELS ───────────────────────────────────────────── */
 .lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .42rem;
   letter-spacing: .2em;
   color: var(--rust);
@@ -116,7 +117,7 @@ body {
 .fr { display: flex; gap: 3mm; margin-bottom: 4mm; }
 .f { flex: 1; }
 .f-lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .38rem;
   letter-spacing: .15em;
   color: var(--text-dim);
@@ -133,15 +134,17 @@ body {
   text-align: center;
 }
 .attr-n {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: .95rem;
-  letter-spacing: .08em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .85rem;
+  letter-spacing: .06em;
   color: var(--amber);
   line-height: 1;
   margin-bottom: .8mm;
 }
 .attr-d {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .3rem;
   color: var(--text-dim);
   letter-spacing: .05em;
@@ -155,8 +158,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'VT323', monospace;
-  font-size: 1.6rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
   color: var(--amber-bright);
 }
 
@@ -168,7 +172,7 @@ body {
   margin-bottom: 3mm;
 }
 .trk-top {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .4rem;
   letter-spacing: .15em;
   color: var(--rust);
@@ -177,13 +181,14 @@ body {
   margin-bottom: 2mm;
 }
 .trk-sub {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .33rem;
-  letter-spacing: .08em;
+  letter-spacing: .05em;
   color: var(--text-dim);
   margin-top: 1.5mm;
   display: flex;
-  gap: 8mm;
+  flex-wrap: wrap;
+  gap: 2mm 6mm;
 }
 .trk-sub .danger { color: rgba(192,48,32,.8); }
 .trk-sub .bonus  { color: var(--cyan); }
@@ -208,8 +213,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'VT323', monospace;
-  font-size: .7rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: .52rem;
   color: var(--text-dim);
   flex-shrink: 0;
 }
@@ -225,7 +231,7 @@ body {
   padding: 1.5mm;
 }
 .inv-lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .3rem;
   letter-spacing: .1em;
   color: var(--text-dim);
@@ -249,7 +255,7 @@ body {
   padding: 1.5mm 2mm;
 }
 .area-lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .3rem;
   letter-spacing: .1em;
   color: var(--cyan-dim);
@@ -265,7 +271,7 @@ body {
   right: 12mm;
   display: flex;
   justify-content: space-between;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .3rem;
   color: var(--text-dim);
   letter-spacing: .1em;
@@ -282,7 +288,7 @@ body {
   text-align: center;
 }
 .sm-lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .35rem;
   letter-spacing: .12em;
   color: var(--text-dim);
@@ -312,7 +318,7 @@ body {
   flex-shrink: 0;
 }
 .est-n {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .35rem;
   letter-spacing: .08em;
   color: var(--text-dim);
@@ -326,9 +332,11 @@ body {
   padding: 2.5mm 3mm;
 }
 .mod-n {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: .85rem;
-  letter-spacing: .1em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .8rem;
+  letter-spacing: .06em;
   color: var(--cyan);
   border-bottom: 1px solid var(--border);
   padding-bottom: 1mm;
@@ -338,11 +346,11 @@ body {
 .mod-fields { display: flex; flex-direction: column; gap: 1.5mm; }
 .mf { display: flex; align-items: center; gap: 2mm; }
 .mf-lbl {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: .33rem;
-  letter-spacing: .08em;
+  letter-spacing: .05em;
   color: var(--text-dim);
-  width: 17mm;
+  width: 21mm;
   flex-shrink: 0;
 }
 .mf-line { flex: 1; border-bottom: 1px solid var(--border-bright); height: 4mm; }
